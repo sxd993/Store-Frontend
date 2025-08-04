@@ -4,7 +4,7 @@ import { categories } from '../../utils/data';
 
 const Categories = () => {
   return (
-    <section className="py-32 bg-white border-b border-gray-100">
+    <section className="py-12 bg-white border-b border-gray-100">
       <div className="text-center mb-20">
         <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-gray-900 mb-6">Категории</h2>
         <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed px-4">

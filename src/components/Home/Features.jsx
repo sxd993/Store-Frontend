@@ -3,7 +3,7 @@ import { features, icons } from '../../utils/data';
 
 const Features = () => {
   return (
-    <section className="py-32 bg-white border-b border-gray-100">
+    <section className="py-12 bg-white border-b border-gray-100">
       {/* Header */}
       <div className="text-center mb-20">
         <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-gray-900 mb-6">Почему выбирают нас</h2>

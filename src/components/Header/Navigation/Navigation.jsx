@@ -16,7 +16,7 @@ const Navigation = ({ isMobile = false, onItemClick }) => {
           <Link
             key={index}
             to={item.path}
-            className="block text-2xl font-medium text-gray-900 hover:text-gray-700 transition-colors"
+            className="block text-3xl font-medium text-gray-700 py-4"
             onClick={onItemClick}
           >
             {item.name}
