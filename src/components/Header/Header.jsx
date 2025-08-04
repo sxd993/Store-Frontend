@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import TopBar from './TopBar/TopBar';
 import Logo from './Logo/Logo';
 import SearchBar from './SearchBar/SearchBar';
 import UserMenu from './UserMenu/UserMenu';
 import CartIcon from './CartIcon/CartIcon';
 import Navigation from './Navigation/Navigation';
-import PromoInfo from './PromoInfo/PromoInfo';
 import MobileMenu from './MobileMenu/MobileMenu';
 
 const Header = () => {
@@ -25,43 +23,50 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50">
-      {/* Top Bar */}
-      <TopBar />
-
+    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
       {/* Main Header */}
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Logo />
 
-          {/* Search Bar */}
-          <div className="hidden md:flex flex-1 max-w-2xl mx-8">
-            <SearchBar />
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            <Navigation />
           </div>
 
           {/* Right Side */}
-          <div className="flex items-center space-x-4">
-            {/* Mobile Search Toggle */}
-            <button
-              onClick={handleSearchToggle}
-              className="md:hidden text-gray-600 hover:text-blue-600"
-            >
-              🔍
-            </button>
+          <div className="flex items-center space-x-6">
+            {/* Desktop Elements */}
+            <div className="hidden md:flex items-center space-x-6">
+              {/* Favorites */}
+              <button className="text-gray-900 hover:text-gray-700 transition-colors">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </button>
 
-            {/* User Menu */}
-            <UserMenu />
+              {/* User Menu */}
+              <UserMenu />
 
-            {/* Cart */}
-            <CartIcon itemCount={3} />
+              {/* Cart */}
+              <CartIcon itemCount={3} />
+            </div>
 
             {/* Mobile Menu Toggle */}
             <button
               onClick={handleMenuToggle}
-              className="md:hidden text-gray-600 hover:text-blue-600"
+              className="md:hidden text-gray-900 hover:text-gray-700 transition-colors"
             >
-              {isMenuOpen ? '✕' : '☰'}
+              {isMenuOpen ? (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
             </button>
           </div>
         </div>
@@ -69,31 +74,16 @@ const Header = () => {
         {/* Mobile Search */}
         {isSearchOpen && (
           <div className="md:hidden mt-4">
-            <SearchBar placeholder="Поиск..." />
+            <SearchBar placeholder="Поиск iPhone..." />
           </div>
         )}
       </div>
 
-      {/* Navigation Menu */}
-      <nav className="bg-gray-50 border-t border-gray-200">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between">
-            {/* Desktop Navigation */}
-            <Navigation />
-
-            {/* Promo Info */}
-            <PromoInfo />
-          </div>
-
-          {/* Mobile Menu */}
-          <MobileMenu 
-            isOpen={isMenuOpen}
-            onClose={handleMenuClose}
-            onSearchToggle={handleSearchToggle}
-            isSearchOpen={isSearchOpen}
-          />
-        </div>
-      </nav>
+      {/* Mobile Menu */}
+      <MobileMenu 
+        isOpen={isMenuOpen}
+        onClose={handleMenuClose}
+      />
     </header>
   );
 };

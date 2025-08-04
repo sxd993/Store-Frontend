@@ -1,58 +1,40 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Navigation = ({ categories = [], isMobile = false, onItemClick }) => {
-  const defaultCategories = [
-    { name: 'iPhone 15 Pro', path: '/iphone-15-pro' },
-    { name: 'iPhone 15', path: '/iphone-15' },
-    { name: 'iPhone 14 Pro', path: '/iphone-14-pro' },
-    { name: 'Чехлы', path: '/cases' },
-    { name: 'Стекла', path: '/screen-protectors' },
-    { name: 'Аксессуары', path: '/accessories' }
+const Navigation = ({ isMobile = false, onItemClick }) => {
+  const navItems = [
+    { name: 'Главная', path: '/' },
+    { name: 'Каталог', path: '/catalog' },
+    { name: 'О нас', path: '/about' },
+    { name: 'Контакты', path: '/contacts' }
   ];
-
-  const navCategories = categories.length > 0 ? categories : defaultCategories;
 
   if (isMobile) {
     return (
-      <div className="md:hidden py-4 border-t border-gray-200">
-        <div className="space-y-2">
-          {navCategories.map((category, index) => (
-            <Link
-              key={index}
-              to={category.path}
-              className="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-              onClick={onItemClick}
-            >
-              {category.name}
-            </Link>
-          ))}
-          <div className="pt-4 border-t border-gray-200">
-            <div className="space-y-2 text-sm text-gray-600">
-              <div className="flex items-center space-x-2">
-                <span>⚡</span>
-                <span>Быстрая доставка</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <span>🛡️</span>
-                <span>Гарантия Apple</span>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="space-y-8">
+        {navItems.map((item, index) => (
+          <Link
+            key={index}
+            to={item.path}
+            className="block text-2xl font-medium text-gray-900 hover:text-gray-700 transition-colors"
+            onClick={onItemClick}
+          >
+            {item.name}
+          </Link>
+        ))}
       </div>
     );
   }
 
   return (
     <div className="hidden md:flex items-center space-x-8">
-      {navCategories.map((category, index) => (
+      {navItems.map((item, index) => (
         <Link
           key={index}
-          to={category.path}
-          className="py-4 px-2 text-gray-700 hover:text-blue-600 font-medium transition-colors"
+          to={item.path}
+          className="text-gray-900 hover:text-gray-700 font-light transition-colors duration-300"
         >
-          {category.name}
+          {item.name}
         </Link>
       ))}
     </div>
