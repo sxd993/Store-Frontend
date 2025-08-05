@@ -1,10 +1,8 @@
-// src/components/CatalogList.js
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { CatalogApi } from '../api/Catalog/CatalogApi';
-import { Typography, Button, Grid, Paper, CircularProgress } from '@mui/material';
+import { CatalogApi } from '../../api/Catalog/CatalogApi';
 
-const CatalogList = () => {
+export const CatalogList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 20;
 
@@ -16,53 +14,20 @@ const CatalogList = () => {
   });
 
   return (
-    <div style={{ padding: '16px' }}>
-      <Typography variant="h5" gutterBottom>
-        Каталог товаров
-      </Typography>
-
-      {isLoading && <CircularProgress />}
-      {error && <Typography color="error">Ошибка: {error.message}</Typography>}
-      {data?.items && (
-        <div>
-          <Typography variant="h6" gutterBottom>
-            Найдено {data.pagination.total} товаров
-          </Typography>
-          <Grid container spacing={2}>
-            {data.items.map((product) => (
-              <Grid item xs={12} sm={6} md={4} key={product.id}>
-                <Paper elevation={3} style={{ padding: '16px' }}>
-                  <Typography variant="h6">{product.name}</Typography>
-                  <Typography>Цена: ${product.price.toFixed(2)}</Typography>
-                  <Typography>В наличии: {product.stock_quantity} шт.</Typography>
-                </Paper>
-              </Grid>
-            ))}
-          </Grid>
-          <div style={{ marginTop: '16px' }}>
-            <Typography>
-              Страница {data.pagination.page} из {data.pagination.totalPages}
-            </Typography>
-            <Button
-              variant="contained"
-              disabled={!data.pagination.has_prev}
-              onClick={() => setCurrentPage(currentPage - 1)}
-              style={{ marginRight: '8px' }}
-            >
-              Предыдущая
-            </Button>
-            <Button
-              variant="contained"
-              disabled={!data.pagination.has_next}
-              onClick={() => setCurrentPage(currentPage + 1)}
-            >
-              Следующая
-            </Button>
-          </div>
+    <div>
+      {isLoading && <p>Загрузка...</p>}
+      {error && <p>Ошибка загрузки товаров: {error.message}</p>}
+      {data && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+          {data.items.map(product => (
+            <div key={product.id} className="border p-4 rounded">
+              <h2 className="text-lg font-bold">{product.name}</h2>
+              <p>{product.description}</p>
+              <p>Цена: {product.price} руб.</p>
+            </div>
+          ))}
         </div>
       )}
     </div>
   );
 };
-
-export default CatalogList;

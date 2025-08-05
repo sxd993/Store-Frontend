@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { CatalogList} from './CatalogList'
 import { Link } from 'react-router-dom';
 
 const Catalog = () => {
@@ -409,74 +410,7 @@ const Catalog = () => {
           {/* Сетка товаров */}
           <div className="flex-1">
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-              {filteredProducts.map(product => (
-                <Link key={product.id} to={`/product/${product.id}`} className="group">
-                  {/* Изображение товара */}
-                  <div className="aspect-square bg-gray-50 mb-6 flex items-center justify-center group-hover:bg-gray-100 transition-colors duration-300">
-                    <svg className="h-20 w-20 text-gray-300 group-hover:text-gray-400 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-
-                  {/* Информация о товаре */}
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-light text-gray-900">{product.name}</h3>
-                    
-                    <div className="space-y-2">
-                      <p className="text-sm text-gray-500 font-light">{product.storage} • {product.color}</p>
-                      
-                      {/* Рейтинг */}
-                      <div className="flex items-center">
-                        <div className="flex items-center">
-                          {[...Array(5)].map((_, i) => (
-                            <svg
-                              key={i}
-                              className={`h-4 w-4 ${i < Math.floor(product.rating) ? 'text-gray-900' : 'text-gray-200'}`}
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                            </svg>
-                          ))}
-                        </div>
-                        <span className="ml-2 text-sm text-gray-500 font-light">({product.reviews})</span>
-                      </div>
-                    </div>
-
-                    {/* Цена и кнопки */}
-                    <div className="space-y-4">
-                      <div>
-                        <p className="text-2xl font-light text-gray-900">${product.price}</p>
-                        <p className="text-sm text-gray-500 font-light">или $99/мес</p>
-                      </div>
-                      
-                      <div className="flex gap-3">
-                        <button 
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            // Здесь будет логика добавления в корзину
-                            console.log('Добавить в корзину:', product.name);
-                          }}
-                          className="flex-1 border-2 border-gray-900 bg-white text-gray-900 px-6 py-3 font-medium hover:bg-gray-900 hover:text-white transition-colors duration-300"
-                        >
-                          В корзину
-                        </button>
-                        <button 
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            window.location.href = `/product/${product.id}`;
-                          }}
-                          className="flex-1 border-2 border-gray-200 bg-gray-50 text-gray-700 px-6 py-3 font-medium hover:bg-gray-100 transition-colors duration-300"
-                        >
-                          Подробнее
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
+                <CatalogList/>
             </div>
 
             {/* Пустое состояние */}
