@@ -15,9 +15,6 @@ const Footer = () => {
               <span className="text-lg md:text-xl font-bold text-gray-900">nnvStore</span>
             </div>
             <h3 className="text-gray-600 hover:text-gray-900 transition-colors text-sm">Telegram канал</h3>
-            <p className="text-sm text-gray-600">
-              © 2025 nnvStore. Все права защищены.
-            </p>
             <p className="text-sm text-gray-400 leading-tight">
               nnvStore - современная техника и аксессуары с быстрой доставкой по приятным ценам. Делаем технологии доступными каждому.
             </p>
@@ -64,11 +61,7 @@ const Footer = () => {
 
         <div className="border-t border-gray-200 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-center items-center gap-2 md:gap-4">
-            <p className="text-xs md:text-sm text-gray-500 text-center">
-              <span className="block md:inline">Пользовательское соглашение</span>
-              <span className="hidden md:inline"> | </span>
-              <span className="block md:inline">Политика конфиденциальности</span>
-            </p>
+            <p className="text-xs md:text-sm text-gray-500 text-center">© 2025 nnvStore. Все права защищены.</p>
           </div>
         </div>
       </div>

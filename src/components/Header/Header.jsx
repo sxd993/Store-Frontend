@@ -1,71 +1,44 @@
-import React, { useCallback, useState } from 'react';
-import { Logo, CartIcon, FavoritesIcon, UserMenu} from '../../ui/Icons/HeaderIcons'
-import Navigation from './Navigation/Navigation';
-import MobileMenu from './MobileMenu/MobileMenu';
+import React, { useState } from "react";
+import Navigation from "./Navigation/Navigation";
+import Search from "./Search/Search";
+import MobileMenu from "./MobileMenu/MobileMenu";
+import { Logo } from "../../ui/Icons/HeaderIcons";
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const handleMenuToggle = useCallback(() => {
-    setIsMenuOpen(!isMenuOpen);
-  }, []);
-
-  const handleMenuClose = useCallback(() => {
-    setIsMenuOpen(false);
-  }, []);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white border-b py-3 border-gray-200 sticky top-0 z-50">
-      {/* Main Header */}
-      <div className="container mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Logo />
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+    <>
+      <header className="w-full bg-white border-b border-gray-300 sticky top-0 z-50 h-16">
+        <div className="max-w-7xl mx-auto flex items-center justify-between h-16 px-6">
+          {/* Логотип слева */}
+          <div className="font-black text-2xl text-black tracking-tight select-none flex-shrink-0">
+            <Logo />
+          </div>
+          {/* Поиск по центру (desktop) */}
+          <div className="hidden md:flex flex-1 justify-center">
+            <Search />
+          </div>
+          {/* Навигация справа (desktop) */}
+          <div className="hidden md:flex items-center gap-8 flex-shrink-0 ml-6">
             <Navigation />
           </div>
-
-          {/* Right Side */}
-          <div className="flex items-center space-x-6">
-            {/* Desktop Elements */}
-            <div className="hidden md:flex items-center space-x-6">
-              {/* Favorites */}
-              <FavoritesIcon />
-              
-              {/* User Menu */}
-              <UserMenu />
-
-              {/* Cart */}
-              <CartIcon itemCount={3} />
-            </div>
-
-            {/* Mobile Menu Toggle */}
-            <button
-              onClick={handleMenuToggle}
-              className="md:hidden text-gray-900 hover:text-gray-700 transition-colors"
-            >
-              {isMenuOpen ? (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              ) : (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              )}
-            </button>
-          </div>
+          {/* Бургер-меню (mobile) */}
+          <button
+            className="md:hidden p-0 m-0 bg-transparent border-none outline-none text-black"
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            aria-label="Открыть меню"
+          >
+            <svg width="32" height="32" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+              <line x1="4" y1="7" x2="20" y2="7" />
+              <line x1="4" y1="12" x2="20" y2="12" />
+              <line x1="4" y1="17" x2="20" y2="17" />
+            </svg>
+          </button>
         </div>
-      </div>
-
-      {/* Mobile Menu */}
-      <MobileMenu 
-        isOpen={isMenuOpen}
-        onClose={handleMenuClose}
-      />
-    </header>
+      </header>
+      <MobileMenu open={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+    </>
   );
 };
 

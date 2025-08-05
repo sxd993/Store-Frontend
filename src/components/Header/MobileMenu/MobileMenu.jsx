@@ -1,59 +1,147 @@
-import React, { useEffect } from 'react';
-import Navigation from '../Navigation/Navigation';
+import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
+import Search from "../Search/Search";
 
-const MobileMenu = ({ isOpen, onClose }) => {
+const MobileMenu = ({ open, onClose }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [currentMenu, setCurrentMenu] = useState('main');
+  const [menuHistory, setMenuHistory] = useState(['main']);
+
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
+    if (open) {
+      setIsVisible(true);
+      setCurrentMenu('main');
+      setMenuHistory(['main']);
+      // Запускаем анимацию после рендера
+      setTimeout(() => setIsAnimating(true), 10);
     } else {
-      document.body.style.overflow = '';
+      setIsAnimating(false);
+      const timer = setTimeout(() => {
+        setIsVisible(false);
+      }, 300);
+      return () => clearTimeout(timer);
     }
-    // Очистка при размонтировании
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
+  }, [open]);
 
-  if (!isOpen) return null;
+  if (!isVisible) return null;
 
-  return (
+  const navigateToSubmenu = (menuName) => {
+    setCurrentMenu(menuName);
+    setMenuHistory(prev => [...prev, menuName]);
+  };
+
+  const navigateBack = () => {
+    if (menuHistory.length > 1) {
+      const newHistory = menuHistory.slice(0, -1);
+      setMenuHistory(newHistory);
+      setCurrentMenu(newHistory[newHistory.length - 1]);
+    }
+  };
+
+  const phoneModels = ['iPhone 12', 'iPhone 13', 'iPhone 14', 'iPhone 15', 'iPhone 16'];
+
+  const renderMainMenu = () => (
+    <>
+      <button 
+        onClick={() => navigateToSubmenu('phones')}
+        className="w-full py-6 px-4 text-black font-bold text-2xl border-b border-gray-200 text-center hover:bg-gray-100 transition-colors"
+      >
+        Айфоны
+      </button>
+      <button 
+        onClick={() => navigateToSubmenu('cases')}
+        className="w-full py-6 px-4 text-black font-bold text-2xl border-b border-gray-200 text-center hover:bg-gray-100 transition-colors"
+      >
+        Чехлы
+      </button>
+      <button 
+        onClick={() => navigateToSubmenu('glass')}
+        className="w-full py-6 px-4 text-black font-bold text-2xl border-b border-gray-200 text-center hover:bg-gray-100 transition-colors"
+      >
+        Защитные стекла
+      </button>
+      <a href="#" className="w-full py-6 px-4 text-black font-bold text-2xl border-b border-gray-200 text-center hover:bg-gray-100 transition-colors">Личный кабинет</a>
+      <a href="#" className="w-full py-6 px-4 text-black font-bold text-2xl border-b border-gray-200 text-center hover:bg-gray-100 transition-colors">О нас</a>
+      <a href="#" className="w-full py-6 px-4 text-black font-bold text-2xl text-center hover:bg-gray-100 transition-colors">Корзина</a>
+    </>
+  );
+
+  const renderSubmenu = (title) => (
+    <>
+      <div className="w-full py-4 px-4 border-b border-gray-300 flex justify-center items-center">
+        <button 
+          onClick={navigateBack}
+          className="absolute left-6 p-1 hover:bg-gray-200 rounded"
+        >
+          <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+            <polyline points="15,18 9,12 15,6"/>
+          </svg>
+        </button>
+        <h2 className="text-xl font-bold text-gray-800">{title}</h2>
+      </div>
+      {phoneModels.map((model, index) => (
+        <a 
+          key={index}
+          href="#" 
+          className="w-full py-5 px-4 text-black font-medium text-xl border-b border-gray-200 text-center hover:bg-gray-100 transition-colors"
+        >
+          {model}
+        </a>
+      ))}
+    </>
+  );
+
+  const renderCurrentMenu = () => {
+    switch (currentMenu) {
+      case 'phones':
+        return renderSubmenu('Айфоны');
+      case 'cases':
+        return renderSubmenu('Чехлы');
+      case 'glass':
+        return renderSubmenu('Защитные стекла');
+      default:
+        return renderMainMenu();
+    }
+  };
+
+  return createPortal(
     <>
       {/* Overlay */}
       <div 
-        className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+        className={`md:hidden fixed inset-0 bg-black transition-opacity duration-300 z-40 ${
+          isAnimating ? 'opacity-50' : 'opacity-0'
+        }`}
         onClick={onClose}
       />
       
-      {/* Full Screen Menu */}
-      <div className="fixed inset-0 bg-white z-50 md:hidden overflow-hidden">
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-3 border-b border-gray-200">
-        <svg className="w-7 h-7 md:w-8 md:h-8 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-              </svg>
-          <div className="flex items-center space-x-2">
-            <div className="text-lg font-bold text-gray-900">nnvStore</div>
+      {/* Menu */}
+      <div 
+        className={`md:hidden fixed inset-0 bg-white z-50 flex flex-col transition-transform duration-300 ease-out ${
+          isAnimating ? 'transform translate-x-0' : 'transform translate-x-full'
+        }`}
+      >
+        <header className="px-6 pt-6 pb-4 flex justify-center items-center border-b border-gray-200 relative">
+          <div className="flex-1 max-w-sm">
+            <Search />
           </div>
-          
-          {/* Close Button */}
           <button
             onClick={onClose}
-            className="text-gray-900 hover:text-gray-700 transition-colors"
+            className="absolute right-6 p-2 hover:bg-gray-100 rounded-full text-black transition-colors"
+            aria-label="Закрыть меню"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
             </svg>
           </button>
-        </div>
-
-        {/* Centered Navigation Menu */}
-        <div className="flex items-center justify-center h-full">
-          <div className="text-center">
-            <Navigation isMobile={true} onItemClick={onClose} />
-          </div>
-        </div>
+        </header>
+        
+        <main className="flex-1 flex flex-col justify-center items-center w-full max-w-xs mx-auto overflow-y-auto relative">
+          {renderCurrentMenu()}
+        </main>
       </div>
-    </>
+    </>,
+    document.body
   );
 };
 

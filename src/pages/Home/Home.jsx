@@ -1,9 +1,5 @@
-import React from 'react';
 import Hero from '../../components/Home/Hero';
 import Categories from '../../components/Home/Categories';
-import Features from '../../components/Home/Features';
-import Testimonials from '../../components/Home/Testimonials';
-import Newsletter from '../../components/Home/Newsletter';
 
 const Home = () => {
   return (
@@ -11,9 +7,6 @@ const Home = () => {
       <div className="w-full max-w-7xl mx-auto px-4">
         <Hero />
         <Categories />
-        <Features />
-        <Testimonials />
-        <Newsletter />
       </div>
     </div>
   );
