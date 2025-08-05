@@ -1,8 +1,9 @@
 import React from "react";
-import { CartIcon, FavoritesIcon, UserMenu } from "../../../ui/Icons/HeaderIcons";
+import { CartIcon, FavoritesIcon, PhoneIcon, UserMenu } from "../../../ui/Icons/HeaderIcons";
 
 const Navigation = () => (
-  <div className="flex items-center gap-6">
+  <div className='flex items-center text-gray-900 gap-8'>
+    <PhoneIcon />
     <FavoritesIcon />
     <UserMenu />
     <CartIcon />
