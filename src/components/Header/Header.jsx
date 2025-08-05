@@ -1,24 +1,21 @@
-import React, { useState } from 'react';
-import Logo from './Logo/Logo';
-import UserMenu from './UserMenu/UserMenu';
-import CartIcon from './CartIcon/CartIcon';
-import FavoritesIcon from './FavoritesIcon/FaforitesIcon';  
+import React, { useCallback, useState } from 'react';
+import { Logo, CartIcon, FavoritesIcon, UserMenu} from '../../ui/Icons/HeaderIcons'
 import Navigation from './Navigation/Navigation';
 import MobileMenu from './MobileMenu/MobileMenu';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const handleMenuToggle = () => {
+  const handleMenuToggle = useCallback(() => {
     setIsMenuOpen(!isMenuOpen);
-  };
+  }, []);
 
-  const handleMenuClose = () => {
+  const handleMenuClose = useCallback(() => {
     setIsMenuOpen(false);
-  };
+  }, []);
 
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <header className="bg-white border-b py-3 border-gray-200 sticky top-0 z-50">
       {/* Main Header */}
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">

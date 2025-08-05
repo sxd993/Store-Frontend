@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Search from '../Search/Search';
 
 const Navigation = ({ isMobile = false, onItemClick }) => {
   const navItems = [
@@ -12,6 +13,7 @@ const Navigation = ({ isMobile = false, onItemClick }) => {
   if (isMobile) {
     return (
       <div className="space-y-8">
+        <Search />
         {navItems.map((item, index) => (
           <Link
             key={index}
@@ -27,17 +29,7 @@ const Navigation = ({ isMobile = false, onItemClick }) => {
   }
 
   return (
-    <div className="hidden md:flex items-center space-x-8">
-      {navItems.map((item, index) => (
-        <Link
-          key={index}
-          to={item.path}
-          className="text-gray-900 hover:text-gray-700 font-light transition-colors duration-300"
-        >
-          {item.name}
-        </Link>
-      ))}
-    </div>
+    <Search />
   );
 };
 
