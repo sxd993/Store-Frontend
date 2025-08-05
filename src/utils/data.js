@@ -61,29 +61,6 @@ export const features = [
   }
 ];
 
-export const banners = [
-  {
-    id: 1,
-    title: 'iPhone 15 Pro Max',
-    subtitle: 'Титановый дизайн. Чип A17 Pro.',
-    description: 'Самый мощный iPhone в истории',
-    image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=800&h=400&fit=crop',
-    buttonText: 'Купить сейчас',
-    buttonLink: '/iphone-15-pro-max',
-    color: 'from-blue-600 to-purple-600'
-  },
-  {
-    id: 2,
-    title: 'Защита премиум',
-    subtitle: 'Чехлы и стекла',
-    description: 'Защитите свой iPhone стильно',
-    image: 'https://images.unsplash.com/photo-1601599561213-832382fd07ba?w=800&h=400&fit=crop',
-    buttonText: 'Смотреть аксессуары',
-    buttonLink: '/accessories',
-    color: 'from-green-600 to-blue-600'
-  }
-];
-
 export const testimonials = [
   {
     id: 1,
