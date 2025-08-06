@@ -10,7 +10,7 @@ export const CatalogList = () => {
   const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [currentPage]);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['catalog', currentPage],
@@ -56,7 +56,7 @@ export const CatalogList = () => {
           <Link key={product.id} to={`/product/${product.id}`} className="group block">
             <div className="bg-white border-2 border-gray-200 hover:border-gray-300 p-6 md:p-8 text-center transition-colors duration-300 h-full">
               <div className="mb-6 md:mb-8 flex items-center justify-center">
-                <img src={product.image}></img>
+                <img className='max-w-[250px] max-h-[250px]' src={product.image}></img>
               </div>
 
               {/* Product Info */}

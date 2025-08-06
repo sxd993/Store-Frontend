@@ -11,3 +11,8 @@ export const ProductApi = async (productId) => {
   const response = await client.get(`/catalog/${productId}`);
   return response.data.data;
 };
+
+export const AddProductApi = async (productData) => {
+  const response = await client.post('/catalog', productData);
+  return response.data.data;
+}
