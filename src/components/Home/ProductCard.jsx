@@ -9,14 +9,14 @@ export const ProductCard = ({ product }) => {
         to={`/product/${product.id}`}
         className="block h-full"
       >
-        <div className="bg-white border border-gray-200 hover:border-gray-300 hover:shadow-lg rounded-lg overflow-hidden transition-all duration-300 h-full flex flex-col">
+        <div className="bg-white border border-gray-200 overflow-hidden h-full flex flex-col">
           {/* Изображение товара */}
-          <div className="aspect-square bg-gray-50 flex flex-col items-center justify-center p-4 flex-shrink-0">
+          <div className="aspect-square flex flex-col items-center justify-center flex-shrink-0">
             {product.image ? (
               <img
                 src={product.image}
                 alt={product.name}
-                className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+                className="w-full h-full object-contain"
                 loading="lazy"
               />
             ) : null} 
