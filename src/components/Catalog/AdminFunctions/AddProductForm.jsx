@@ -1,5 +1,5 @@
-import { useAddProductForm } from '../../hooks/Catalog/useAddProductForm';
-import { InputField } from './utils/InputFields';
+import { useAddProductForm } from '../../../hooks/Catalog/useAddProductForm';
+import { InputField } from '../InputFields';
 
 export const AddProductForm = ({ onClose }) => {
   const { handleSubmit, register, formState, mutation } = useAddProductForm(onClose);
@@ -9,7 +9,7 @@ export const AddProductForm = ({ onClose }) => {
       {/* Заголовок */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold">Добавить товар</h2>
-        <button 
+        <button
           onClick={onClose}
           className="text-gray-400 hover:text-gray-600"
         >
@@ -26,7 +26,7 @@ export const AddProductForm = ({ onClose }) => {
           validation={{ required: 'Название обязательно' }}
           error={formState.errors.name}
         />
-        
+
         <div className="grid grid-cols-2 gap-4">
           <InputField
             register={register}
@@ -34,19 +34,19 @@ export const AddProductForm = ({ onClose }) => {
             type="number"
             step="0.01"
             placeholder="Цена"
-            validation={{ 
+            validation={{
               required: 'Цена обязательна',
               min: { value: 0.01, message: 'Цена должна быть больше 0' }
             }}
             error={formState.errors.price}
           />
-          
+
           <InputField
             register={register}
             name="stock_quantity"
             type="number"
             placeholder="Количество"
-            validation={{ 
+            validation={{
               required: 'Количество обязательно',
               min: { value: 0, message: 'Количество не может быть отрицательным' }
             }}
@@ -60,7 +60,7 @@ export const AddProductForm = ({ onClose }) => {
             name="color"
             placeholder="Цвет"
           />
-          
+
           <InputField
             register={register}
             name="memory"
@@ -91,7 +91,7 @@ export const AddProductForm = ({ onClose }) => {
           >
             Отмена
           </button>
-          <button 
+          <button
             type="submit"
             disabled={mutation.isLoading}
             className="flex-1 py-2 text-white bg-black hover:bg-neutral-900 rounded-lg disabled:opacity-50"
