@@ -22,7 +22,7 @@ const Catalog = () => {
                 Добавить товар
               </button>
             </div>
-            
+
             <CatalogList />
           </div>
         </div>
@@ -35,4 +35,4 @@ const Catalog = () => {
   );
 };
 
-export default Catalog;
+export default Catalog; 

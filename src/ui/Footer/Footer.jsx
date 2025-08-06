@@ -51,8 +51,6 @@ const Footer = () => {
                   <Link to="/catalog" className="block text-gray-600 hover:text-gray-900 transition-colors text-lg font-light">Каталог</Link>
                   <Link to="/about" className="block text-gray-600 hover:text-gray-900 transition-colors text-lg font-light">О нас</Link>
                   <Link to="/delivery" className="block text-gray-600 hover:text-gray-900 transition-colors text-lg font-light">Доставка и оплата</Link>
-                  <Link to="/warranty" className="block text-gray-600 hover:text-gray-900 transition-colors text-lg font-light">Гарантия</Link>
-                  <Link to="/contacts" className="block text-gray-600 hover:text-gray-900 transition-colors text-lg font-light">Контакты</Link>
                 </nav>
               </div>
             </div>
@@ -115,8 +113,6 @@ const Footer = () => {
               <Link to="/catalog" className="block text-gray-600 hover:text-gray-900 transition-colors text-base md:text-base font-light">Каталог</Link>
               <Link to="/about" className="block text-gray-600 hover:text-gray-900 transition-colors text-base md:text-base font-light">О нас</Link>
               <Link to="/delivery" className="block text-gray-600 hover:text-gray-900 transition-colors text-base md:text-base font-light">Доставка и оплата</Link>
-              <Link to="/warranty" className="block text-gray-600 hover:text-gray-900 transition-colors text-base md:text-base font-light">Гарантия</Link>
-              <Link to="/contacts" className="block text-gray-600 hover:text-gray-900 transition-colors text-base md:text-base font-light">Контакты</Link>
             </nav>
           </div>
 
