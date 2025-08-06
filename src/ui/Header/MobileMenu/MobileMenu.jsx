@@ -13,7 +13,6 @@ const MobileMenu = ({ open, onClose }) => {
       setIsVisible(true);
       setCurrentMenu('main');
       setMenuHistory(['main']);
-      // Запускаем анимацию после рендера
       setTimeout(() => setIsAnimating(true), 10);
     } else {
       setIsAnimating(false);
@@ -45,46 +44,46 @@ const MobileMenu = ({ open, onClose }) => {
     <>
       <button 
         onClick={() => navigateToSubmenu('phones')}
-        className="w-full py-6 px-4 text-black font-bold text-2xl border-b border-gray-200 text-center hover:bg-gray-100 transition-colors"
+        className="w-full py-[6%] px-[4%] text-black font-bold text-xl md:text-base border-b border-gray-200 text-center hover:bg-gray-100 transition-colors"
       >
         Айфоны
       </button>
       <button 
         onClick={() => navigateToSubmenu('cases')}
-        className="w-full py-6 px-4 text-black font-bold text-2xl border-b border-gray-200 text-center hover:bg-gray-100 transition-colors"
+        className="w-full py-[6%] px-[4%] text-black font-bold text-xl md:text-base border-b border-gray-200 text-center hover:bg-gray-100 transition-colors"
       >
         Чехлы
       </button>
       <button 
         onClick={() => navigateToSubmenu('glass')}
-        className="w-full py-6 px-4 text-black font-bold text-2xl border-b border-gray-200 text-center hover:bg-gray-100 transition-colors"
+        className="w-full py-[6%] px-[4%] text-black font-bold text-xl md:text-base border-b border-gray-200 text-center hover:bg-gray-100 transition-colors"
       >
         Защитные стекла
       </button>
-      <a href="#" className="w-full py-6 px-4 text-black font-bold text-2xl border-b border-gray-200 text-center hover:bg-gray-100 transition-colors">Личный кабинет</a>
-      <a href="#" className="w-full py-6 px-4 text-black font-bold text-2xl border-b border-gray-200 text-center hover:bg-gray-100 transition-colors">О нас</a>
-      <a href="#" className="w-full py-6 px-4 text-black font-bold text-2xl text-center hover:bg-gray-100 transition-colors">Корзина</a>
+      <a href="#" className="w-full py-[6%] px-[4%] text-black font-bold text-xl md:text-base border-b border-gray-200 text-center hover:bg-gray-100 transition-colors">Личный кабинет</a>
+      <a href="#" className="w-full py-[6%] px-[4%] text-black font-bold text-xl md:text-base border-b border-gray-200 text-center hover:bg-gray-100 transition-colors">О нас</a>
+      <a href="#" className="w-full py-[6%] px-[4%] text-black font-bold text-xl md:text-base text-center hover:bg-gray-100 transition-colors">Корзина</a>
     </>
   );
 
   const renderSubmenu = (title) => (
     <>
-      <div className="w-full py-4 px-4 border-b border-gray-300 flex justify-center items-center">
+      <div className="w-full py-[4%] px-[4%] border-b border-gray-300 flex justify-center items-center relative">
         <button 
           onClick={navigateBack}
-          className="absolute left-6 p-1 hover:bg-gray-200 rounded"
+          className="absolute left-[6%] p-[2%] hover:bg-gray-200 rounded"
         >
           <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
             <polyline points="15,18 9,12 15,6"/>
           </svg>
         </button>
-        <h2 className="text-xl font-bold text-gray-800">{title}</h2>
+        <h2 className="text-xl md:text-base font-bold text-gray-800">{title}</h2>
       </div>
       {phoneModels.map((model, index) => (
         <a 
           key={index}
           href="#" 
-          className="w-full py-5 px-4 text-black font-medium text-xl border-b border-gray-200 text-center hover:bg-gray-100 transition-colors"
+          className="w-full py-[5%] px-[4%] text-black font-medium text-lg md:text-base border-b border-gray-200 text-center hover:bg-gray-100 transition-colors"
         >
           {model}
         </a>
@@ -121,13 +120,13 @@ const MobileMenu = ({ open, onClose }) => {
           isAnimating ? 'transform translate-x-0' : 'transform translate-x-full'
         }`}
       >
-        <header className="px-6 pt-6 pb-4 flex justify-center items-center border-b border-gray-200 relative">
-          <div className="flex-1 max-w-sm">
+        <header className="px-[6%] pt-[6%] pb-[4%] flex justify-center items-center border-b border-gray-200 relative">
+          <div className="flex-1 max-w-[80vw]">
             <Search />
           </div>
           <button
             onClick={onClose}
-            className="absolute right-6 p-2 hover:bg-gray-100 rounded-full text-black transition-colors"
+            className="absolute right-[1%] p-[4%] hover:bg-gray-100 rounded-full text-black transition-colors"
             aria-label="Закрыть меню"
           >
             <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -136,7 +135,7 @@ const MobileMenu = ({ open, onClose }) => {
           </button>
         </header>
         
-        <main className="flex-1 flex flex-col justify-center items-center w-full max-w-xs mx-auto overflow-y-auto relative">
+        <main className="flex-1 flex flex-col justify-center items-center w-full max-w-[90vw] mx-auto overflow-y-auto relative">
           {renderCurrentMenu()}
         </main>
       </div>
