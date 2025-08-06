@@ -1,8 +1,10 @@
+// pages/Home/Home.jsx
 import Hero from '../../components/Home/Hero';
 import Categories from '../../components/Home/Categories';
-import { PopularOffers } from '../../components/Home/PopularOffers';
+import { PopularOffers } from './PopularOffers';
 
-const popularIds = [51, 52, 53, 54]; // Здесь укажите id популярных товаров
+
+const popularIds = [51, 52, 53];
 
 const Home = () => {
   return (
