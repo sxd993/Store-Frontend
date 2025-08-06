@@ -7,9 +7,6 @@ import Catalog from './pages/Catalog/Catalog'
 import ProductPage from './pages/Product/ProductPage'
 import Cart from './pages/Cart/Cart'
 import Login from './pages/Login/Login'
-import ForgotPassword from './components/Login/ForgotPassword'
-import CodeConfirmation from './components/Login/CodeConfirmation'
-import ChangePassword from './components/Login/ChangePassword'
 
 function App() {
 
@@ -24,9 +21,6 @@ function App() {
           <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/code-confirmation" element={<CodeConfirmation />} />
-          <Route path="/change-password" element={<ChangePassword />} />
         </Routes>
       </main>
       <Footer />

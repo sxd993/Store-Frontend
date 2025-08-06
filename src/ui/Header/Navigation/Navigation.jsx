@@ -1,4 +1,3 @@
-import React from "react";
 import { CartIcon, PhoneIcon, UserMenu } from "../../../ui/Icons/HeaderIcons";
 
 const Navigation = () => (

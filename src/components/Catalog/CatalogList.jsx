@@ -1,27 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import { CatalogApi } from '../../api/Catalog/CatalogApi';
+import { formatPrice } from '../../utils/formatPrice'
 
 export const CatalogList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 12;
   const navigate = useNavigate();
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['catalog', currentPage],
     queryFn: () => CatalogApi({ page: currentPage, per_page: perPage }),
     staleTime: 1000 * 60 * 5
   });
-  console.log(JSON.stringify({data}))
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat('ru-RU', {
-      style: 'currency',
-      currency: 'RUB',
-      minimumFractionDigits: 0
-    }).format(price);
-  };
 
   if (isLoading) {
     return (
@@ -79,10 +74,10 @@ export const CatalogList = () => {
                 <div className="space-y-2">
                   <p className="text-2xl md:text-3xl font-light text-gray-900">{formatPrice(product.price)}</p>
                 </div>
-                
+
                 {/* Action Buttons */}
                 <div className="flex gap-3 pt-4">
-                  <button 
+                  <button
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
@@ -92,7 +87,7 @@ export const CatalogList = () => {
                   >
                     В корзину
                   </button>
-                  <button 
+                  <button
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
@@ -119,24 +114,23 @@ export const CatalogList = () => {
           >
             ←
           </button>
-          
+
           {[...Array(Math.min(5, data.pagination.pages))].map((_, i) => {
             const page = i + 1;
             return (
               <button
                 key={page}
                 onClick={() => setCurrentPage(page)}
-                className={`px-4 py-2 border-2 font-light transition-colors duration-300 ${
-                  currentPage === page
+                className={`px-4 py-2 border-2 font-light transition-colors duration-300 ${currentPage === page
                     ? 'border-gray-900 bg-gray-900 text-white'
                     : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50'
-                }`}
+                  }`}
               >
                 {page}
               </button>
             );
           })}
-          
+
           <button
             onClick={() => setCurrentPage(prev => Math.min(prev + 1, data.pagination.pages))}
             disabled={currentPage === data.pagination.pages}

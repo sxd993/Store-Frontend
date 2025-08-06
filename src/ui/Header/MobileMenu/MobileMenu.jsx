@@ -68,7 +68,7 @@ const MobileMenu = ({ open, onClose }) => {
 
   const renderSubmenu = (title) => (
     <>
-      <div className="w-full py-[4%] px-[4%] border-b border-gray-300 flex justify-center items-center relative">
+      <div className="w-full py-[4%] px-[4%] border-b border-gray-300 flex justify-center items-center">
         <button 
           onClick={navigateBack}
           className="absolute left-[6%] p-[2%] hover:bg-gray-200 rounded"
@@ -120,13 +120,11 @@ const MobileMenu = ({ open, onClose }) => {
           isAnimating ? 'transform translate-x-0' : 'transform translate-x-full'
         }`}
       >
-        <header className="px-[6%] pt-[6%] pb-[4%] flex justify-center items-center border-b border-gray-200 relative">
-          <div className="flex-1 max-w-[80vw]">
+        <header className="mx-auto pt-[6%] min-w-[80%] flex justify-between items-center border-b border-gray-200 relative">
             <Search />
-          </div>
           <button
             onClick={onClose}
-            className="absolute right-[1%] p-[4%] hover:bg-gray-100 rounded-full text-black transition-colors"
+            className="right-[1%] p-[4%] hover:bg-gray-100 rounded-full text-black transition-colors"
             aria-label="Закрыть меню"
           >
             <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
