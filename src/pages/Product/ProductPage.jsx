@@ -1,8 +1,7 @@
-import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { ProductApi } from '../../api/Catalog/CatalogApi';
-
+import CircularProgress from '@mui/material/CircularProgress';
 const ProductPage = () => {
   const { id } = useParams();
 
@@ -14,26 +13,6 @@ const ProductPage = () => {
     retry: 1
   });
 
-  // Fallback данные если API недоступен
-  const fallbackProduct = {
-    id: id,
-    name: `Товар #${id}`,
-    price: Math.floor(Math.random() * 500) + 500,
-    category: 'unknown',
-    storage: '128GB',
-    color: 'Black',
-    description: `Описание товара с ID ${id}. Это динамически созданный товар для демонстрации.`,
-    features: [
-      'Dynamic product',
-      'Generated for demo',
-      'API integration ready',
-      'Responsive design',
-      'Modern interface'
-    ]
-  };
-
-  // Используем данные из API или fallback
-  const currentProduct = product || fallbackProduct;
 
   if (isLoading) {
     return (
@@ -43,10 +22,10 @@ const ProductPage = () => {
             <Link to="/catalog" className="text-gray-500 hover:text-gray-900 transition-colors duration-300">
               ← Назад к каталогу
             </Link>
-          </div>
-          <div className="text-center py-16">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
-            <p className="text-lg text-gray-600 font-light">Загрузка товара...</p>
+            <div className="text-center py-16">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
+              <p className="text-lg text-gray-600 font-light">Загрузка товара...</p>
+            </div>
           </div>
         </div>
       </div>
@@ -136,7 +115,7 @@ const ProductPage = () => {
                   или ${Math.round((currentProduct?.price || 0) / 12)}/мес
                 </p>
               </div>
-              
+
               <div className="flex gap-4">
                 <button className="flex-1 border-2 border-gray-900 bg-white text-gray-900 px-8 py-4 font-light hover:bg-gray-900 hover:text-white transition-colors duration-300">
                   Купить

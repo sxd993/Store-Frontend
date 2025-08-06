@@ -9,8 +9,8 @@ const Hero = () => {
         <div className="flex-1 flex items-center justify-center mb-12 md:mb-0 md:pr-12">
           <div className="w-full max-w-lg overflow-hidden flex items-center justify-center">
             <img
-              src="/src/assets/iph15.jpg"
               alt="iPhone 15 Pro Max"
+              src='https://s3.twcstorage.ru/596b6535-030ac4e4-0e39-4a9c-bb07-ffa6936ce428/iphone-images/iphone%2015%20pro%20max%20white.jpg'
               className="object-contain w-full h-auto max-h-112 md:max-h-144"
               onError={(e) => {
                 console.log('Image failed to load');

@@ -8,12 +8,13 @@ export const CatalogList = () => {
   const perPage = 12;
   const navigate = useNavigate();
 
+
   const { data, isLoading, error } = useQuery({
     queryKey: ['catalog', currentPage],
     queryFn: () => CatalogApi({ page: currentPage, per_page: perPage }),
     staleTime: 1000 * 60 * 5
   });
-
+  console.log(JSON.stringify({data}))
   const formatPrice = (price) => {
     return new Intl.NumberFormat('ru-RU', {
       style: 'currency',
@@ -59,21 +60,15 @@ export const CatalogList = () => {
         {data.items.map(product => (
           <Link key={product.id} to={`/product/${product.id}`} className="group block">
             <div className="bg-white border-2 border-gray-200 hover:border-gray-300 p-6 md:p-8 text-center transition-colors duration-300 h-full">
-              {/* Product Image */}
               <div className="mb-6 md:mb-8 flex items-center justify-center">
-                <div className="aspect-square bg-gray-50 border border-gray-200 w-32 h-32 md:w-40 md:h-40 flex items-center justify-center group-hover:bg-gray-100 transition-colors duration-300">
-                  <svg className="h-16 w-16 md:h-20 md:w-20 text-gray-300 group-hover:text-gray-400 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                  </svg>
-                </div>
+                <img src={product.image}></img>
               </div>
 
               {/* Product Info */}
               <div className="space-y-4">
                 <h3 className="font-light text-xl md:text-2xl text-gray-900 mb-3 group-hover:text-gray-700 transition-colors duration-300">
-                  {product.name}
+                  {product?.name} {product?.color} {product?.memory}GB
                 </h3>
-                
                 <div className="space-y-2">
                   <p className="text-sm md:text-base text-gray-500 font-light">
                     В наличии: {product.stock_quantity} шт.
@@ -83,7 +78,6 @@ export const CatalogList = () => {
                 {/* Price */}
                 <div className="space-y-2">
                   <p className="text-2xl md:text-3xl font-light text-gray-900">{formatPrice(product.price)}</p>
-                  <p className="text-sm text-gray-500 font-light">или {formatPrice(Math.round(product.price / 12))}/мес</p>
                 </div>
                 
                 {/* Action Buttons */}
