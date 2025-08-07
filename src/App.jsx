@@ -1,7 +1,7 @@
 // frontend/src/App.jsx - Интеграция с вашим существующим приложением
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AuthProvider } from './auth/context/AuthContext.jsx';
+import { AuthProvider } from './context/AuthContext.jsx';
 import { ProtectedRoute } from '././components/Auth/ProtectedRoute/ProtectedRoute.jsx';
 
 // Ваши существующие компоненты
@@ -40,17 +40,17 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/catalog" element={<Catalog />} />
               <Route path="/product/:id" element={<ProductPage />} />
-              
+
               {/* Защищенный роут корзины (только для авторизованных) */}
-              <Route 
-                path="/cart" 
+              <Route
+                path="/cart"
                 element={
                   <ProtectedRoute>
                     <Cart />
                   </ProtectedRoute>
-                } 
+                }
               />
-              
+
               {/* Auth роуты */}
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />

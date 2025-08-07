@@ -1,17 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { authApi } from '../../auth/api/authApi.js';
-import { useAuthContext } from '../../auth/context/AuthContext.jsx';
+import { authApi } from '../../api/Auth/authApi.jsx';
+import { useAuthContext } from '../../context/AuthContext.jsx';
 
 export const useAuth = () => {
   const { user, setUser, clearUser } = useAuthContext();
   const queryClient = useQueryClient();
-  
+
   // Получение данных пользователя
-  const { 
-    data: userData, 
-    isLoading, 
+  const {
+    data: userData,
+    isLoading,
     error,
-    refetch: refetchUser 
+    refetch: refetchUser
   } = useQuery({
     queryKey: ['currentUser'],
     queryFn: authApi.getCurrentUser,
@@ -25,7 +25,7 @@ export const useAuth = () => {
       clearUser();
     }
   });
-  
+
   // Мутация логина
   const loginMutation = useMutation({
     mutationFn: authApi.login,
@@ -39,7 +39,7 @@ export const useAuth = () => {
       console.error('Login failed:', error);
     }
   });
-  
+
   // Мутация регистрации
   const registerMutation = useMutation({
     mutationFn: authApi.register,
@@ -53,7 +53,7 @@ export const useAuth = () => {
       console.error('Registration failed:', error);
     }
   });
-  
+
   // Мутация выхода
   const logoutMutation = useMutation({
     mutationFn: authApi.logout,
@@ -71,7 +71,7 @@ export const useAuth = () => {
       window.location.href = '/login';
     }
   });
-  
+
   // Мутация выхода со всех устройств
   const logoutAllMutation = useMutation({
     mutationFn: authApi.logoutAll,
@@ -87,25 +87,25 @@ export const useAuth = () => {
       window.location.href = '/login';
     }
   });
-  
+
   // Проверка аутентификации при загрузке
   const checkAuth = () => {
     refetchUser();
   };
-  
+
   return {
     // Состояние
     user: user || userData?.user,
     isAuthenticated: !!(user || userData?.user),
     isLoading: isLoading || loginMutation.isPending || registerMutation.isPending,
-    
+
     // Методы
     login: loginMutation.mutate,
     register: registerMutation.mutate,
     logout: logoutMutation.mutate,
     logoutAll: logoutAllMutation.mutate,
     checkAuth,
-    
+
     // Состояния мутаций
     loginError: loginMutation.error,
     registerError: registerMutation.error,

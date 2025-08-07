@@ -1,8 +1,7 @@
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { registerSchema } from '../../../auth/validators/authSchemas.js';
-import { useAuth } from '../../../hooks/Auth/useAuth.js';
+import { registerSchema } from '../../../utils/AuthValidators/authSchemas';
+import { useAuth } from '../../../hooks/Auth/useAuth';
 
 export const RegisterForm = () => {
   const { register: registerUser, registerError, isRegistering } = useAuth();
@@ -24,7 +23,7 @@ export const RegisterForm = () => {
   return (
     <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
       <h2 className="text-2xl font-bold text-center mb-6">Регистрация</h2>
-      
+
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">

@@ -1,5 +1,4 @@
-import React from 'react';
-import { useAuth } from '../../../hooks/Auth/useAuth.js';
+import { useAuth } from '../../../hooks/Auth/useAuth';
 
 export const ProtectedRoute = ({ children, adminOnly = false }) => {
   const { user, isAuthenticated, isLoading } = useAuth();
