@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { CatalogList } from '../../components/Catalog/CatalogList/CatalogList';
-import { FilterSideBar } from '../../components/Catalog/Filter/Filter';
+import { Filter } from '../../components/Catalog/Filter/Filter';
 import { Modal } from '../../ui/Modal/Modal';
 import { AddProductForm } from '../../components/Catalog/AdminFunctions/AddProductForm';
 
@@ -11,7 +11,7 @@ const Catalog = () => {
     <div className="min-h-screen bg-white">
       <div className="max-w-8xl mx-auto px-4 py-12">
         <div className="flex flex-col lg:flex-row gap-8">
-          <FilterSideBar />
+          <Filter />
 
           <div className="flex-1">
             <div className="w-full flex justify-center md:justify-end mb-2">

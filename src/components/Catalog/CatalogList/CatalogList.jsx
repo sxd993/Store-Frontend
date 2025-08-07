@@ -3,8 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import { CatalogApi } from '../../../api/Catalog/CatalogApi';
 import { EditItem } from '../AdminFunctions/EditItem.jsx';
 import { Modal } from '../../../ui/Modal/Modal.jsx';
-import { ProductsGrid } from './utils/ProductsGrid.jsx';
-import { Pagination } from './utils/Pagination';
+import { ProductsGrid } from './ProductsGrid.jsx';
+import { Pagination } from './Pagination.jsx';
 
 export const CatalogList = () => {
   const [currentPage, setCurrentPage] = useState(1);

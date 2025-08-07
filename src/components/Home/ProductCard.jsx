@@ -25,7 +25,7 @@ export const ProductCard = ({ product }) => {
           {/* Информация о товаре */}
           <div className="p-6 flex flex-col flex-1">
             <h3 className="font-medium text-lg text-gray-900 mb-3 group-hover:text-gray-700 transition-colors line-clamp-2">
-              {product.name}
+              {product.model}
             </h3>
             
             {/* Характеристики */}

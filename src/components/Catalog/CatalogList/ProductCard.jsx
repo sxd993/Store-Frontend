@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { formatPrice } from '../../../../utils/formatPrice';
+import { formatPrice } from '../../../utils/formatPrice';
 import EditIcon from '@mui/icons-material/Edit';
 
 export const ProductCard = ({ product, onEditClick }) => {
@@ -10,11 +10,11 @@ export const ProductCard = ({ product, onEditClick }) => {
       {/* Основная карточка товара */}
       <Link to={`/product/${product.id}`} className="block">
         <div className="bg-white border-2 border-gray-200 hover:border-gray-300 p-6 md:p-8 text-center transition-colors duration-300 h-full">
-          
+
           {/* Изображение и кнопка редактирования */}
           <div className="mb-6 md:mb-8 flex flex-col items-center justify-center relative">
             {/* Кнопка редактирования */}
-            <button 
+            <button
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -26,10 +26,10 @@ export const ProductCard = ({ product, onEditClick }) => {
             >
               <EditIcon className='text-gray-500 hover:text-gray-700 transition-colors duration-300' />
             </button>
-            
+
             {/* Изображение товара */}
-            <img 
-              className='max-w-[250px] max-h-[250px] object-contain' 
+            <img
+              className='max-w-[250px] max-h-[250px] object-contain'
               src={product.image}
               alt={`${product?.name} ${product?.color}`}
               loading="lazy"
@@ -39,9 +39,9 @@ export const ProductCard = ({ product, onEditClick }) => {
           {/* Информация о товаре */}
           <div className="space-y-4">
             <h3 className="font-light text-xl md:text-2xl text-gray-900 mb-3 group-hover:text-gray-700 transition-colors duration-300">
-              {product?.name} {product?.color} {product?.memory}GB
+              {product?.brand} {product?.model} {product?.color} {product?.memory}GB
             </h3>
-            
+
             {/* Количество в наличии */}
             <div className="space-y-2">
               <p className="text-sm md:text-base text-gray-500 font-light">

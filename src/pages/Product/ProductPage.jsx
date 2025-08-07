@@ -72,7 +72,7 @@ const ProductPage = () => {
               <div className="max-w-7xl mx-auto px-4 py-4">
 
                 <h1 className="text-4xl md:text-6xl font-light text-gray-900 mb-8 leading-tight">
-                  {currentProduct?.name || `Товар #${id}`}
+                  {currentProduct?.brand} {currentProduct?.model}
                 </h1>
                 <p className="text-lg md:text-xl text-gray-600 font-light leading-relaxed max-w-2xl">
                   {currentProduct?.description || 'Описание товара недоступно.'}
