@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// Существующие компоненты
 import Header from './ui/Header/Header';
 import Footer from './ui/Footer/Footer';
 import Home from './pages/Home/Home';
@@ -9,10 +8,8 @@ import Catalog from './pages/Catalog/Catalog';
 import ProductPage from './pages/Product/ProductPage';
 import Cart from './pages/Cart/Cart';
 import {ProfilePage} from './pages/Profile/Profile';
+import { AuthPage } from './pages/Auth/Auth';
 
-// Auth страницы
-import { LoginPage } from './pages/Login/Login';
-import { RegisterPage } from './pages/Register/Register';
 
 function App() {
   return (
@@ -25,8 +22,8 @@ function App() {
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<AuthPage />} />
+          <Route path="/register" element={<AuthPage />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Routes>
       </main>
