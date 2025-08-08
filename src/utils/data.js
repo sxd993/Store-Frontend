@@ -1,10 +1,6 @@
-import { FaTruck, FaShieldAlt, FaDollarSign, FaUndo, FaUser, FaUserTie, FaUserGraduate } from 'react-icons/fa';
+import { FaUser, FaUserTie, FaUserGraduate } from 'react-icons/fa';
 
 export const icons = {
-  truck: FaTruck,
-  shield: FaShieldAlt,
-  money: FaDollarSign,
-  refresh: FaUndo,
   user: FaUser,
   userTie: FaUserTie,
   userGraduate: FaUserGraduate
@@ -34,32 +30,6 @@ export const categories = [
   },
 ];
 
-export const features = [
-  {
-    icon: 'truck',
-    title: 'Быстрая доставка',
-    description: 'Доставляем по всей России в течение 1-3 дней',
-    color: 'blue'
-  },
-  {
-    icon: 'shield',
-    title: 'Официальная гарантия',
-    description: 'Гарантия Apple на все iPhone и аксессуары',
-    color: 'green'
-  },
-  {
-    icon: 'money',
-    title: 'Лучшие цены',
-    description: 'Регулярные скидки на iPhone и аксессуары',
-    color: 'yellow'
-  },
-  {
-    icon: 'refresh',
-    title: 'Возврат 14 дней',
-    description: 'Возврат товара в течение 14 дней без вопросов',
-    color: 'purple'
-  }
-];
 
 export const testimonials = [
   {

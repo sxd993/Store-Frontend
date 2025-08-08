@@ -72,12 +72,6 @@ const ProductPage = () => {
     <section className="py-16 bg-white border-b border-gray-100">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
-          {/* Навигация */}
-          <div className="mb-8">
-            <Link to="/catalog" className="text-gray-500 hover:text-gray-900 transition-colors duration-300 font-light">
-              ← Назад к каталогу
-            </Link>
-          </div>
 
           {/* Основной контент */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -86,7 +80,7 @@ const ProductPage = () => {
               <img 
                 src={currentProduct.image} 
                 alt={`${currentProduct?.brand} ${currentProduct?.model}`}
-                className="w-full h-auto max-h-96 object-contain"
+                className="w-full h-auto max-h-110 object-contain"
               />
             </div>
 

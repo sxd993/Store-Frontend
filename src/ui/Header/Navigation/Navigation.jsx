@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom';
-import { CartIcon, PhoneIcon, UserMenu } from "../../../ui/Icons/HeaderIcons";
+import { CartIcon, UserMenu } from "../../../ui/Icons/HeaderIcons";
 import { AdminGuard } from "../../../components/Auth/AdminGuard";
 
 const Navigation = () => (
   <div className='flex items-center text-gray-900 gap-[6vw] md:gap-[2vw] text-lg md:text-base'>
-    <PhoneIcon />
     
     {/* Админская панель */}
     <AdminGuard>

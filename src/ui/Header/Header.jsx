@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Navigation from "./Navigation/Navigation";
-import Search from "./Search/Search";
 import MobileMenu from "./MobileMenu/MobileMenu";
 import { Logo } from "../../ui/Icons/HeaderIcons";
 import { Link } from "react-router-dom";
