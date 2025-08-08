@@ -7,7 +7,12 @@ import { useAuth } from '../../hooks/Auth/useAuth';
 
 const Catalog = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentFilters, setCurrentFilters] = useState({});
   const { user } = useAuth();
+
+  const handleFiltersApply = async (filters) => {
+    setCurrentFilters(filters);
+  };
 
   return (
     <section className="py-10 bg-white border-b border-gray-100">
@@ -20,24 +25,24 @@ const Catalog = () => {
               Каталог товаров
             </h1>
           </div>
+          
           {/* Кнопка добавления товара */}
-          {
-            user?.is_admin === 1 
-              ?
-              <div className="w-full flex justify-center md:justify-end mb-6">
-                <button
-                  onClick={() => setIsModalOpen(true)}
-                  className="px-6 py-3 border border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light transition-colors duration-300"
-                >
-                  Добавить товар
-                </button>
-              </div>
-              :
-              <></>
-          }
-          {/*     Фильтры    */}
-          <Filter />
-          <CatalogList />
+          {user?.is_admin === 1 && (
+            <div className="w-full flex justify-center md:justify-end mb-6">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="px-6 py-3 border border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light transition-colors duration-300"
+              >
+                Добавить товар
+              </button>
+            </div>
+          )}
+          
+          {/* Фильтры */}
+          <Filter onFiltersApply={handleFiltersApply} />
+          
+          {/* Каталог */}
+          <CatalogList filters={currentFilters} />
         </div>
       </div>
 
@@ -48,4 +53,4 @@ const Catalog = () => {
   );
 };
 
-export default Catalog; 
+export default Catalog;

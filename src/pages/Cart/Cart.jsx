@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const Cart = () => {
@@ -25,7 +25,7 @@ const Cart = () => {
 
   const updateQuantity = (id, newQuantity) => {
     if (newQuantity < 1) return;
-    
+
     setCartItems(prevItems =>
       prevItems.map(item =>
         item.id === id ? { ...item, quantity: newQuantity } : item
@@ -40,7 +40,9 @@ const Cart = () => {
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const shipping = 0; // Бесплатная доставка
   const total = subtotal + shipping;
-
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   return (
     <div className="min-h-screen bg-white">
       {/* Заголовок */}
@@ -141,7 +143,7 @@ const Cart = () => {
             <div className="lg:col-span-1">
               <div className="border border-gray-200 p-6">
                 <h2 className="text-2xl font-light text-gray-900 mb-6">Итого</h2>
-                
+
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between">
                     <span className="text-gray-600 font-light">Подытог</span>
@@ -160,7 +162,7 @@ const Cart = () => {
                 <button className="w-full border-2 border-gray-900 bg-white text-gray-900 px-8 py-4 font-medium hover:bg-gray-900 hover:text-white transition-colors duration-300 mb-4">
                   Оформить заказ
                 </button>
-                
+
                 <Link
                   to="/catalog"
                   className="w-full border-2 border-gray-200 bg-gray-50 text-gray-700 px-8 py-4 font-medium hover:bg-gray-100 transition-colors duration-300 block text-center"

@@ -6,12 +6,17 @@ import { Modal } from '../../../ui/Modal/Modal.jsx';
 import { ProductsGrid } from './ProductsGrid.jsx';
 import { Pagination } from './Pagination.jsx';
 
-export const CatalogList = () => {
+export const CatalogList = ({ filters = {} }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
   const perPage = 12;
+
+  // Сбрасываем страницу при смене фильтров
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters]);
 
   // Скролл в начало при смене страницы
   useEffect(() => {
@@ -20,8 +25,8 @@ export const CatalogList = () => {
 
   // Запрос данных каталога
   const { data, isLoading, error } = useQuery({
-    queryKey: ['catalog', currentPage],
-    queryFn: () => CatalogApi({ page: currentPage, per_page: perPage }),
+    queryKey: ['catalog', currentPage, filters],
+    queryFn: () => CatalogApi({ page: currentPage, per_page: perPage, filters }),
     staleTime: 1000 * 60 * 5
   });
 
