@@ -1,11 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { formatPrice } from '../../../utils/formatPrice';
 import EditIcon from '@mui/icons-material/Edit';
-import { useAuth } from '../../../hooks/Auth/useAuth';
 
-export const ProductCard = ({ product, onEditClick }) => {
+
+export const ProductCard = ({ user, product, onEditClick }) => {
   const navigate = useNavigate();
-  const { user } = useAuth;
+
 
   return (
     <div className="group relative h-full">
@@ -17,8 +17,7 @@ export const ProductCard = ({ product, onEditClick }) => {
           <div className="mb-6 flex flex-col items-center justify-center relative flex-shrink-0">
             {/* Кнопка редактирования */}
             {
-              user?.isAdmin
-                ?
+              user?.is_admin === 1 && (
                 <button
                   onClick={(e) => {
                     e.preventDefault();
@@ -31,8 +30,7 @@ export const ProductCard = ({ product, onEditClick }) => {
                 >
                   <EditIcon className='text-gray-500 hover:text-gray-700 transition-colors duration-300' />
                 </button>
-                :
-                <></>
+              )
             }
 
 

@@ -28,7 +28,7 @@ const Catalog = () => {
 
           {/* Кнопка добавления товара */}
           {
-            user?.isAdmin
+            user?.is_admin === 1 
               ?
               <div className="w-full flex justify-center md:justify-end mb-8">
                 <button
