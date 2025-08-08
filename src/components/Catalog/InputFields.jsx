@@ -8,15 +8,15 @@ export const InputField = ({
   step,
   rows 
 }) => {
-  const baseClass = "w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none";
-  const errorClass = error ? "border-red-500" : "";
+  const baseClass = "w-full px-4 py-3 border border-gray-200 bg-white text-gray-900 placeholder-gray-500 font-light focus:outline-none focus:border-gray-900 transition-colors duration-300";
+  const errorClass = error ? "border-red-300 focus:border-red-500" : "";
   
   return (
-    <div>
+    <div className="space-y-2">
       {type === "textarea" ? (
         <textarea
           {...register(name, validation)}
-          rows={rows || 3}
+          rows={rows || 4}
           placeholder={placeholder}
           className={`${baseClass} ${errorClass} resize-none`}
         />
@@ -31,7 +31,7 @@ export const InputField = ({
       )}
       
       {error && (
-        <p className="text-red-500 text-xs mt-1">{error.message}</p>
+        <p className="text-red-600 text-sm font-light">{error.message}</p>
       )}
     </div>
   );

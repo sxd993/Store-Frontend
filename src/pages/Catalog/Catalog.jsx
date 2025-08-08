@@ -8,30 +8,43 @@ const Catalog = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-8xl mx-auto px-4 py-12">
-        <div className="flex flex-col lg:flex-row gap-8">
+    <section className="py-16 bg-white border-b border-gray-100">
+      <div className="container mx-auto px-4">
+        {/* Заголовок */}
+        <div className="text-center mb-12">
+          <h1 className="text-3xl md:text-5xl font-light text-gray-900 mb-4">
+            Каталог товаров
+          </h1>
+          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            Найдите нужный товар среди нашего ассортимента
+          </p>
+        </div>
+
+        {/* Кнопка добавления товара */}
+        <div className="w-full flex justify-center md:justify-end mb-8">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="px-6 py-3 border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 font-light transition-colors duration-300"
+          >
+            Добавить товар
+          </button>
+        </div>
+
+        {/* Фильтры */}
+        <div className="mb-8">
           <Filter />
+        </div>
 
-          <div className="flex-1">
-            <div className="w-full flex justify-center md:justify-end mb-2">
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="flex justify-center items-center text-nowrap bg-neutral-300 hover:bg-neutral-400 px-4 py-2 rounded-full transition-colors"
-              >
-                Добавить товар
-              </button>
-            </div>
-
-            <CatalogList />
-          </div>
+        {/* Список товаров на всю ширину */}
+        <div className="w-full">
+          <CatalogList />
         </div>
       </div>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <AddProductForm onClose={() => setIsModalOpen(false)} />
       </Modal>
-    </div>
+    </section>
   );
 };
 

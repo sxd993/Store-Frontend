@@ -6,13 +6,13 @@ export const ProductCard = ({ product, onEditClick }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="group relative">
+    <div className="group relative h-full">
       {/* Основная карточка товара */}
-      <Link to={`/product/${product.id}`} className="block">
-        <div className="bg-white border-2 border-gray-200 hover:border-gray-300 p-6 md:p-8 text-center transition-colors duration-300 h-full">
+      <Link to={`/product/${product.id}`} className="block h-full">
+        <div className="bg-white border border-gray-200 hover:border-gray-300 p-6 text-center transition-colors duration-300 h-full flex flex-col">
 
           {/* Изображение и кнопка редактирования */}
-          <div className="mb-6 md:mb-8 flex flex-col items-center justify-center relative">
+          <div className="mb-6 flex flex-col items-center justify-center relative flex-shrink-0">
             {/* Кнопка редактирования */}
             <button
               onClick={(e) => {
@@ -20,7 +20,7 @@ export const ProductCard = ({ product, onEditClick }) => {
                 e.stopPropagation();
                 onEditClick(product);
               }}
-              className='w-full flex items-end justify-end'
+              className='w-full flex items-end justify-end mb-2'
               type="button"
               aria-label={`Редактировать ${product.name}`}
             >
@@ -28,43 +28,45 @@ export const ProductCard = ({ product, onEditClick }) => {
             </button>
 
             {/* Изображение товара */}
-            <img
-              className='max-w-[250px] max-h-[250px] object-contain'
-              src={product.image}
-              alt={`${product?.name} ${product?.color}`}
-              loading="lazy"
-            />
+            <div className="w-full h-48 flex items-center justify-center">
+              <img
+                className='w-full h-full object-contain'
+                src={product.image}
+                alt={`${product?.name} ${product?.color}`}
+                loading="lazy"
+              />
+            </div>
           </div>
 
           {/* Информация о товаре */}
-          <div className="space-y-4">
-            <h3 className="font-light text-xl md:text-2xl text-gray-900 mb-3 group-hover:text-gray-700 transition-colors duration-300">
+          <div className="flex flex-col flex-1 space-y-4">
+            <h3 className="font-light text-lg text-gray-900 group-hover:text-gray-700 transition-colors duration-300 line-clamp-2">
               {product?.brand} {product?.model} {product?.color} {product?.memory}GB
             </h3>
 
             {/* Количество в наличии */}
-            <div className="space-y-2">
-              <p className="text-sm md:text-base text-gray-500 font-light">
+            <div className="flex-shrink-0">
+              <p className="text-sm text-gray-500 font-light">
                 В наличии: {product.stock_quantity} шт.
               </p>
             </div>
 
             {/* Цена */}
-            <div className="space-y-2">
-              <p className="text-2xl md:text-3xl font-light text-gray-900">
+            <div className="flex-shrink-0">
+              <p className="text-xl font-light text-gray-900">
                 {formatPrice(product.price)}
               </p>
             </div>
 
             {/* Кнопки действий */}
-            <div className="flex gap-3 pt-4">
+            <div className="flex gap-3 pt-4 flex-shrink-0 mt-auto">
               <button
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   console.log('Добавить в корзину:', product.name, 'ID:', product.id);
                 }}
-                className="flex-1 border-2 border-gray-900 bg-white text-gray-900 px-6 py-3 font-light hover:bg-gray-900 hover:text-white transition-colors duration-300"
+                className="flex-1 px-4 py-3 border border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light transition-colors duration-300 h-12"
               >
                 В корзину
               </button>
@@ -74,7 +76,7 @@ export const ProductCard = ({ product, onEditClick }) => {
                   e.stopPropagation();
                   navigate(`/product/${product.id}`);
                 }}
-                className="flex-1 border-2 border-gray-200 bg-gray-50 text-gray-700 px-6 py-3 font-light hover:bg-gray-100 transition-colors duration-300"
+                className="flex-1 px-4 py-3 border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 font-light transition-colors duration-300 h-12"
               >
                 Подробнее
               </button>
