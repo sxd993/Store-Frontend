@@ -87,7 +87,7 @@ export const ProfilePage = () => {
             Личный кабинет
           </h1>
           <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Добро пожаловать, {user.email}
+            Добро пожаловать, {user.name}
           </p>
         </div>
 

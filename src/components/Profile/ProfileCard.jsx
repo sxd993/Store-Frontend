@@ -5,6 +5,13 @@ const UserInfo = ({ user }) => (
   <div className="bg-white border border-gray-200 p-6">
     <h2 className="text-xl font-light text-gray-900 mb-6">Информация о пользователе</h2>
     <div className="space-y-4">
+      {user.name && (
+        <div>
+          <label className="block text-sm font-light text-gray-700 mb-2">Имя</label>
+          <p className="text-gray-900 border border-gray-200 px-3 py-2 font-light">{user.name}</p>
+        </div>
+      )}
+
       <div>
         <label className="block text-sm font-light text-gray-700 mb-2">Email</label>
         <p className="text-gray-900 border border-gray-200 px-3 py-2 font-light">{user.email}</p>
@@ -14,24 +21,6 @@ const UserInfo = ({ user }) => (
         <div>
           <label className="block text-sm font-light text-gray-700 mb-2">Телефон</label>
           <p className="text-gray-900 border border-gray-200 px-3 py-2 font-light">{user.phone}</p>
-        </div>
-      )}
-
-      <div>
-        <label className="block text-sm font-light text-gray-700 mb-2">Статус</label>
-        <div className="flex items-center gap-2">
-          <span className="inline-block px-3 py-1 text-sm border border-gray-300 text-gray-700 font-light">
-            {user.isAdmin ? 'Администратор' : 'Пользователь'}
-          </span>
-        </div>
-      </div>
-
-      {user.created_at && (
-        <div>
-          <label className="block text-sm font-light text-gray-700 mb-2">Дата регистрации</label>
-          <p className="text-gray-900 border border-gray-200 px-3 py-2 font-light">
-            {new Date(user.created_at).toLocaleDateString('ru-RU')}
-          </p>
         </div>
       )}
     </div>

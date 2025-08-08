@@ -10,30 +10,24 @@ const Catalog = () => {
   const { user } = useAuth();
 
   return (
-    <section className="py-16 bg-white border-b border-gray-100">
+    <section className="py-10 bg-white border-b border-gray-100">
       <div className="container mx-auto px-4">
-
-
-        {/*     Фильтры    */}
-        <Filter />
-
         {/* Список товаров на всю ширину */}
         <div className="w-full">
           {/* Заголовок */}
-          <div className="text-center mb-12">
-            <h1 className="text-3xl md:text-5xl font-light text-gray-900 mb-4">
+          <div className="text-center">
+            <h1 className="text-3xl md:text-5xl font-light text-gray-900 mb-8">
               Каталог товаров
             </h1>
           </div>
-
           {/* Кнопка добавления товара */}
           {
             user?.is_admin === 1 
               ?
-              <div className="w-full flex justify-center md:justify-end mb-8">
+              <div className="w-full flex justify-center md:justify-end mb-6">
                 <button
                   onClick={() => setIsModalOpen(true)}
-                  className="px-6 py-3 border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 font-light transition-colors duration-300"
+                  className="px-6 py-3 border border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light transition-colors duration-300"
                 >
                   Добавить товар
                 </button>
@@ -41,7 +35,8 @@ const Catalog = () => {
               :
               <></>
           }
-
+          {/*     Фильтры    */}
+          <Filter />
           <CatalogList />
         </div>
       </div>

@@ -31,8 +31,8 @@ export const RadioFilter = ({ title, options, selectedValue, onChange }) => {
   }, []);
 
   return (
-    <div className="mb-8">
-      <h4 className="text-sm font-light text-gray-900 mb-4">{title}</h4>
+    <div className="mb-4">
+      <h4 className="text-sm font-light text-gray-900 mb-2">{title}</h4>
       <div className="relative" ref={dropdownRef}>
         <button
           onClick={() => setIsOpen(!isOpen)}

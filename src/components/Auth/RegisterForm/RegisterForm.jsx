@@ -96,6 +96,39 @@ export const RegisterForm = ({ onSuccess }) => {
       </div>
 
       <div>
+        <label htmlFor="name" className="block text-sm font-light text-gray-700 mb-2">
+          Имя
+        </label>
+        <input
+          id="name"
+          type="text"
+          autoComplete="given-name"
+          placeholder="Введите ваше имя"
+          className={`w-full px-4 py-3 border border-gray-200 focus:border-gray-900 outline-none transition-colors duration-200 font-light ${
+            errors.name?.message ? 'border-red-500' : ''
+          }`}
+          {...register('name', {
+            required: 'Имя обязательно',
+            minLength: {
+              value: 2,
+              message: 'Имя должно содержать минимум 2 символа',
+            },
+            maxLength: {
+              value: 50,
+              message: 'Имя не должно превышать 50 символов',
+            },
+            pattern: {
+              value: /^[а-яёa-z\s-]+$/i,
+              message: 'Имя может содержать только буквы, пробелы и дефисы',
+            },
+          })}
+        />
+        {errors.name?.message && (
+          <p className="mt-2 text-sm text-red-600 font-light">{errors.name.message}</p>
+        )}
+      </div>
+
+      <div>
         <label htmlFor="phone" className="block text-sm font-light text-gray-700 mb-2">
           Телефон
         </label>

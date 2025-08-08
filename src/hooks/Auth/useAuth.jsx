@@ -24,11 +24,16 @@ export const useAuth = (options = {}) => {
          localStorage.removeItem('token');
          return null;
        }
+       if (error.response?.status === 429) {
+         // Бан на 15 минут - не повторяем запрос
+         console.warn('Аккаунт заблокирован на 15 минут из-за слишком многих попыток');
+         return null;
+       }
        throw error;
      }
    },
    retry: (failureCount, error) => {
-     if (error.response?.status === 401 || error.response?.status === 403) {
+     if (error.response?.status === 401 || error.response?.status === 403 || error.response?.status === 429) {
        return false;
      }
      return failureCount < 2;
@@ -52,9 +57,16 @@ export const useAuth = (options = {}) => {
        refetchType: 'none'
      });
    },
-   onError: () => {
+   onError: (error) => {
      queryClient.removeQueries(['user', 'current']);
      localStorage.removeItem('token');
+     
+     // Обработка специфических ошибок
+     if (error.response?.status === 401) {
+       console.warn('Неверный email или пароль');
+     } else if (error.response?.status === 429) {
+       console.warn('Аккаунт заблокирован на 15 минут из-за слишком многих попыток входа');
+     }
    },
  });
 
@@ -73,9 +85,14 @@ export const useAuth = (options = {}) => {
        refetchType: 'none'
      });
    },
-   onError: () => {
+   onError: (error) => {
      queryClient.removeQueries(['user', 'current']);
      localStorage.removeItem('token');
+     
+     // Обработка специфических ошибок
+     if (error.response?.status === 429) {
+       console.warn('Слишком много попыток регистрации. Подождите 15 минут.');
+     }
    },
  });
 

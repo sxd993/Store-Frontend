@@ -32,7 +32,14 @@ export const LoginForm = ({ onSuccess }) => {
       await login({ email: data.email, password: data.password });
       onSuccess?.();
     } catch (error) {
-      setFormError(error.message);
+      // Обработка специфических ошибок
+      if (error.response?.status === 401) {
+        setFormError('Неверный email или пароль');
+      } else if (error.response?.status === 429) {
+        setFormError('Аккаунт заблокирован на 15 минут из-за слишком многих попыток входа. Попробуйте позже.');
+      } else {
+        setFormError(error.message || 'Произошла ошибка при входе');
+      }
     }
   };
 

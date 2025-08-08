@@ -64,16 +64,16 @@ export const MobileFilter = ({
       {/* Кнопки */}
       <div className="flex justify-center gap-3 pt-6 border-t border-gray-200">
         <button
-          onClick={onApply}
-          className="px-6 py-3 border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 font-light transition-colors duration-300"
-        >
-          Применить
-        </button>
-        <button
           onClick={onReset}
           className="px-6 py-3 border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 font-light transition-colors duration-300"
         >
           Сбросить
+        </button>
+        <button
+          onClick={onApply}
+          className="px-6 py-3 border border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light transition-colors duration-300"
+        >
+          Применить
         </button>
       </div>
     </div>
@@ -81,7 +81,7 @@ export const MobileFilter = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="bg-white p-6 max-h-[90vh] overflow-y-auto">
+      <div className="bg-white p-6 max-h-[90vh] overflow-y-auto max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-xl font-light text-gray-900">Фильтры</h3>
           <button

@@ -10,7 +10,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="w-full bg-white border-b border-gray-300 sticky top-0 z-50 h-[8vh] min-h-[56px]">
+      <header className="w-full bg-white border-b border-gray-300 sticky top-0 z-50 h-[10vh] min-h-[56px]">
         <div className="w-full max-w-7xl mx-auto flex items-center justify-between h-full px-[5%]">
           {/* Логотип слева */}
           <div className="flex items-center gap-[3%] flex-shrink-0">
@@ -26,13 +26,7 @@ const Header = () => {
                 {/* Кнопка каталога */}
                 <Link
                   to="/catalog"
-                  className="flex items-center gap-2 px-6 py-2 text-gray-700 hover:bg-gray-50 font-light transition-colors duration-300"
-                >
-                  <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
-                    <rect x="2" y="4" width="16" height="2.5" rx="1.25" fill="currentColor"/>
-                    <rect x="2" y="9" width="16" height="2.5" rx="1.25" fill="currentColor"/>
-                    <rect x="2" y="14" width="16" height="2.5" rx="1.25" fill="currentColor"/>
-                  </svg>
+                  className="flex items-center gap-2 px-6 py-2 text-gray-700 hover:bg-gray-50 font-light transition-colors duration-300">
                   <span className="tracking-wide text-base">Каталог</span>
                 </Link>
                 
