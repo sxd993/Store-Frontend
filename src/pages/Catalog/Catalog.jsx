@@ -1,14 +1,13 @@
 import { useState } from 'react';
-import { CatalogList } from '../../components/Catalog/CatalogList/CatalogList';
+import {CatalogList} from '../../components/Catalog/CatalogList/CatalogList';
 import { Filter } from '../../components/Catalog/Filter/Filter';
 import { Modal } from '../../ui/Modal/Modal';
 import { AddProductForm } from '../../components/Catalog/AdminFunctions/AddProductForm';
-import { useAuth } from '../../hooks/Auth/useAuth';
+import { AdminGuard } from '../../components/Auth/AdminGuard';
 
 const Catalog = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentFilters, setCurrentFilters] = useState({});
-  const { user } = useAuth();
 
   const handleFiltersApply = async (filters) => {
     setCurrentFilters(filters);
@@ -26,8 +25,8 @@ const Catalog = () => {
             </h1>
           </div>
           
-          {/* Кнопка добавления товара */}
-          {user?.is_admin === 1 && (
+          {/* ОБНОВЛЕННАЯ админская кнопка */}
+          <AdminGuard>
             <div className="w-full flex justify-center md:justify-end mb-6">
               <button
                 onClick={() => setIsModalOpen(true)}
@@ -36,7 +35,7 @@ const Catalog = () => {
                 Добавить товар
               </button>
             </div>
-          )}
+          </AdminGuard>
           
           {/* Фильтры */}
           <Filter onFiltersApply={handleFiltersApply} />

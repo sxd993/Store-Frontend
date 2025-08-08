@@ -1,3 +1,4 @@
+// components/Catalog/CatalogList/CatalogList.jsx
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { CatalogApi } from '../../../api/Catalog/CatalogApi';

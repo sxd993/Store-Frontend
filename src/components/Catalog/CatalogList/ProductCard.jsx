@@ -1,11 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { formatPrice } from '../../../utils/formatPrice';
 import EditIcon from '@mui/icons-material/Edit';
+import { AdminGuard } from '../../Auth/AdminGuard';
 
-
-export const ProductCard = ({ user, product, onEditClick }) => {
+export const ProductCard = ({ product, onEditClick }) => {
   const navigate = useNavigate();
-
 
   return (
     <div className="group relative h-full">
@@ -15,24 +14,22 @@ export const ProductCard = ({ user, product, onEditClick }) => {
 
           {/* Изображение и кнопка редактирования */}
           <div className="mb-6 flex flex-col items-center justify-center relative flex-shrink-0">
-            {/* Кнопка редактирования */}
-            {
-              user?.is_admin === 1 && (
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    onEditClick(product);
-                  }}
-                  className='w-full flex items-end justify-end mb-2'
-                  type="button"
-                  aria-label={`Редактировать ${product.name}`}
-                >
-                  <EditIcon className='text-gray-500 hover:text-gray-700 transition-colors duration-300' />
-                </button>
-              )
-            }
-
+            
+            {/* ОБНОВЛЕННАЯ админская кнопка */}
+            <AdminGuard>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onEditClick(product);
+                }}
+                className='w-full flex items-end justify-end mb-2'
+                type="button"
+                aria-label={`Редактировать ${product.name}`}
+              >
+                <EditIcon className='text-gray-500 hover:text-gray-700 transition-colors duration-300' />
+              </button>
+            </AdminGuard>
 
             {/* Изображение товара */}
             <div className="w-full h-48 flex items-center justify-center">

@@ -7,9 +7,10 @@ import About from './pages/About/About';
 import Catalog from './pages/Catalog/Catalog';
 import ProductPage from './pages/Product/ProductPage';
 import Cart from './pages/Cart/Cart';
-import {ProfilePage} from './pages/Profile/Profile';
+import { ProfilePage } from './pages/Profile/Profile';
 import { AuthPage } from './pages/Auth/Auth';
-
+import { AccessDenied } from './pages/AccessDenied/AccessDenied';
+import { ProtectedRoute } from './components/Auth/ProtectedRoute';
 
 function App() {
   return (
@@ -17,14 +18,48 @@ function App() {
       <Header />
       <main>
         <Routes>
+          {/* Публичные маршруты */}
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/product/:id" element={<ProductPage />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/login" element={<AuthPage />} />
-          <Route path="/register" element={<AuthPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          
+          {/* Защищенные маршруты */}
+          <Route path="/cart" element={
+            <ProtectedRoute>
+              <Cart />
+            </ProtectedRoute>
+          } />
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          } />
+          
+          {/* Админские маршруты */}
+          <Route path="/admin" element={
+            <ProtectedRoute requireAdmin={true}>
+              <div className="p-8 text-center">
+                <h1 className="text-2xl font-light mb-4">Панель администратора</h1>
+                <p>Здесь будет админская панель</p>
+              </div>
+            </ProtectedRoute>
+          } />
+          
+          {/* Маршруты авторизации - для НЕавторизованных */}
+          <Route path="/login" element={
+            <ProtectedRoute requireAuth={false}>
+              <AuthPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/register" element={
+            <ProtectedRoute requireAuth={false}>
+              <AuthPage />
+            </ProtectedRoute>
+          } />
+          
+          {/* Страница отказа в доступе */}
+          <Route path="/access-denied" element={<AccessDenied />} />
         </Routes>
       </main>
       <Footer />

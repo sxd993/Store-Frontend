@@ -7,9 +7,8 @@ import { RegisterForm } from '../../components/Auth/RegisterForm/RegisterForm';
 export const AuthPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
 
-  // Определяем режим из URL или query параметров
   const [mode, setMode] = useState(() => {
     const searchParams = new URLSearchParams(location.search);
     const modeParam = searchParams.get('mode');
@@ -18,29 +17,41 @@ export const AuthPage = () => {
     return 'login';
   });
 
-  const from = location.state?.from?.pathname || '/profile';
-
-  // Редирект авторизованных пользователей
+  // УМНЫЙ РЕДИРЕКТ для уже авторизованных
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
+      const from = location.state?.from?.pathname || getSmartRedirect(user);
       navigate(from, { replace: true });
     }
-  }, [isAuthenticated, isLoading, navigate, from]);
+  }, [isAuthenticated, isLoading, navigate, location, user]);
 
-  // Обновляем URL при смене режима
-  useEffect(() => {
-    const currentPath = location.pathname;
-    const currentSearch = location.search;
-    if (mode === 'register' && currentPath !== '/register') {
-      navigate('/register' + currentSearch, { replace: true, state: location.state });
-    } else if (mode === 'login' && currentPath !== '/login') {
-      navigate('/login' + currentSearch, { replace: true, state: location.state });
-    }
-  }, [mode, navigate, location]);
-
-  const handleSuccess = () => {
+  const handleSuccess = (userData) => {
+    const from = location.state?.from?.pathname || getSmartRedirect(userData);
     navigate(from, { replace: true });
   };
+
+  const getSmartRedirect = (userData) => {
+    if (userData?.is_admin === 1) {
+      return '/catalog';
+    }
+    return '/profile';
+  };
+
+  if (isLoading) {
+    return (
+      <section className="py-16 bg-white border-b border-gray-100">
+        <div className="container mx-auto px-4">
+          <div className="max-w-md mx-auto text-center">
+            <div className="animate-pulse">
+              <div className="h-8 bg-gray-200 rounded mb-4"></div>
+              <div className="h-4 bg-gray-200 rounded mb-8"></div>
+              <div className="h-64 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const config = {
     login: {
@@ -66,22 +77,6 @@ export const AuthPage = () => {
   };
 
   const currentConfig = config[mode];
-
-  if (isLoading) {
-    return (
-      <section className="py-16 bg-white border-b border-gray-100">
-        <div className="container mx-auto px-4">
-          <div className="max-w-md mx-auto text-center">
-            <div className="animate-pulse">
-              <div className="h-8 bg-gray-200 rounded mb-4"></div>
-              <div className="h-4 bg-gray-200 rounded mb-8"></div>
-              <div className="h-64 bg-gray-200 rounded"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section className="py-16 bg-white border-b border-gray-100">
