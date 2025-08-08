@@ -1,9 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { formatPrice } from '../../../utils/formatPrice';
 import EditIcon from '@mui/icons-material/Edit';
+import { useAuth } from '../../../hooks/Auth/useAuth';
 
 export const ProductCard = ({ product, onEditClick }) => {
   const navigate = useNavigate();
+  const { user } = useAuth;
 
   return (
     <div className="group relative h-full">
@@ -14,18 +16,25 @@ export const ProductCard = ({ product, onEditClick }) => {
           {/* Изображение и кнопка редактирования */}
           <div className="mb-6 flex flex-col items-center justify-center relative flex-shrink-0">
             {/* Кнопка редактирования */}
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                onEditClick(product);
-              }}
-              className='w-full flex items-end justify-end mb-2'
-              type="button"
-              aria-label={`Редактировать ${product.name}`}
-            >
-              <EditIcon className='text-gray-500 hover:text-gray-700 transition-colors duration-300' />
-            </button>
+            {
+              user?.isAdmin
+                ?
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onEditClick(product);
+                  }}
+                  className='w-full flex items-end justify-end mb-2'
+                  type="button"
+                  aria-label={`Редактировать ${product.name}`}
+                >
+                  <EditIcon className='text-gray-500 hover:text-gray-700 transition-colors duration-300' />
+                </button>
+                :
+                <></>
+            }
+
 
             {/* Изображение товара */}
             <div className="w-full h-48 flex items-center justify-center">
