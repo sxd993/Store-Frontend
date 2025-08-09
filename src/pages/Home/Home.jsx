@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import Hero from '../../components/Home/Hero';
-import Categories from '../../components/Home/Categories';
-import { PopularOffers } from '../../components/Home/PopularOffers';
-import Testimonials from '../../components/Home/Testimonials';
-import { GetFilterCategory } from '../../api/Catalog/FilterApi';
-import { CatalogApi } from '../../api/Catalog/CatalogApi';
+import Hero from './Hero.jsx';
+import Categories from './Categories.jsx';
+import { PopularOffers } from './PopularOffers.jsx';
+import Testimonials from './Testimonials.jsx';
+import { GetFilterCategory } from '../../shared/api/filters.jsx';
+import { CatalogApi } from '../../shared/api/catalog';
 
 const popularIds = [51, 52, 53];
 

@@ -1,5 +1,5 @@
-import { useAuth } from '../../hooks/Auth/useAuth';
-import { ProfileCard } from '../../components/Profile/ProfileCard';
+import { useAuth } from '../../features/auth/model/useAuth';
+import { ProfileCard } from '../../features/profile/ui/ProfileCard';
 import { useNavigate, Link } from 'react-router-dom';
 
 const LoadingState = () => (

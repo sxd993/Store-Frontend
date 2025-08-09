@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import {CatalogList} from '../../components/Catalog/CatalogList/CatalogList';
-import { Filter } from '../../components/Catalog/Filter/Filter';
-import { Modal } from '../../ui/Modal/Modal';
-import { AddProductForm } from '../../components/Catalog/AdminFunctions/AddProductForm';
-import { AdminGuard } from '../../components/Auth/AdminGuard';
+import {CatalogList} from '../../features/catalog/ui/CatalogList/CatalogList';
+import { Filter } from '../../features/catalog/ui/Filter/Filter';
+import { Modal } from '../../shared/ui/Modal/Modal';
+import { AddProductForm } from '../../features/catalog/ui/AdminFunctions/AddProductForm';
+import { AdminGuard } from '../../features/auth/ui/AdminGuard';
 
 const Catalog = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

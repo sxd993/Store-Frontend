@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../hooks/Auth/useAuth';
+import { useAuth } from '../../features/auth/model/useAuth';
 
 export const AccessDenied = () => {
   const { userRole } = useAuth();

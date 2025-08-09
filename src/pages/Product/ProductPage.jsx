@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { ProductApi } from '../../api/Catalog/CatalogApi';
+import { ProductApi } from '../../shared/api/catalog';
 import { useEffect } from 'react';
 
 const ProductPage = () => {
