@@ -1,31 +1,47 @@
+import { memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { formatPrice } from '../../shared/utils/formatPrice.jsx';
+import { formatPrice } from '../../shared/lib/formatPrice';
 
-// Добавляем export
-export const ProductCard = ({ product }) => {
+export const ProductCard = memo(({ product }) => {
+  // Мемоизируем вычисляемые значения
+  const formattedPrice = useMemo(() => 
+    formatPrice(product.price), 
+    [product.price]
+  );
+
+  const productLink = useMemo(() => 
+    `/product/${product.id}`, 
+    [product.id]
+  );
+
+  const displayName = useMemo(() => 
+    product.model || product.name, 
+    [product.model, product.name]
+  );
+
   return (
     <div className="group h-full">
       <Link
-        to={`/product/${product.id}`}
+        to={productLink}
         className="block h-full"
       >
         <div className="bg-white border border-gray-200 overflow-hidden h-full flex flex-col">
           {/* Изображение товара */}
           <div className="aspect-square flex flex-col items-center justify-center flex-shrink-0">
-            {product.image ? (
+            {product.image && (
               <img
                 src={product.image}
-                alt={product.name}
+                alt={displayName}
                 className="w-full h-full object-contain"
                 loading="lazy"
               />
-            ) : null} 
+            )}
           </div>
 
           {/* Информация о товаре */}
           <div className="p-6 flex flex-col flex-1">
             <h3 className="font-medium text-lg text-gray-900 mb-3 group-hover:text-gray-700 transition-colors line-clamp-2">
-              {product.model}
+              {displayName}
             </h3>
             
             {/* Характеристики */}
@@ -45,7 +61,7 @@ export const ProductCard = ({ product }) => {
             {/* Цена */}
             <div className="flex items-center justify-center pt-4 border-t border-gray-100 text-2xl font-light text-gray-900 mt-auto">
               <p className="text-center">
-                {formatPrice(product.price)}
+                {formattedPrice}
               </p>
             </div>
             
@@ -61,4 +77,4 @@ export const ProductCard = ({ product }) => {
       </Link>
     </div>
   );
-};
+});

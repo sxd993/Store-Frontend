@@ -1,134 +1,142 @@
-import React, { useState } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Logo } from '../Icons/HeaderIcons';
 
-const Footer = () => {
+// Данные и подкомпоненты для сокращения дублирования
+const TELEGRAM_URL = 'https://t.me/nnvStore';
+const COMPANY_DESCRIPTION = 'nnvStore - современная техника и аксессуары с быстрой доставкой по приятным ценам. Делаем технологии доступными каждому.';
+
+const QUICK_LINKS = [
+  { to: '/profile', label: 'Личный кабинет' },
+  { to: '/catalog', label: 'Каталог' },
+  { to: '/cart', label: 'Корзина' },
+];
+
+const CONTACTS = {
+  phone: { value: '+7 (495) 123-45-67', caption: 'Круглосуточно' },
+  email: { value: 'gamhotik2005@gmail.com', caption: 'Поддержка' },
+};
+
+const TelegramLink = ({ className = '' }) => (
+  <a
+    href={TELEGRAM_URL}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Открыть Telegram канал"
+    className={`flex items-center gap-[2%] text-gray-500 hover:text-gray-900 transition-colors ${className}`}
+  >
+    <svg className="w-[4%] h-[4%]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+    </svg>
+    <span>Telegram канал</span>
+  </a>
+);
+
+const CompanyInfo = ({ className = '' }) => (
+  <div className={`space-y-[4%] ${className}`}>
+    <div className="flex items-center gap-[2%]">
+      <Logo />
+    </div>
+    <p className="text-gray-600 leading-relaxed font-light text-lg md:text-base">
+      {COMPANY_DESCRIPTION}
+    </p>
+    <TelegramLink className="text-lg md:text-base" />
+  </div>
+);
+
+const LinksList = () => (
+  <nav className="space-y-[2%]">
+    {QUICK_LINKS.map((item) => (
+      <Link
+        key={item.to}
+        to={item.to}
+        className="block text-gray-600 hover:text-gray-900 transition-colors font-light text-lg md:text-base"
+      >
+        {item.label}
+      </Link>
+    ))}
+  </nav>
+);
+
+const ContactsBlock = () => (
+  <div className="space-y-[3%]">
+    <div className="space-y-[1%]">
+      <div className="text-lg md:text-base text-gray-500 font-light">{CONTACTS.phone.caption}</div>
+      <div className="font-medium text-gray-900 text-lg md:text-base">{CONTACTS.phone.value}</div>
+    </div>
+    <div className="space-y-[1%]">
+      <div className="text-lg md:text-base text-gray-500 font-light">{CONTACTS.email.caption}</div>
+      <div className="font-medium text-gray-900 text-lg md:text-base break-all">{CONTACTS.email.value}</div>
+    </div>
+  </div>
+);
+
+const AccordionSection = ({ title, isOpen, onToggle, children }) => (
+  <div className="border-b border-gray-200">
+    <button
+      className="w-full flex justify-between items-center py-[3%] px-[2%] focus:outline-none"
+      onClick={onToggle}
+    >
+      <span className="font-semibold text-gray-900 text-xl">{title}</span>
+      <svg
+        className={`w-[5%] h-[5%] transform transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+      </svg>
+    </button>
+    <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-[50vh] py-[2%]' : 'max-h-0 py-0'}`}>
+      <div className="px-[2%] pb-[3%]">{children}</div>
+    </div>
+  </div>
+);
+
+const Footer = memo(() => {
   const [openSection, setOpenSection] = useState('company');
+
+  // Мемоизируем обработчик для стабильности
+  const toggleSection = useCallback((section) => {
+    setOpenSection(prev => prev === section ? null : section);
+  }, []);
+
+  // Мемоизируем обработчики для каждой секции
+  const handleLinksToggle = useCallback(() => {
+    toggleSection('links');
+  }, [toggleSection]);
+
+  const handleContactsToggle = useCallback(() => {
+    toggleSection('contacts');
+  }, [toggleSection]);
 
   return (
     <footer className="w-full bg-white border-t border-gray-300">
       <div className="w-full max-w-7xl mx-auto px-[5%] py-[6%]">
         
-        {/* Телефонная версия (до md) */}
+        {/* Мобильная версия (до md) */}
         <div className="block md:hidden">
-          {/* О компании - всегда открыта */}
-          <div className="mb-[4%]">
-            <div className="flex items-center gap-[2%] mb-[3%]">
-              <Logo />
-            </div>
-            <p className="text-gray-600 text-lg leading-relaxed font-light mb-[3%]">
-              NNV - современная техника и аксессуары с быстрой доставкой по приятным ценам. 
-              Делаем технологии доступными каждому.
-            </p>
-            <div className="flex items-center gap-[2%] text-gray-500 text-lg">
-              <svg className="w-[4%] h-[4%]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-              </svg>
-              <span>Telegram канал</span>
-            </div>
-          </div>
-
-          {/* Аккордеоны для остальных секций */}
+          <CompanyInfo className="mb-[4%]" />
           <div className="space-y-[2%]">
-            {/* Быстрые ссылки */}
-            <div className="border-b border-gray-200">
-              <button
-                className="w-full flex justify-between items-center py-[3%] px-[2%] focus:outline-none"
-                onClick={() => setOpenSection(openSection === 'links' ? null : 'links')}
-              >
-                <span className="font-semibold text-gray-900 text-xl">Быстрые ссылки</span>
-                <svg
-                  className={`w-[5%] h-[5%] transform transition-transform duration-200 ${openSection === 'links' ? 'rotate-180' : ''}`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              <div className={`overflow-hidden transition-all duration-300 ${openSection === 'links' ? 'max-h-[50vh] py-[2%]' : 'max-h-0 py-0'}`}>
-                <nav className="space-y-[2%] px-[2%] pb-[3%]">
-                  <Link to="/catalog" className="block text-gray-600 hover:text-gray-900 transition-colors text-lg font-light">Каталог</Link>
-                  <Link to="/about" className="block text-gray-600 hover:text-gray-900 transition-colors text-lg font-light">О нас</Link>
-                  <Link to="/delivery" className="block text-gray-600 hover:text-gray-900 transition-colors text-lg font-light">Доставка и оплата</Link>
-                </nav>
-              </div>
-            </div>
-
-            {/* Контакты */}
-            <div className="border-b border-gray-200">
-              <button
-                className="w-full flex justify-between items-center py-[3%] px-[2%] focus:outline-none"
-                onClick={() => setOpenSection(openSection === 'contacts' ? null : 'contacts')}
-              >
-                <span className="font-semibold text-gray-900 text-xl">Контакты</span>
-                <svg
-                  className={`w-[5%] h-[5%] transform transition-transform duration-200 ${openSection === 'contacts' ? 'rotate-180' : ''}`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              <div className={`overflow-hidden transition-all duration-300 ${openSection === 'contacts' ? 'max-h-[50vh] py-[2%]' : 'max-h-0 py-0'}`}>
-                <div className="space-y-[3%] px-[2%] pb-[3%]">
-                  <div className="space-y-[1%]">
-                    <div className="font-medium text-gray-900 text-lg">+7 (495) 123-45-67</div>
-                    <div className="text-lg text-gray-500 font-light">Круглосуточно</div>
-                  </div>
-                  <div className="space-y-[1%]">
-                    <div className="font-medium text-gray-900 text-lg break-all">gamhotik2005@gmail.com</div>
-                    <div className="text-lg text-gray-500 font-light">Поддержка</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <AccordionSection title="Быстрые ссылки" isOpen={openSection === 'links'} onToggle={handleLinksToggle}>
+              <LinksList />
+            </AccordionSection>
+            <AccordionSection title="Контакты" isOpen={openSection === 'contacts'} onToggle={handleContactsToggle}>
+              <ContactsBlock />
+            </AccordionSection>
           </div>
         </div>
 
-        {/* Компьютерная версия (md и выше) */}
+        {/* Десктопная версия (md и выше) */}
         <div className="hidden md:grid grid-cols-3 gap-[8%]">
-          {/* Company Info */}
-          <div className="space-y-[4%]">
-            <div className="flex items-center gap-[2%]">
-              <Logo />
-            </div>
-            <p className="text-gray-600 text-base md:text-base leading-relaxed font-light">
-              nnvStore - современная техника и аксессуары с быстрой доставкой по приятным ценам. 
-              Делаем технологии доступными каждому.
-            </p>
-            <div className="flex items-center gap-[2%] text-gray-500 text-base md:text-base">
-              <svg className="w-[4%] h-[4%]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-              </svg>
-              <span>Telegram канал</span>
-            </div>
-          </div>
-
-          {/* Quick Links */}
+          <CompanyInfo />
           <div className="space-y-[4%]">
             <h3 className="font-semibold text-gray-900 text-lg md:text-lg">Быстрые ссылки</h3>
-            <nav className="space-y-[2%]">
-              <Link to="/catalog" className="block text-gray-600 hover:text-gray-900 transition-colors text-base md:text-base font-light">Каталог</Link>
-              <Link to="/about" className="block text-gray-600 hover:text-gray-900 transition-colors text-base md:text-base font-light">О нас</Link>
-              <Link to="/delivery" className="block text-gray-600 hover:text-gray-900 transition-colors text-base md:text-base font-light">Доставка и оплата</Link>
-            </nav>
+            <LinksList />
           </div>
-
-          {/* Contact Info */}
           <div className="space-y-[4%]">
             <h3 className="font-semibold text-gray-900 text-lg md:text-lg">Контакты</h3>
-            <div className="space-y-[3%]">
-              <div className="space-y-[1%]">
-                <div className="font-medium text-gray-900 text-base md:text-base">+7 (495) 123-45-67</div>
-                <div className="text-base md:text-base text-gray-500 font-light">Круглосуточно</div>
-              </div>
-              <div className="space-y-[1%]">
-                <div className="font-medium text-gray-900 text-base md:text-base break-all">gamhotik2005@gmail.com</div>
-                <div className="text-base md:text-base text-gray-500 font-light">Поддержка</div>
-              </div>
-            </div>
+            <ContactsBlock />
           </div>
         </div>
 
@@ -141,6 +149,6 @@ const Footer = () => {
       </div>
     </footer>
   );
-};
+});
 
 export default Footer;

@@ -17,16 +17,9 @@ export const AppRouter = () => {
       <Route path="/" element={<Home />} />
       <Route path="/catalog" element={<Catalog />} />
       <Route path="/product/:id" element={<Product />} />
+      <Route path="/cart" element={<Cart />} />
       
       {/* Защищенные маршруты для авторизованных пользователей */}
-      <Route 
-        path="/cart" 
-        element={
-          <ProtectedRoute>
-            <Cart />
-          </ProtectedRoute>
-        } 
-      />
       <Route 
         path="/profile" 
         element={

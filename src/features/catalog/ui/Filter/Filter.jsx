@@ -71,17 +71,19 @@ export const Filter = memo(({ onFiltersApply }) => {
     }
 
     return (
-        <div className="w-full mb-3">
+        <div className="w-full mb-6">
             {/* Десктопная версия */}
-            <div className="hidden lg:block">
-                <FilterButton
-                    hasActiveFilters={isActive}
-                    onClick={handleOpenDesktop}
-                />
+            <div className="hidden md:flex justify-end">
+                <div className="w-full md:max-w-xs">
+                    <FilterButton
+                        hasActiveFilters={isActive}
+                        onClick={handleOpenDesktop}
+                    />
+                </div>
             </div>
 
             {/* Мобильная версия */}
-            <div className="lg:hidden">
+            <div className="flex md:hidden justify-center">
                 <FilterButton
                     hasActiveFilters={isActive}
                     onClick={handleOpenMobile}

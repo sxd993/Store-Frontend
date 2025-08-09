@@ -4,13 +4,13 @@ import { formatPrice } from '../../../../shared/lib/formatPrice';
 import EditIcon from '@mui/icons-material/Edit';
 import { AdminGuard } from '../../../../features/auth/ui/AdminGuard';
 
-// ОПТИМИЗИРОВАННАЯ ВЕРСИЯ ProductCard
+
 export const ProductCard = memo(({ product, onEditClick }) => {
   const navigate = useNavigate();
 
   // Мемоизируем вычисляемые значения
   const displayName = useMemo(() => 
-    `${product?.brand} ${product?.model} ${product?.color} ${product?.memory}GB`,
+    `${product?.brand || ''} ${product?.model || ''} ${product?.color || ''} ${product?.memory ? `${product.memory}GB` : ''}`.trim(),
     [product?.brand, product?.model, product?.color, product?.memory]
   );
 

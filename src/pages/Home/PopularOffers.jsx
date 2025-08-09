@@ -1,4 +1,4 @@
-import { ProductCard } from '../../features/catalog/ui/CatalogList/ProductCard.jsx';
+import { ProductCard } from './ProductCard.jsx';
 import { usePopularProducts } from '../../features/catalog/model/PopularOffers/usePopularProducts.jsx';
 
 export const PopularOffers = ({ ids }) => {

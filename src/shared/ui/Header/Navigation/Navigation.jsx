@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { CartIcon, UserMenu } from "../../../ui/Icons/HeaderIcons";
+import { CartIcon, UserMenu, PhoneIcon} from "../../../ui/Icons/HeaderIcons";
 import { AdminGuard } from "../../../../features/auth/ui/AdminGuard.jsx";
 
 const Navigation = () => (
@@ -19,6 +19,7 @@ const Navigation = () => (
       </Link>
     </AdminGuard>
     
+    <PhoneIcon telegramUrl="https://t.me/your_username" />
     <UserMenu />
     <CartIcon />
   </div>

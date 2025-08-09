@@ -1,11 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, memo, useCallback } from "react";
 import Navigation from "./Navigation/Navigation";
 import MobileMenu from "./MobileMenu/MobileMenu";
-import { Logo } from "../../ui/Icons/HeaderIcons";
+import { Logo } from "../Icons/HeaderIcons";
 import { Link } from "react-router-dom";
 
-const Header = () => {
+const Header = memo(() => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Мемоизируем обработчики для стабильности
+  const toggleMobileMenu = useCallback(() => {
+    setMobileMenuOpen(prev => !prev);
+  }, []);
+
+  const closeMobileMenu = useCallback(() => {
+    setMobileMenuOpen(false);
+  }, []);
 
   return (
     <>
@@ -58,7 +67,7 @@ const Header = () => {
           {/* Бургер-меню (mobile) */}
           <button
             className="md:hidden p-0 m-0 bg-transparent border-none outline-none text-black ml-auto"
-            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            onClick={toggleMobileMenu}
             aria-label="Открыть меню"
             style={{ fontSize: '6vw' }}
           >
@@ -73,10 +82,10 @@ const Header = () => {
 
       {/* MobileMenu с плавной анимацией */}
       <div className={`fixed inset-0 z-50 transition-all duration-300 ${mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-        <MobileMenu open={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+        <MobileMenu open={mobileMenuOpen} onClose={closeMobileMenu} />
       </div>
     </>
   );
-};
+});
 
 export default Header;

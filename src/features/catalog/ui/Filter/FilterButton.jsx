@@ -2,7 +2,12 @@ import { memo } from 'react';
 
 export const FilterButton = memo(({ hasActiveFilters, onClick }) => {
   return (
-    <div className="bg-white border border-gray-200 p-3">
+    <button
+      type="button"
+      aria-label="Открыть фильтры"
+      onClick={onClick}
+      className="w-full bg-white border border-gray-200 rounded-lg p-3 hover:bg-gray-50 transition-colors duration-300 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-2"
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -13,13 +18,10 @@ export const FilterButton = memo(({ hasActiveFilters, onClick }) => {
             <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
           )}
         </div>
-        <button
-          onClick={onClick}
-          className="px-3 py-1.5 border border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light transition-colors duration-300 text-sm"
-        >
-          Открыть
-        </button>
+        <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
+        </svg>
       </div>
-    </div>
+    </button>
   );
 });

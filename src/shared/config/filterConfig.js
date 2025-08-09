@@ -17,21 +17,21 @@ export const FILTER_CONFIG = [
       key: 'model',
       title: 'Модели', 
       type: 'dropdown',
-      defaultValue: 'all',
+      defaultValue: 'Все модели',
       dataKey: 'model'
     },
     {
       key: 'color',
       title: 'Цвет',
       type: 'radio',
-      defaultValue: 'all',
+      defaultValue: 'Все цвета',
       dataKey: 'colors'
     },
     {
       key: 'memory',
       title: 'Память',
       type: 'radio', 
-      defaultValue: 'all',
+      defaultValue: 'Любая',
       dataKey: 'memory'
     }
   ];
