@@ -17,7 +17,7 @@ const Testimonials = () => {
   };
 
   return (
-    <section className="py-16 bg-white border-b border-gray-100">
+    <section className="py-12 bg-white border-b border-gray-100">
       <div className="container mx-auto px-4">
         {/* Заголовок */}
         <div className="text-center mb-12">

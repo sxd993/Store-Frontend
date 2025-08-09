@@ -1,5 +1,5 @@
-const Search = () => (
-  <form className="flex items-center border-1 border-grey rounded-none px-4 h-10 md:h-10 bg-white w-full max-w-xs md:max-w-lg md:w-[420px]">
+const Search = ({ className = "" }) => (
+  <form className={`flex items-center border-1 border-grey rounded-none px-4 h-10 md:h-10 bg-white w-full max-w-xs md:max-w-lg md:w-[420px] ${className}`}>
     <input
       type="text"
       placeholder="Поиск..."
