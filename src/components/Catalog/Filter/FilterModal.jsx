@@ -1,7 +1,17 @@
-import { Modal } from '../../../ui/Modal/Modal'
-import { FilterContent } from './FilterContent';
+import { memo } from 'react';
+import { Modal } from '../../../ui/Modal/Modal';
+import { UniversalFilter } from './UniversalFilter';
 
-export const FilterModal = ({ isOpen, onClose, data, filterState, onApply, onReset }) => {
+export const FilterModal = memo(({ 
+  isOpen, 
+  onClose, 
+  data, 
+  filterValues, 
+  filterSetters, 
+  onApply, 
+  onReset,
+  isLoading 
+}) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="p-4">
@@ -21,13 +31,16 @@ export const FilterModal = ({ isOpen, onClose, data, filterState, onApply, onRes
             </svg>
           </button>
         </div>
-        <FilterContent
+        
+        <UniversalFilter
           data={data}
-          filterState={filterState}
+          filterValues={filterValues}
+          filterSetters={filterSetters}
           onApply={onApply}
           onReset={onReset}
+          isLoading={isLoading}
         />
       </div>
     </Modal>
   );
-};
+});

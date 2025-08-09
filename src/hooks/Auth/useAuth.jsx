@@ -41,38 +41,46 @@ export const useAuth = (options = {}) => {
     enabled: !skipInitialLoad,
   });
 
-  // Роли и права
+  // ИСПРАВЛЕННАЯ система ролей и прав
   const isAuthenticated = !!user;
-  const isAdmin = user?.is_admin === 1;
+  
+  // Современная проверка админа через hasPermission
+  const isAdmin = isAuthenticated && hasPermission('admin');
 
   const getUserRole = () => {
     if (!isAuthenticated) return 'guest';
-    if (isAdmin) return 'admin';
+    if (hasPermission('admin')) return 'admin';
     return 'user';
   };
 
-  const hasPermission = (permission) => {
-    if (!isAuthenticated) return false;
+  // Централизованная система прав доступа
+  function hasPermission(permission) {
+    if (!isAuthenticated || !user) return false;
+    
+    // Определяем админа через is_admin поле
+    const userIsAdmin = user.is_admin === 1;
     
     switch (permission) {
       case 'admin':
-        return isAdmin;
+        return userIsAdmin;
       case 'edit_products':
-        return isAdmin;
+        return userIsAdmin;
       case 'view_analytics':
-        return isAdmin;
+        return userIsAdmin;
       case 'manage_users':
-        return isAdmin;
+        return userIsAdmin;
+      case 'access_dashboard':
+        return userIsAdmin;
       default:
         return false;
     }
-  };
+  }
 
   const requireAdminAccess = (action = 'выполнить это действие') => {
     if (!isAuthenticated) {
       throw new Error('Необходима авторизация');
     }
-    if (!isAdmin) {
+    if (!hasPermission('admin')) {
       throw new Error(`Недостаточно прав для: ${action}`);
     }
     return true;
@@ -161,4 +169,12 @@ export const useAuth = (options = {}) => {
     loginError: loginMutation.error,
     registerError: registerMutation.error,
   };
+};
+
+// ИСПРАВЛЕНИЕ: getSmartRedirect теперь правильно использует userData
+const getSmartRedirect = (userData) => {
+  if (userData?.is_admin === 1) {
+    return '/catalog'; // Админы в каталог
+  }
+  return '/profile'; // Пользователи в профиль
 };

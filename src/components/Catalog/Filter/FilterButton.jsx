@@ -1,4 +1,6 @@
-export const FilterButton = ({ hasActiveFilters, onClick }) => {
+import { memo } from 'react';
+
+export const FilterButton = memo(({ hasActiveFilters, onClick }) => {
   return (
     <div className="bg-white border border-gray-200 p-3">
       <div className="flex items-center justify-between">
@@ -20,4 +22,4 @@ export const FilterButton = ({ hasActiveFilters, onClick }) => {
       </div>
     </div>
   );
-};
+});

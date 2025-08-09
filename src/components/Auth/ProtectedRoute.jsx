@@ -5,9 +5,10 @@ export const ProtectedRoute = ({
   children, 
   requireAuth = true, 
   requireAdmin = false,
+  permission = null,
   redirectTo = null 
 }) => {
-  const { isAuthenticated, isAdmin, isLoading } = useAuth();
+  const { isAuthenticated, hasPermission, isLoading, user } = useAuth();
   const location = useLocation();
 
   if (isLoading) {
@@ -29,15 +30,20 @@ export const ProtectedRoute = ({
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // Требуются админские права
-  if (requireAdmin && !isAdmin) {
+  // ИСПРАВЛЕНИЕ: Используем hasPermission вместо isAdmin
+  if (requireAdmin && !hasPermission('admin')) {
+    return <Navigate to="/access-denied" replace />;
+  }
+
+  // ДОБАВЛЕНИЕ: Проверка конкретных разрешений
+  if (permission && !hasPermission(permission)) {
     return <Navigate to="/access-denied" replace />;
   }
 
   return children;
 };
 
-// Умный редирект
+// ИСПРАВЛЕНИЕ: правильное использование параметра user
 const getSmartRedirect = (user) => {
   if (user?.is_admin === 1) {
     return '/catalog'; // Админы в каталог
