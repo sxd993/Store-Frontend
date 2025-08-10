@@ -1,5 +1,5 @@
 import React from 'react';
-import { testimonials, icons } from '../../shared/lib/data';
+import { testimonials, icons } from '../../shared/utils/data';
 import { FaStar } from 'react-icons/fa';
 
 const Testimonials = () => {

@@ -1,5 +1,5 @@
 import { ProductCard } from './ProductCard.jsx';
-import { usePopularProducts } from '../../features/catalog/model/PopularOffers/usePopularProducts.jsx';
+import { usePopularProducts } from '../../features/catalog/hooks/usePopularProducts';
 
 export const PopularOffers = ({ ids }) => {
     const { 

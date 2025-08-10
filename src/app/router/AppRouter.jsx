@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { ProtectedRoute } from '../../features/auth';
+import { ProtectedRoute } from '../../features/auth/components/ProtectedRoute';
 
 // Импорты страниц
 import Home from '../../pages/Home/Home';

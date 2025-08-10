@@ -1,6 +1,6 @@
 import { memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { formatPrice } from '../../shared/lib/formatPrice';
+import { formatPrice } from '../../shared/utils/formatPrice';
 
 export const ProductCard = memo(({ product }) => {
   // Мемоизируем вычисляемые значения

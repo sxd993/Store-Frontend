@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
-import { useAuth } from './features/auth';
-import { Header, Footer } from './shared/ui';
-import { AppRouter } from './app/router';
+import { useAuth } from './features/auth/hooks/useAuth';
+import Header from './shared/components/Header/Header';
+import Footer from './shared/components/Footer/Footer';
+import { AppRouter } from './app/router/AppRouter';
 
 function App() {
   const { checkAuth } = useAuth();
