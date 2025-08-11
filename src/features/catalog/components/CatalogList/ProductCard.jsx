@@ -9,11 +9,6 @@ export const ProductCard = memo(({ product, onEditClick }) => {
   const navigate = useNavigate();
 
   // Мемоизируем вычисляемые значения
-  const displayName = useMemo(() => 
-    `${product?.brand || ''} ${product?.model || ''} ${product?.color || ''} ${product?.memory ? `${product.memory}GB` : ''}`.trim(),
-    [product?.brand, product?.model, product?.color, product?.memory]
-  );
-
   const formattedPrice = useMemo(() => 
     formatPrice(product.price), 
     [product.price]
@@ -24,6 +19,11 @@ export const ProductCard = memo(({ product, onEditClick }) => {
     [product.id]
   );
 
+  const displayName = useMemo(() => 
+    product.model || product.name, 
+    [product.model, product.name]
+  );
+
   // Мемоизируем обработчики событий
   const handleEditClick = useCallback((e) => {
     e.preventDefault();
@@ -31,85 +31,72 @@ export const ProductCard = memo(({ product, onEditClick }) => {
     onEditClick(product);
   }, [product, onEditClick]);
 
-  const handleAddToCart = useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    // TODO: Интеграция с корзиной
-    console.log('Добавить в корзину:', product.name, 'ID:', product.id);
-  }, [product.id, product.name]);
-
-  const handleDetailsClick = useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    navigate(productLink);
-  }, [navigate, productLink]);
-
   return (
-    <div className="group relative h-full">
-      {/* Основная карточка товара */}
-      <Link to={productLink} className="block h-full">
-        <div className="bg-white border border-gray-200 hover:border-gray-300 p-6 text-center transition-colors duration-300 h-full flex flex-col">
-
-          {/* Изображение и кнопка редактирования */}
-          <div className="mb-6 flex flex-col items-center justify-center relative flex-shrink-0">
-            
-            {/* Админская кнопка - оптимизированная */}
+    <div className="group h-full">
+      <Link
+        to={productLink}
+        className="block h-full"
+      >
+        <div className="bg-white border border-gray-200 overflow-hidden h-full flex flex-col hover:border-gray-300 transition-colors duration-300 text-center">
+          {/* Изображение товара */}
+          <div className="h-80 flex flex-col items-center justify-center flex-shrink-0 relative pt-5">
+            {/* Админская кнопка редактирования */}
             <AdminGuard>
-              <button
-                onClick={handleEditClick}
-                className='w-full flex items-end justify-end mb-2'
-                type="button"
-                aria-label={`Редактировать ${displayName}`}
-              >
-                <EditIcon className='text-gray-500 hover:text-gray-700 transition-colors duration-300' />
-              </button>
+              <div className="absolute top-3 right-3 z-10">
+                <button
+                  onClick={handleEditClick}
+                  className="p-1 text-gray-400 hover:text-gray-600 transition-colors duration-300"
+                  type="button"
+                  aria-label={`Редактировать ${displayName}`}
+                >
+                  <EditIcon className="w-4 h-4" />
+                </button>
+              </div>
             </AdminGuard>
-
-            {/* Изображение товара */}
-            <div className="w-full h-48 flex items-center justify-center">
+            
+            {product.image && (
               <img
-                className='w-full h-full object-contain'
                 src={product.image}
                 alt={displayName}
+                className="w-full h-full object-contain p-3"
                 loading="lazy"
               />
-            </div>
+            )}
           </div>
 
           {/* Информация о товаре */}
-          <div className="flex flex-col flex-1 space-y-4">
-            <h3 className="font-light text-lg text-gray-900 group-hover:text-gray-700 transition-colors duration-300 line-clamp-2">
+          <div className="p-4 flex flex-col flex-1 items-center justify-center">
+            <h3 className="font-medium text-base text-gray-900 mb-2 group-hover:text-gray-700 transition-colors line-clamp-2 text-center">
               {displayName}
             </h3>
-
-            {/* Количество в наличии */}
-            <div className="flex-shrink-0">
-              <p className="text-sm text-gray-500 font-light">
-                В наличии: {product.stock_quantity} шт.
-              </p>
+            
+            {/* Характеристики */}
+            <div className="space-y-1 mb-3 text-xs text-gray-600 flex-1 text-center">
+              {product.color && (
+                <p className="text-center">
+                  <span className="font-medium">Цвет:</span> {product.color}
+                </p>
+              )}
+              {product.memory && (
+                <p className="text-center">
+                  <span className="font-medium">Память:</span> {product.memory} ГБ
+                </p>
+              )}
             </div>
-
+            
             {/* Цена */}
-            <div className="flex-shrink-0">
-              <p className="text-xl font-light text-gray-900">
+            <div className="flex items-center justify-center pt-3 border-t border-gray-100 text-xl font-light text-gray-900 mt-auto w-full">
+              <p className="text-center">
                 {formattedPrice}
               </p>
             </div>
-
-            {/* Кнопки действий */}
-            <div className="flex gap-3 pt-4 flex-shrink-0 mt-auto">
-              <button
-                onClick={handleAddToCart}
-                className="flex-1 px-4 py-3 border border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light transition-colors duration-300 h-12"
-              >
-                В корзину
-              </button>
-              <button
-                onClick={handleDetailsClick}
-                className="flex-1 px-4 py-3 border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 font-light transition-colors duration-300 h-12"
-              >
-                Подробнее
-              </button>
+            
+            {/* Ссылка "Подробнее" */}
+            <div className="flex items-center justify-center gap-2 mt-2 text-xs text-gray-500 group-hover:text-gray-700 transition-colors w-full">
+              <span>Подробнее</span>
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
             </div>
           </div>
         </div>

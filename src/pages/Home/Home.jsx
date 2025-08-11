@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import Hero from './Hero.jsx';
 import Categories from './Categories.jsx';
-import { PopularOffers } from './PopularOffers.jsx';
+import { BestOffers } from './BestOffers.jsx';
 import Testimonials from './Testimonials.jsx';
 import { GetFilterCategory } from '../../shared/api/filters.jsx';
 import { CatalogApi } from '../../shared/api/catalog';
@@ -33,7 +33,7 @@ const Home = () => {
     <div className="min-h-screen bg-white">
       <div className="w-full max-w-7xl mx-auto px-4">
         <Hero />
-        <PopularOffers ids={popularIds} />
+        <BestOffers ids={popularIds} />
         <Categories />
         <Testimonials />
       </div>
