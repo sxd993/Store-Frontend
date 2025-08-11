@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import {CatalogList} from '../../features/catalog/components/CatalogList/CatalogList';
-import { Filter } from '../../features/catalog/components/Filter/Filter';
-import { Modal } from '../../shared/components/Modal';
-import { AddProductForm } from '../../features/catalog/components/AddProductForm';
-import { AdminGuard } from '../../features/auth/components/AdminGuard';
+import { CatalogList } from '../components/CatalogList/CatalogList';
+import { Filter } from '../components/Filter/Filter';
+import { Modal } from '../../../shared/ui/Modal';
+import { AddProductForm } from '../components/CatalogList/AddProductForm';
+import { AdminGuard } from '../../auth/components/AdminGuard';
 
-const Catalog = () => {
+export const Catalog = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentFilters, setCurrentFilters] = useState({});
+
 
   const handleFiltersApply = async (filters) => {
     setCurrentFilters(filters);
@@ -24,7 +25,7 @@ const Catalog = () => {
               Каталог товаров
             </h1>
           </div>
-          
+
           {/* Админская кнопка */}
           <AdminGuard>
             <div className="w-full flex justify-center md:justify-end mb-6">
@@ -43,10 +44,10 @@ const Catalog = () => {
               </button>
             </div>
           </AdminGuard>
-          
+
           {/* Фильтры */}
           <Filter onFiltersApply={handleFiltersApply} />
-          
+
           {/* Каталог */}
           <CatalogList filters={currentFilters} />
         </div>
@@ -58,5 +59,3 @@ const Catalog = () => {
     </section>
   );
 };
-
-export default Catalog;

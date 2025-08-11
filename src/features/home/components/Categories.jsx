@@ -1,6 +1,5 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import { categories } from '../../shared/utils/data';
+import { categories } from '../../../shared/utils/data';
 
 const Categories = () => {
   return (

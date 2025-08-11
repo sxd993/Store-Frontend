@@ -1,12 +1,12 @@
 import { useEffect, useState, useCallback, memo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { CatalogApi } from '../../../../shared/api/catalog';
-import { EditItem } from '../EditItem';
-import { Modal } from '../../../../shared/components/Modal';
+import { CatalogApi } from '../../api/catalog';
+import { EditItem } from './EditItem';
+import { Modal } from '../../../../shared/ui/Modal';
 import { ProductsGrid } from './ProductsGrid';
 import { Pagination } from './Pagination';
+import { NotificationAlert } from '../../../../shared/ui/SuccessAlert'
 
-// ОПТИМИЗИРОВАННАЯ ВЕРСИЯ CatalogList
 export const CatalogList = memo(({ filters = {} }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,7 +46,6 @@ export const CatalogList = memo(({ filters = {} }) => {
     setCurrentPage(page);
   }, []);
 
-  // Выносим компоненты состояний для оптимизации
   if (isLoading) {
     return <LoadingState />;
   }
@@ -83,6 +82,7 @@ export const CatalogList = memo(({ filters = {} }) => {
           />
         )}
       </Modal>
+      <NotificationAlert />
     </>
   );
 });

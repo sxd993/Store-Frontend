@@ -1,7 +1,7 @@
 import { memo, useMemo } from 'react';
 import { FILTER_CONFIG } from '../../../../shared/config/filterConfig';
-import { RadioFilter } from '../../../../shared/components/RadioFilter.jsx';
-import { DropDownFilter } from '../../../../shared/components/DropDownFilter.jsx';
+import { RadioFilter } from '../../../../shared/ui/RadioFilter.jsx';
+import { DropDownFilter } from '../../../../shared/ui/DropDownFilter.jsx';
 
 // Мемоизированный компонент одного фильтра
 const FilterField = memo(({ filter, data, value, onChange }) => {

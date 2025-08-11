@@ -1,13 +1,12 @@
-// src/pages/Home/Home.jsx
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import Categories from './Categories.jsx';
-import { BestOffers } from './BestOffers.jsx';
-import Testimonials from './Testimonials.jsx';
-import { GetFilterCategory } from '../../shared/api/filters.jsx';
-import { CatalogApi } from '../../shared/api/catalog';
+import Categories from '../components/Categories.jsx';
+import { BestOffers } from '../components/BestOffers.jsx';
+import { Testimonials } from '../components/Testimonials.jsx';
+import { GetFilterCategory } from '../../catalog/api/filters.jsx';
+import { CatalogApi } from '../../catalog/api/catalog.jsx';
 
-const Home = () => {
+export const Home = () => {
   const queryClient = useQueryClient();
 
   // Предзагрузка данных для каталога
@@ -37,5 +36,3 @@ const Home = () => {
     </div>
   );
 };
-
-export default Home;

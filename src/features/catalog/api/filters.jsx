@@ -1,4 +1,4 @@
-import { client } from './client';
+import { client } from '../../../shared/api/client';
 
 export const GetFilterCategory = async () => {
   const response = await client.get('/catalog/filters');

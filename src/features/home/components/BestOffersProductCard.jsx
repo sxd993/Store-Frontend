@@ -1,8 +1,8 @@
 // src/pages/Home/BestOffersProductCard.jsx
 import { memo, useMemo, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { formatPrice } from '../../shared/utils/formatPrice';
-import { useAuth } from '../../features/auth/hooks/useAuth';
+import { formatPrice } from '../../../shared/utils/formatPrice';
+import { useAuth } from '../../auth/hooks/useAuth';
 
 export const BestOffersProductCard = memo(({ 
   product, 

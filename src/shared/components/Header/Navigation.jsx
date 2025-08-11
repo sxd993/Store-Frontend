@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { CartIcon, UserMenu, MessageIcon} from "../HeaderIcons";
+import { CartIcon, UserMenu, MessageIcon} from "./HeaderIcons";
 import { AdminGuard } from "../../../features/auth/components/AdminGuard";
 
 const Navigation = () => (

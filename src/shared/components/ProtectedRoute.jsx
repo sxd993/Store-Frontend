@@ -1,12 +1,12 @@
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../../features/auth/hooks/useAuth';
 import { Navigate, useLocation } from 'react-router-dom';
 
-export const ProtectedRoute = ({ 
-  children, 
-  requireAuth = true, 
+export const ProtectedRoute = ({
+  children,
+  requireAuth = true,
   requireAdmin = false,
   permission = null,
-  redirectTo = null 
+  redirectTo = null
 }) => {
   const { isAuthenticated, hasPermission, isLoading, user } = useAuth();
   const location = useLocation();

@@ -1,9 +1,8 @@
-// src/pages/Home/BestOffers.jsx
 import { useQuery } from '@tanstack/react-query';
-import { useBestOffersLocal } from '../../features/catalog/hooks/useBestOffersLocal';
+import { useBestOffersLocal } from '../../../shared/hooks/useBestOffersLocal';
 import { BestOffersProductCard } from './BestOffersProductCard';
-import { ProductApi } from '../../shared/api/catalog';
-import { useAuth } from '../../features/auth/hooks/useAuth';
+import { ProductApi } from '../../catalog/api/catalog';
+import { useAuth } from '../../auth/hooks/useAuth';
 import { useCallback } from 'react';
 
 export const BestOffers = () => {

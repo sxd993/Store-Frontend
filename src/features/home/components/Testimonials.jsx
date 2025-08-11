@@ -1,15 +1,14 @@
-import React from 'react';
-import { testimonials, icons } from '../../shared/utils/data';
+import { testimonials, icons } from '../../../shared/utils/data';
 import { FaStar } from 'react-icons/fa';
 
-const Testimonials = () => {
+export const Testimonials = () => {
   const renderStars = (rating) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
       stars.push(
-        <FaStar 
-          key={i} 
-          className={`w-4 h-4 ${i <= rating ? 'text-gray-600' : 'text-gray-300'}`} 
+        <FaStar
+          key={i}
+          className={`w-4 h-4 ${i <= rating ? 'text-gray-600' : 'text-gray-300'}`}
         />
       );
     }
@@ -40,12 +39,12 @@ const Testimonials = () => {
                   <div className="flex mb-6">
                     {renderStars(testimonial.rating)}
                   </div>
-                  
+
                   {/* Текст */}
                   <p className="text-base text-gray-700 mb-6 leading-relaxed font-light flex-grow">
                     "{testimonial.text}"
                   </p>
-                  
+
                   {/* Автор */}
                   <div className="flex items-center mt-auto">
                     <div className="flex items-center justify-center mr-4">
@@ -65,5 +64,3 @@ const Testimonials = () => {
     </section>
   );
 };
-
-export default Testimonials;

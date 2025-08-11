@@ -1,11 +1,12 @@
-import { useEditItem } from "../hooks/useEditItem";
-import { InputField } from "./InputFields";
+import { useEditItem } from "../../hooks/useEditItem";
+import { InputField } from "../../../../shared/ui/InputFields";
 
 export const EditItem = ({ item, onClose }) => {
     const { handleSubmit, register, formState, mutation } = useEditItem(item, onClose);
+    console.log(item)
 
     return (
-        <div className="bg-white p-4 max-h-[90vh] overflow-y-auto">
+        <div className="bg-white p-4">
             {/* Заголовок */}
             <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-light text-gray-900">Редактировать товар</h3>
@@ -22,16 +23,45 @@ export const EditItem = ({ item, onClose }) => {
             {/* Форма */}
             <div className="space-y-4">
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    {/* Основная информация */}
+                    {/* Категория */}
                     <div className="space-y-2">
-                        <h4 className="text-sm font-light text-gray-900">Основная информация</h4>
+                        <h4 className="text-sm font-light text-gray-900">Категория</h4>
+                        <p className="text-xs text-gray-500">Например: телефон, приставка, ноутбук</p>
                         <InputField
                             register={register}
-                            name="name"
-                            defaultValue={item.name}
-                            placeholder="Название товара"
-                            validation={{ required: 'Название обязательно' }}
-                            error={formState.errors.name}
+                            name="category"
+                            defaultValue={item.category}
+                            placeholder="Телефон"
+                            validation={{ required: 'Категория обязательна' }}
+                            error={formState.errors.category}
+                        />
+                    </div>
+
+                    {/* Бренд */}
+                    <div className="space-y-2">
+                        <h4 className="text-sm font-light text-gray-900">Бренд</h4>
+                        <p className="text-xs text-gray-500">Например: Apple, Samsung, Sony</p>
+                        <InputField
+                            register={register}
+                            name="brand"
+                            defaultValue={item.brand}
+                            placeholder="Apple"
+                            validation={{ required: 'Бренд обязателен' }}
+                            error={formState.errors.brand}
+                        />
+                    </div>
+
+                    {/* Модель */}
+                    <div className="space-y-2">
+                        <h4 className="text-sm font-light text-gray-900">Модель</h4>
+                        <p className="text-xs text-gray-500">Например: iPhone 15, Galaxy S24, PS5</p>
+                        <InputField
+                            register={register}
+                            name="model"
+                            defaultValue={item.model}
+                            placeholder="iPhone 15"
+                            validation={{ required: 'Модель обязательна' }}
+                            error={formState.errors.model}
                         />
                     </div>
 
@@ -45,7 +75,7 @@ export const EditItem = ({ item, onClose }) => {
                                 type="number"
                                 step="0.01"
                                 defaultValue={item.price}
-                                placeholder="Цена"
+                                placeholder="Цена в рублях"
                                 validation={{
                                     required: 'Цена обязательна',
                                     min: { value: 0.01, message: 'Цена должна быть больше 0' }
@@ -58,7 +88,7 @@ export const EditItem = ({ item, onClose }) => {
                                 name="stock_quantity"
                                 type="number"
                                 defaultValue={item.stock_quantity}
-                                placeholder="Количество"
+                                placeholder="Количество на складе"
                                 validation={{
                                     required: 'Количество обязательно',
                                     min: { value: 0, message: 'Количество не может быть отрицательным' }
@@ -83,14 +113,15 @@ export const EditItem = ({ item, onClose }) => {
                                 register={register}
                                 name="memory"
                                 defaultValue={item.memory}
-                                placeholder="Память"
+                                placeholder="Память (например: 128GB, 16GB)"
                             />
                         </div>
                     </div>
 
                     {/* Медиа */}
                     <div className="space-y-2">
-                        <h4 className="text-sm font-light text-gray-900">Медиа</h4>
+                        <h4 className="text-sm font-light text-gray-900">Изображение товара</h4>
+                        <p className="text-xs text-gray-500">Ссылка на изображение товара</p>
                         <InputField
                             register={register}
                             name="image"
@@ -102,14 +133,15 @@ export const EditItem = ({ item, onClose }) => {
 
                     {/* Описание */}
                     <div className="space-y-2">
-                        <h4 className="text-sm font-light text-gray-900">Описание</h4>
+                        <h4 className="text-sm font-light text-gray-900">Описание товара</h4>
+                        <p className="text-xs text-gray-500">Подробное описание товара, характеристики, особенности</p>
                         <InputField
                             register={register}
                             name="description"
                             type="textarea"
                             defaultValue={item.description}
-                            placeholder="Описание товара"
-                            rows={2}
+                            placeholder="Опишите товар подробно: основные характеристики, особенности, преимущества..."
+                            rows={4}
                         />
                     </div>
 

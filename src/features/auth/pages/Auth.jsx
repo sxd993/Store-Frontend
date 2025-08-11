@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../features/auth/hooks/useAuth';
-import { LoginForm } from '../../features/auth/components/LoginForm';
-import { RegisterForm } from '../../features/auth/components/RegisterForm';
+import { useAuth } from '../hooks/useAuth';
+import { LoginForm } from '../components/LoginForm';
+import { RegisterForm } from '../components/RegisterForm';
 
 export const AuthPage = () => {
   const navigate = useNavigate();

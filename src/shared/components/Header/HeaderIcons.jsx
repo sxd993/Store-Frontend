@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../features/auth/hooks/useAuth';
-import '../../index.css';
+import { useAuth } from '../../../features/auth/hooks/useAuth';
+import '../../../index.css';
 
 export const CartIcon = ({ itemCount = 0 }) => {
   return (

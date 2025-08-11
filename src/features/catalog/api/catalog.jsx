@@ -1,4 +1,4 @@
-import {client} from './client';
+import {client} from '../../../shared/api/client';
 
 export const CatalogApi = async ({ page = 1, per_page = 20, filters = {} } = {}) => {
   const params = { page, per_page };

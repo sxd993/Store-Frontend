@@ -1,13 +1,18 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import { EditProductApi } from '../../../shared/api/catalog.jsx';
+import { EditProductApi } from '../api/catalog';
+import { useNotificationStore } from '../../../shared/store/notificationStore';
 
 export const useEditItem = (item, onClose) => {
     const client = useQueryClient();
+    const { showWithTimeout } = useNotificationStore();
+    
     const formMethods = useForm({
         mode: 'onChange',
         defaultValues: {
-            name: item.name || '',
+            brand: item.brand || '',
+            model: item.model || '',
+            category: item.category || '',
             price: item.price || '',
             stock_quantity: item.stock_quantity || '',
             color: item.color || '',
@@ -16,7 +21,9 @@ export const useEditItem = (item, onClose) => {
             description: item.description || ''
         }
     });
+    
     const { handleSubmit, register, formState, reset } = formMethods;
+    
     const mutation = useMutation({
         mutationFn: (data) => EditProductApi(item.id, data),
         onSuccess: (data) => {
@@ -24,11 +31,16 @@ export const useEditItem = (item, onClose) => {
             client.invalidateQueries(['catalog']);
             reset();
             onClose();
+            showWithTimeout('Товар успешно обновлен!', 'success', 3000);
         },
         onError: (error) => {
             console.error('Ошибка при изменении товара:', error);
+            
+            // Показываем error через store
+            showWithTimeout('Не удалось обновить товар', 'error', 5000);
         }
     });
+    
     const onSubmit = async (data) => {
         console.log(data);
         mutation.mutate(data);
@@ -40,4 +52,4 @@ export const useEditItem = (item, onClose) => {
         formState,
         mutation
     };
-}
+};

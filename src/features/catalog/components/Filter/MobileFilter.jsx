@@ -1,8 +1,8 @@
 import { memo } from 'react';
-import { Modal } from '../../../../shared/components/Modal.jsx';
+import { Modal } from '../../../../shared/ui/Modal.jsx';
 import { UniversalFilter } from './UniversalFilter.jsx';
 
-export const MobileFilter = memo(({   
+export const MobileFilter = memo(({
   data,
   filterValues,
   filterSetters,
@@ -26,7 +26,7 @@ export const MobileFilter = memo(({
             </svg>
           </button>
         </div>
-        
+
         <UniversalFilter
           data={data}
           filterValues={filterValues}

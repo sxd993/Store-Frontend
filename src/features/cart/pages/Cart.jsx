@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const Cart = () => {
+export const Cart = () => {
   const [cartItems, setCartItems] = useState([
     {
       id: 1,
@@ -177,5 +177,3 @@ const Cart = () => {
     </div>
   );
 };
-
-export default Cart;

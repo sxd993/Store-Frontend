@@ -1,5 +1,5 @@
-import { useAddProductForm } from '../hooks/useAddProductForm.jsx';
-import { InputField } from './InputFields.jsx';
+import { useAddProductForm } from '../../hooks/useAddProductForm.jsx';
+import { InputField } from '../../../../shared/ui/InputFields.jsx';
 
 export const AddProductForm = ({ onClose }) => {
   const { handleSubmit, register, formState, mutation } = useAddProductForm(onClose);
@@ -25,13 +25,41 @@ export const AddProductForm = ({ onClose }) => {
           {/* Основная информация */}
           <div className="space-y-2">
             <h4 className="text-sm font-light text-gray-900">Основная информация</h4>
-            <InputField
-              register={register}
-              name="name"
-              placeholder="Название товара"
-              validation={{ required: 'Название обязательно' }}
-              error={formState.errors.name}
-            />
+            
+            <div className="space-y-3">
+              <div>
+                <p className="text-xs text-gray-500 mb-1">Категория (например: телефон, приставка, ноутбук)</p>
+                <InputField
+                  register={register}
+                  name="category"
+                  placeholder="Телефон"
+                  validation={{ required: 'Категория обязательна' }}
+                  error={formState.errors.category}
+                />
+              </div>
+
+              <div>
+                <p className="text-xs text-gray-500 mb-1">Бренд (например: Apple, Samsung, Sony)</p>
+                <InputField
+                  register={register}
+                  name="brand"
+                  placeholder="Apple"
+                  validation={{ required: 'Бренд обязателен' }}
+                  error={formState.errors.brand}
+                />
+              </div>
+
+              <div>
+                <p className="text-xs text-gray-500 mb-1">Модель (например: iPhone 15, Galaxy S24, PS5)</p>
+                <InputField
+                  register={register}
+                  name="model"
+                  placeholder="iPhone 15"
+                  validation={{ required: 'Модель обязательна' }}
+                  error={formState.errors.model}
+                />
+              </div>
+            </div>
           </div>
 
           {/* Цена и количество */}
@@ -43,7 +71,7 @@ export const AddProductForm = ({ onClose }) => {
                 name="price"
                 type="number"
                 step="0.01"
-                placeholder="Цена"
+                placeholder="Цена в рублях"
                 validation={{
                   required: 'Цена обязательна',
                   min: { value: 0.01, message: 'Цена должна быть больше 0' }
@@ -55,7 +83,7 @@ export const AddProductForm = ({ onClose }) => {
                 register={register}
                 name="stock_quantity"
                 type="number"
-                placeholder="Количество"
+                placeholder="Количество на складе"
                 validation={{
                   required: 'Количество обязательно',
                   min: { value: 0, message: 'Количество не может быть отрицательным' }
@@ -78,14 +106,14 @@ export const AddProductForm = ({ onClose }) => {
               <InputField
                 register={register}
                 name="memory"
-                placeholder="Память"
+                placeholder="Память (например: 128GB, 16GB)"
               />
             </div>
           </div>
 
           {/* Медиа */}
           <div className="space-y-2">
-            <h4 className="text-sm font-light text-gray-900">Медиа</h4>
+            <h4 className="text-sm font-light text-gray-900">Изображение</h4>
             <InputField
               register={register}
               name="image"

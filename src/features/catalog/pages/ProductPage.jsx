@@ -1,9 +1,9 @@
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { ProductApi } from '../../shared/api/catalog';
+import { ProductApi } from '../api/catalog';
 import { useEffect } from 'react';
 
-const ProductPage = () => {
+export const ProductPage = () => {
   const { id } = useParams();
 
   // Получаем данные товара через API
@@ -77,8 +77,8 @@ const ProductPage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Изображение товара */}
             <div className="flex items-center justify-center">
-              <img 
-                src={currentProduct.image} 
+              <img
+                src={currentProduct.image}
                 alt={`${currentProduct?.brand} ${currentProduct?.model}`}
                 className="w-full h-auto max-h-110 object-contain"
               />
@@ -138,5 +138,3 @@ const ProductPage = () => {
     </section>
   );
 };
-
-export default ProductPage; 

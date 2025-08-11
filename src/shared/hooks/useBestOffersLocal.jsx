@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect } from 'react';
-import { useAuth } from '../../auth/hooks/useAuth';
+import { useAuth } from '../../features/auth/hooks/useAuth';
 
 const STORAGE_KEY = 'bestOffers';
-const DEFAULT_BEST_OFFERS = [51, 52, 53, 54]; // Fallback значения
+const DEFAULT_BEST_OFFERS = [51, 52, 53, 54];
 
 export const useBestOffersLocal = () => {
   const { isAdmin } = useAuth();

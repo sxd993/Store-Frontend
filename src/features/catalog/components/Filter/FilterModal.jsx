@@ -1,16 +1,16 @@
 import { memo } from 'react';
-import { Modal } from '../../../../shared/components/Modal.jsx';
+import { Modal } from '../../../../shared/ui/Modal.jsx';
 import { UniversalFilter } from './UniversalFilter.jsx';
 
-export const FilterModal = memo(({ 
-  isOpen, 
-  onClose, 
-  data, 
-  filterValues, 
-  filterSetters, 
-  onApply, 
+export const FilterModal = memo(({
+  isOpen,
+  onClose,
+  data,
+  filterValues,
+  filterSetters,
+  onApply,
   onReset,
-  isLoading 
+  isLoading
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -31,7 +31,7 @@ export const FilterModal = memo(({
             </svg>
           </button>
         </div>
-        
+
         <UniversalFilter
           data={data}
           filterValues={filterValues}

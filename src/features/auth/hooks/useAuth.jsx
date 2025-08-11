@@ -1,12 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
-// Стало:
 import { 
   GetProfileApi, 
   LoginApi, 
   RegisterApi, 
   LogoutApi 
-} from '../../../shared/api/auth';
+} from '../api/auth';
 
 export const useAuth = (options = {}) => {
   const queryClient = useQueryClient();

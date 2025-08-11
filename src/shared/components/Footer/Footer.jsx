@@ -1,6 +1,6 @@
 import React, { useState, memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { Logo } from '../HeaderIcons';
+import { Logo } from '../Header/HeaderIcons';
 
 // Constants for reusability
 const COMPANY_DESCRIPTION = 'nnvStore - современная техника и аксессуары с быстрой доставкой по приятным ценам. Делаем технологии доступными каждому.';
