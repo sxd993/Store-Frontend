@@ -4,7 +4,7 @@ import { ProtectedRoute } from '../../shared/components/ProtectedRoute.jsx';
 // Импорты страниц
 import { Home } from '../../features/home/pages/Home.jsx';
 import { Catalog } from '../../features/catalog/pages/Catalog.jsx';
-import { ProductPage } from '../../features/catalog/pages/ProductPage.jsx';
+import { ProductPage } from '../../features/product/pages/ProductPage.jsx';
 import { Cart } from '../../features/cart/pages/Cart.jsx';
 import { ProfilePage } from '../../features/profile/pages/Profile.jsx';
 import { AuthPage } from '../../features/auth/pages/Auth.jsx';

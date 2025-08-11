@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useBestOffersLocal } from '../../../shared/hooks/useBestOffersLocal';
 import { BestOffersProductCard } from './BestOffersProductCard';
-import { ProductApi } from '../../catalog/api/catalog';
+import { ProductApi } from '../../product/api/ProductApi';
 import { useAuth } from '../../auth/hooks/useAuth';
 import { useCallback } from 'react';
 

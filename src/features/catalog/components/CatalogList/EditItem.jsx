@@ -1,9 +1,16 @@
+import { useState } from "react";
 import { useEditItem } from "../../hooks/useEditItem";
 import { InputField } from "../../../../shared/ui/InputFields";
+import { ImageManager } from '../../utils/ImageManager';
 
 export const EditItem = ({ item, onClose }) => {
-    const { handleSubmit, register, formState, mutation } = useEditItem(item, onClose);
-    console.log(item)
+    const [images, setImages] = useState(item?.images?.map(img => img.url || img) || []);
+    const { 
+        handleSubmit, 
+        register, 
+        formState, 
+        mutation
+    } = useEditItem(item, onClose, images);
 
     return (
         <div className="bg-white p-4">
@@ -118,17 +125,11 @@ export const EditItem = ({ item, onClose }) => {
                         </div>
                     </div>
 
-                    {/* Медиа */}
+                    {/* Изображения - ИСПРАВЛЕНО */}
                     <div className="space-y-2">
-                        <h4 className="text-sm font-light text-gray-900">Изображение товара</h4>
-                        <p className="text-xs text-gray-500">Ссылка на изображение товара</p>
-                        <InputField
-                            register={register}
-                            name="image"
-                            type="url"
-                            defaultValue={item.image}
-                            placeholder="Ссылка на изображение"
-                        />
+                        <h4 className="text-sm font-light text-gray-900">Изображения товара</h4>
+                        <p className="text-xs text-gray-500">Добавьте изображения товара. Первое изображение будет главным.</p>
+                        <ImageManager images={images} onChange={setImages} />
                     </div>
 
                     {/* Описание */}
