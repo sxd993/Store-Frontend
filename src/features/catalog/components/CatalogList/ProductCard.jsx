@@ -42,7 +42,7 @@ export const ProductCard = memo(({ product, onEditClick }) => {
           <div className="h-80 flex flex-col items-center justify-center flex-shrink-0 relative pt-5">
             {/* Админская кнопка редактирования */}
             <AdminGuard>
-              <div className="absolute top-3 right-3 z-10">
+              <div className="absolute top-1 right-1 z-10">
                 <button
                   onClick={handleEditClick}
                   className="p-1 text-gray-400 hover:text-gray-600 transition-colors duration-300"

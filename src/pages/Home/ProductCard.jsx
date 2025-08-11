@@ -27,7 +27,7 @@ export const ProductCard = memo(({ product }) => {
       >
         <div className="bg-white border border-gray-200 overflow-hidden h-full flex flex-col hover:border-gray-300 transition-colors duration-300 text-center">
           {/* Изображение товара */}
-          <div className="h-80 flex flex-col items-center justify-center flex-shrink-0 pt-3">
+          <div className="h-80 flex flex-col items-center justify-center flex-shrink-0 pt-2">
             {product.image && (
               <img
                 src={product.image}

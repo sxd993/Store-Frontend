@@ -21,8 +21,8 @@ export const BestOffers = ({ ids }) => {
                 Самые качественные товары с лучшими ценами и характеристиками
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {[1, 2, 3].map((item) => (
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-7xl mx-auto">
+              {[1, 2, 3, 4].map((item) => (
                 <div key={item} className="bg-white border border-gray-200 p-6 animate-pulse">
                   <div className="bg-gray-200 h-48 mb-4"></div>
                   <div className="bg-gray-200 h-4 mb-2"></div>
@@ -76,8 +76,8 @@ export const BestOffers = ({ ids }) => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {products.slice(0, 3).map(product => (
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            {products.slice(0, 4).map(product => (
               <ProductCard 
                 key={product.id}
                 product={product}

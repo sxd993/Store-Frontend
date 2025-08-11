@@ -7,7 +7,7 @@ import Testimonials from './Testimonials.jsx';
 import { GetFilterCategory } from '../../shared/api/filters.jsx';
 import { CatalogApi } from '../../shared/api/catalog';
 
-const popularIds = [51, 52, 53];
+const popularIds = [51, 52, 53, 54];
 
 const Home = () => {
   const queryClient = useQueryClient();
