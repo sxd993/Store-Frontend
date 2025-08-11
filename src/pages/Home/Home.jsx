@@ -1,13 +1,11 @@
+// src/pages/Home/Home.jsx
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import Hero from './Hero.jsx';
 import Categories from './Categories.jsx';
 import { BestOffers } from './BestOffers.jsx';
 import Testimonials from './Testimonials.jsx';
 import { GetFilterCategory } from '../../shared/api/filters.jsx';
 import { CatalogApi } from '../../shared/api/catalog';
-
-const popularIds = [51, 52, 53, 54];
 
 const Home = () => {
   const queryClient = useQueryClient();
@@ -32,8 +30,7 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-white">
       <div className="w-full max-w-7xl mx-auto px-4">
-        <Hero />
-        <BestOffers ids={popularIds} />
+        <BestOffers />
         <Categories />
         <Testimonials />
       </div>

@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import Search from "./Search";
+import { useAuth } from "../../../features/auth/hooks/useAuth";
 
 const MobileMenu = ({ open, onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const { isAdmin } = useAuth();
 
   useEffect(() => {
     if (open) {
@@ -67,16 +69,24 @@ const MobileMenu = ({ open, onClose }) => {
         <main className="flex-1 flex flex-col w-full max-w-[90vw] mx-auto overflow-y-auto relative">
           <div className="flex-1 flex flex-col justify-center items-center">
             <div className="w-full max-w-sm flex flex-col">
-              <Link to="/profile" className="py-[6%] px-[4%] text-black font-bold text-xl md:text-base border-b border-gray-200 text-center hover:bg-gray-100 transition-colors">
+              <Link to="/" className="py-[6%] px-[4%] text-black font-bold text-xl md:text-base border-b border-gray-200 text-center hover:bg-gray-100 transition-colors" onClick={onClose}>
+                Главная
+              </Link>
+              {isAdmin && (
+                <Link to="/admin" className="py-[6%] px-[4%] text-black font-bold text-xl md:text-base border-b border-gray-200 text-center hover:bg-gray-100 transition-colors" onClick={onClose}>
+                  Админ-панель
+                </Link>
+              )}
+              <Link to="/profile" className="py-[6%] px-[4%] text-black font-bold text-xl md:text-base border-b border-gray-200 text-center hover:bg-gray-100 transition-colors" onClick={onClose}>
                 Личный кабинет
               </Link>
-              <Link to="/catalog" className="py-[6%] px-[4%] text-black font-bold text-xl md:text-base border-b border-gray-200 text-center hover:bg-gray-100 transition-colors">
+              <Link to="/catalog" className="py-[6%] px-[4%] text-black font-bold text-xl md:text-base border-b border-gray-200 text-center hover:bg-gray-100 transition-colors" onClick={onClose}>
                 Каталог
               </Link>
-              <Link to="/cart" className="py-[6%] px-[4%] text-black font-bold text-xl md:text-base border-b border-gray-200 text-center hover:bg-gray-100 transition-colors">
+              <Link to="/cart" className="py-[6%] px-[4%] text-black font-bold text-xl md:text-base border-b border-gray-200 text-center hover:bg-gray-100 transition-colors" onClick={onClose}>
                 Корзина
               </Link>
-              <a href="https://t.me/your_username" target="_blank" rel="noopener noreferrer" className="py-[6%] px-[4%] text-black font-bold text-xl md:text-base text-center hover:bg-gray-100 transition-colors">
+              <a href="https://t.me/your_username" target="_blank" rel="noopener noreferrer" className="py-[6%] px-[4%] text-black font-bold text-xl md:text-base text-center hover:bg-gray-100 transition-colors" onClick={onClose}>
                 Телеграм
               </a>
             </div>

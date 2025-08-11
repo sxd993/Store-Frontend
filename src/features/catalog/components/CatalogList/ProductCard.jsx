@@ -1,12 +1,11 @@
 import { memo, useCallback, useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { formatPrice } from '../../../../shared/utils/formatPrice';
-import EditIcon from '@mui/icons-material/Edit';
+import { useAuth } from '../../../auth/hooks/useAuth';
 import { AdminGuard } from '../../../auth/components/AdminGuard';
 
-
 export const ProductCard = memo(({ product, onEditClick }) => {
-  const navigate = useNavigate();
+  const { isAdmin } = useAuth();
 
   // Мемоизируем вычисляемые значения
   const formattedPrice = useMemo(() => 
@@ -24,7 +23,7 @@ export const ProductCard = memo(({ product, onEditClick }) => {
     [product.model, product.name]
   );
 
-  // Мемоизируем обработчики событий
+  // Мемоизируем обработчик редактирования
   const handleEditClick = useCallback((e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -38,22 +37,28 @@ export const ProductCard = memo(({ product, onEditClick }) => {
         className="block h-full"
       >
         <div className="bg-white border border-gray-200 overflow-hidden h-full flex flex-col hover:border-gray-300 transition-colors duration-300 text-center">
-          {/* Изображение товара */}
-          <div className="h-80 flex flex-col items-center justify-center flex-shrink-0 relative pt-5">
-            {/* Админская кнопка редактирования */}
-            <AdminGuard>
-              <div className="absolute top-1 right-1 z-10">
+          
+          {/* Админская панель с ID */}
+          <AdminGuard>
+            <div className="bg-gray-50 px-3 py-2 border-b border-gray-200 flex items-center justify-between">
+              <span className="text-xs text-gray-600 font-mono">ID: {product.id}</span>
+              {onEditClick && (
                 <button
                   onClick={handleEditClick}
                   className="p-1 text-gray-400 hover:text-gray-600 transition-colors duration-300"
                   type="button"
                   aria-label={`Редактировать ${displayName}`}
                 >
-                  <EditIcon className="w-4 h-4" />
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
                 </button>
-              </div>
-            </AdminGuard>
-            
+              )}
+            </div>
+          </AdminGuard>
+          
+          {/* Изображение товара */}
+          <div className="h-80 flex flex-col items-center justify-center flex-shrink-0 relative pt-5">
             {product.image && (
               <img
                 src={product.image}

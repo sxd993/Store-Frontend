@@ -25,14 +25,21 @@ const Catalog = () => {
             </h1>
           </div>
           
-          {/* ОБНОВЛЕННАЯ админская кнопка */}
+          {/* Админская кнопка */}
           <AdminGuard>
             <div className="w-full flex justify-center md:justify-end mb-6">
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="px-6 py-3 border border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light transition-colors duration-300"
+                className="w-full md:w-auto bg-white border border-gray-200 rounded-lg px-4 py-3 hover:bg-gray-50 transition-colors duration-300 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-2"
               >
-                Добавить товар
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
+                    </svg>
+                    <span className="text-sm font-light text-gray-900">Добавить товар</span>
+                  </div>
+                </div>
               </button>
             </div>
           </AdminGuard>
