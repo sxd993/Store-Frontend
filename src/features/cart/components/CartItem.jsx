@@ -1,90 +1,92 @@
-import { CartItemImage } from './CartItemImage';
-import { CartQuantitySelector } from './CartQuantitySelector';
+import { useState } from 'react';
+import { useCart } from '../hooks/useCart';
 import { PriceDisplay } from '../../../shared/ui/PriceDisplay';
-import { useCartApi } from '../hooks/useCartApi';
 
-export const CartItem = ({ item, className = '' }) => {
-  const { removeFromCart, isItemRemoving } = useCartApi();
-  const isRemoving = isItemRemoving(item.id);
+export const CartItem = ({ item }) => {
+  const { updateQuantity, removeItem, isUpdating, isRemoving } = useCart();
+  const [localQuantity, setLocalQuantity] = useState(item.quantity);
+
+  const handleQuantityChange = (newQuantity) => {
+    setLocalQuantity(newQuantity);
+    updateQuantity({ productId: item.id, quantity: newQuantity });
+  };
 
   const handleRemove = () => {
-    if (isRemoving) return;
-    
     if (window.confirm('Удалить товар из корзины?')) {
-      removeFromCart(item.id);
+      removeItem(item.id);
     }
   };
 
-  const totalPrice = item.price * item.quantity;
+  const isDisabled = isUpdating || isRemoving;
 
   return (
-    <div className={`flex items-center gap-4 md:gap-6 p-4 md:p-6 border border-gray-200 bg-white transition-all duration-300 ${
-      isRemoving ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
-    } ${className}`}>
-      
-      {/* Изображение товара */}
-      <CartItemImage
-        src={item.image}
-        alt={item.name}
-        className="w-16 h-16 md:w-20 md:h-20"
-      />
-
-      {/* Информация о товаре */}
-      <div className="flex-1 min-w-0">
-        <h3 className="text-base md:text-lg font-light text-gray-900 mb-1 truncate">
-          {item.name}
-        </h3>
-
-        {item.displaySpecs && (
-          <p className="text-sm text-gray-500 font-light mb-2">
-            {item.displaySpecs}
-          </p>
+    <div className={`flex gap-6 p-6 border border-gray-200 bg-white ${
+      isDisabled ? 'opacity-50' : ''
+    }`}>
+      {/* Изображение */}
+      <div className="w-24 h-24 bg-gray-100 flex-shrink-0">
+        {item.image ? (
+          <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-gray-400">
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
         )}
-
-        <div className="flex items-center justify-between md:hidden">
-          <PriceDisplay price={item.price} size="medium" />
-          <PriceDisplay price={totalPrice} size="medium" className="font-medium" />
-        </div>
       </div>
 
-      {/* Цена за единицу (desktop) */}
-      <div className="hidden md:block text-right">
-        <PriceDisplay price={item.price} size="large" />
+      {/* Информация */}
+      <div className="flex-1">
+        <h3 className="text-lg font-light mb-2">{item.name}</h3>
+        {item.color && <p className="text-sm text-gray-500">Цвет: {item.color}</p>}
+        {item.memory && <p className="text-sm text-gray-500">Память: {item.memory}</p>}
+        <PriceDisplay price={item.price} className="mt-2" />
       </div>
 
       {/* Количество */}
-      <div className="flex flex-col items-center gap-2">
-        <CartQuantitySelector
-          productId={item.id}
-          currentQuantity={item.quantity}
-          size="medium"
-          disabled={isRemoving}
+      <div className="flex items-center gap-2">
+        <button
+          onClick={() => handleQuantityChange(localQuantity - 1)}
+          disabled={isDisabled || localQuantity <= 1}
+          className="w-8 h-8 border border-gray-300 hover:bg-gray-100 disabled:opacity-50"
+        >
+          -
+        </button>
+        <input
+          type="number"
+          value={localQuantity}
+          onChange={(e) => setLocalQuantity(Number(e.target.value))}
+          onBlur={() => handleQuantityChange(localQuantity)}
+          disabled={isDisabled}
+          className="w-16 text-center border border-gray-300 py-1"
+          min="1"
+          max="99"
         />
+        <button
+          onClick={() => handleQuantityChange(localQuantity + 1)}
+          disabled={isDisabled || localQuantity >= 99}
+          className="w-8 h-8 border border-gray-300 hover:bg-gray-100 disabled:opacity-50"
+        >
+          +
+        </button>
       </div>
 
-      {/* Итого за товар (desktop) */}
-      <div className="hidden md:block text-right min-w-[100px]">
-        <PriceDisplay
-          price={totalPrice}
-          size="large"
-          className="font-medium"
-        />
+      {/* Сумма */}
+      <div className="text-right min-w-[100px]">
+        <PriceDisplay price={item.price * item.quantity} className="font-medium" />
       </div>
 
-      {/* Кнопка удаления */}
+      {/* Удалить */}
       <button
         onClick={handleRemove}
-        disabled={isRemoving}
-        className="text-gray-400 hover:text-red-500 transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50 p-2 -m-2"
-        title="Удалить товар"
+        disabled={isDisabled}
+        className="text-gray-400 hover:text-red-500 disabled:cursor-not-allowed"
       >
-        {isRemoving ? (
-          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-current"></div>
-        ) : (
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        )}
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        </svg>
       </button>
     </div>
   );

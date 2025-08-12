@@ -37,10 +37,10 @@ const Header = memo(() => {
                   className="flex items-center gap-2 px-6 py-2 text-gray-700 hover:bg-gray-50 font-light transition-colors duration-300">
                   <span className="tracking-wide text-base">Каталог</span>
                 </Link>
-                
+
                 {/* Разделитель */}
                 <div className="w-px h-8 bg-gray-200"></div>
-                
+
                 {/* Поиск */}
                 <div className="flex-1 flex items-center px-4 py-2">
                   <input
@@ -50,8 +50,8 @@ const Header = memo(() => {
                   />
                   <button type="submit" className="p-1 text-gray-600 ml-2">
                     <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-                      <circle cx="11" cy="11" r="8"/>
-                      <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                      <circle cx="11" cy="11" r="8" />
+                      <line x1="21" y1="21" x2="16.65" y2="16.65" />
                     </svg>
                   </button>
                 </div>

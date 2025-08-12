@@ -26,12 +26,17 @@ export const ProductPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  const { addToCart, isItemInCart, getItemQuantity } = useCart();
 
-  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const {
+    addItem,
+    isInCart,
+    getQuantity,
+    isAdding
+  } = useCart();
+
   const [quantity, setQuantity] = useState(1);
 
-  // Получаем данные товара через API
+  // Получаем данные товара
   const { data: currentProduct, isLoading, error } = useQuery({
     queryKey: ['product', id],
     queryFn: () => ProductApi(id),
@@ -43,13 +48,15 @@ export const ProductPage = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Проверяем, есть ли товар в корзине
-  const inCart = currentProduct ? isItemInCart(currentProduct.id) : false;
-  const cartQuantity = currentProduct ? getItemQuantity(currentProduct.id) : 0;
+  // Кол-во в корзине и проверка наличия
+  const inCart = currentProduct ? isInCart(currentProduct.id) : false;
+  const cartQuantity = currentProduct ? getQuantity(currentProduct.id) : 0;
+  const productAvailable = currentProduct && isProductAvailable(currentProduct);
 
-  // Обработчики действий
+  // Быстрая покупка
   const handleBuy = () => {
     if (!isAuthenticated) {
+      alert('ЗАРЕГАЙСЯ ЧМО')
       navigate('/login', {
         state: {
           from: { pathname: `/catalog/${id}` },
@@ -58,35 +65,40 @@ export const ProductPage = () => {
       });
       return;
     }
-    // TODO: Логика быстрой покупки
     console.log('Покупка товара:', currentProduct);
   };
 
-  const handleAddToCart = async () => {
+  // Добавление в корзину
+  const handleAddToCart = () => {
+    if (!isAuthenticated) {
+      alert('ЗАРЕГАЙСЯ ЧМО');
+      navigate('/login', {
+        state: {
+          from: { pathname: `/catalog/${id}` },
+          message: 'Для покупки необходимо войти в аккаунт'
+        }
+      });
+      return; // чтобы дальше не шло выполнение
+    }
+
     if (!currentProduct) return;
 
-    setIsAddingToCart(true);
-
-    try {
-      const result = await addToCart(currentProduct, quantity);
-
-      if (result.success) {
-        // Показываем успешное уведомление (можно добавить toast)
-        console.log('Товар добавлен в корзину');
-        setQuantity(1); // Сбрасываем количество
-      } else {
-        console.error('Ошибка добавления в корзину:', result.error);
-        // Показываем ошибку пользователю
-        alert(result.error);
+    addItem(
+      { productId: currentProduct.id, quantity },
+      {
+        onSuccess: () => {
+          console.log('Товар добавлен в корзину');
+          setQuantity(1);
+        },
+        onError: (err) => {
+          console.error('Ошибка добавления в корзину:', err);
+        }
       }
-    } catch (error) {
-      console.error('Ошибка:', error);
-      alert('Произошла ошибка при добавлении товара в корзину');
-    } finally {
-      setIsAddingToCart(false);
-    }
+    );
   };
 
+
+  // Переход в корзину
   const handleGoToCart = () => {
     navigate('/cart');
   };
@@ -95,11 +107,10 @@ export const ProductPage = () => {
   if (isLoading) return <ProductLoading />;
   if (error) return <ProductError error={error} />;
 
-  // Данные продукта
+  // Данные для отображения
   const productImages = getProductImages(currentProduct);
   const productDisplayName = getProductDisplayName(currentProduct);
   const productSpecs = getProductSpecs(currentProduct);
-  const productAvailable = isProductAvailable(currentProduct);
 
   return (
     <section className="py-16 bg-white border-b border-gray-100">
@@ -107,14 +118,13 @@ export const ProductPage = () => {
         <div className="max-w-6xl mx-auto">
           {/* Хлебные крошки */}
           <div className="mb-8">
-            <Link to="/catalog" className="text-gray-500 hover:text-gray-900 transition-colors duration-300 font-light">
+            <Link to="/catalog" className="text-gray-500 hover:text-gray-900 transition-colors font-light">
               ← Назад к каталогу
             </Link>
           </div>
 
-          {/* Основной контент */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Галерея изображений */}
+            {/* Галерея */}
             <div className="flex items-start justify-center">
               <ProductImageGallery
                 images={productImages}
@@ -122,9 +132,9 @@ export const ProductPage = () => {
               />
             </div>
 
-            {/* Информация о товаре */}
+            {/* Инфо */}
             <div className="space-y-8">
-              {/* Заголовок */}
+              {/* Название и описание */}
               <div>
                 <h1 className="text-3xl md:text-5xl font-light text-gray-900 mb-4 leading-tight">
                   {productDisplayName}
@@ -155,14 +165,14 @@ export const ProductPage = () => {
                 </p>
               </div>
 
-              {/* Количество (если товар доступен) */}
+              {/* Количество */}
               {productAvailable && !inCart && (
                 <div className="flex items-center space-x-4">
                   <span className="text-gray-700 font-light">Количество:</span>
                   <div className="flex items-center border border-gray-300">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="px-3 py-2 text-gray-600 hover:bg-gray-50 transition-colors"
+                      className="px-3 py-2 text-gray-600 hover:bg-gray-50"
                       disabled={quantity <= 1}
                     >
                       -
@@ -172,7 +182,7 @@ export const ProductPage = () => {
                     </span>
                     <button
                       onClick={() => setQuantity(Math.min(10, quantity + 1))}
-                      className="px-3 py-2 text-gray-600 hover:bg-gray-50 transition-colors"
+                      className="px-3 py-2 text-gray-600 hover:bg-gray-50"
                       disabled={quantity >= 10}
                     >
                       +
@@ -181,7 +191,7 @@ export const ProductPage = () => {
                 </div>
               )}
 
-              {/* Информация о товаре в корзине */}
+              {/* В корзине */}
               {inCart && (
                 <div className="bg-green-50 border border-green-200 p-4 rounded">
                   <p className="text-green-800 font-light">
@@ -190,14 +200,13 @@ export const ProductPage = () => {
                 </div>
               )}
 
-              {/* Кнопки действий */}
+              {/* Кнопки */}
               <div className="space-y-4">
-                {/* Основные кнопки */}
                 <div className="flex gap-4">
                   <button
                     onClick={handleBuy}
                     disabled={!productAvailable}
-                    className="flex-1 px-8 py-4 border-2 border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex-1 px-8 py-4 border-2 border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light disabled:opacity-50"
                   >
                     {productAvailable ? 'Купить сейчас' : 'Нет в наличии'}
                   </button>
@@ -206,17 +215,17 @@ export const ProductPage = () => {
                     inCart ? (
                       <button
                         onClick={handleGoToCart}
-                        className="flex-1 px-8 py-4 border-2 border-green-600 bg-green-600 text-white hover:bg-green-700 font-light transition-colors duration-300"
+                        className="flex-1 px-8 py-4 border-2 border-green-600 bg-green-600 text-white hover:bg-green-700 font-light"
                       >
                         Перейти в корзину
                       </button>
                     ) : (
                       <button
                         onClick={handleAddToCart}
-                        disabled={isAddingToCart}
-                        className="flex-1 px-8 py-4 border-2 border-gray-200 bg-white text-gray-700 hover:bg-gray-50 font-light transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled={isAdding}
+                        className="flex-1 px-8 py-4 border-2 border-gray-200 bg-white text-gray-700 hover:bg-gray-50 font-light disabled:opacity-50"
                       >
-                        {isAddingToCart ? (
+                        {isAdding ? (
                           <div className="flex items-center justify-center">
                             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-current mr-2"></div>
                             Добавление...
@@ -229,7 +238,7 @@ export const ProductPage = () => {
                   )}
                 </div>
 
-                {/* Дополнительные гарантии */}
+                {/* Гарантии */}
                 <div className="text-xs text-gray-500 space-y-2 pt-4 border-t border-gray-200">
                   <div className="flex items-center justify-center gap-6">
                     <div className="flex items-center gap-1">

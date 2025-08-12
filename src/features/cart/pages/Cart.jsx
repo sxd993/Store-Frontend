@@ -1,102 +1,103 @@
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useCart } from '../hooks/useCart';
 import { CartItem } from '../components/CartItem';
 import { CartSummary } from '../components/CartSummary';
-import { EmptyCart } from './EmptyCart';
 import { CartActions } from '../components/CartActions';
-import { useCart } from '../hooks/useCart';
+import { EmptyCart } from './EmptyCart';
+import { useAuth } from '../../auth/hooks/useAuth';
 
 export const Cart = () => {
-  const {
-    formattedCartItems,
-    isEmpty,
-    isLoading,
-    calculations,
-    error
-  } = useCart();
+  const { items, isEmpty, isLoading, error, calculations } = useCart();
+  const { isAuthenticated } = useAuth();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  // Если пользователь не авторизован
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center max-w-md">
+          <h2 className="text-2xl font-light mb-4">Необходима авторизация</h2>
+          <p className="text-gray-600 mb-6">
+            Для работы с корзиной необходимо войти в аккаунт
+          </p>
+          <Link
+            to="/login"
+            state={{ from: '/cart' }}
+            className="inline-block px-8 py-4 border-2 border-gray-900 hover:bg-gray-900 hover:text-white transition-colors"
+          >
+            Войти в аккаунт
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
+  // Загрузка
   if (isLoading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
-          <p className="text-gray-600 font-light">Загрузка корзины...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4" />
+          <p className="text-gray-600">Загрузка корзины...</p>
         </div>
       </div>
     );
   }
 
+  // Ошибка
   if (error) {
     return (
-      <div className="min-h-screen bg-white">
-        <div className="max-w-7xl mx-auto px-6 py-16">
-          <div className="text-center">
-            <svg className="mx-auto h-16 w-16 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-            <h3 className="mt-4 text-lg font-light text-gray-900">Ошибка загрузки корзины</h3>
-            <p className="mt-2 text-gray-500 font-light mb-8">{error}</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="inline-block border-2 border-gray-900 bg-white text-gray-900 px-8 py-4 font-medium hover:bg-gray-900 hover:text-white transition-colors duration-300"
-            >
-              Попробовать снова
-            </button>
-          </div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <h3 className="text-lg font-light text-gray-900 mb-2">Ошибка загрузки</h3>
+          <p className="text-gray-600 mb-4">{error.message}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-6 py-3 border-2 border-gray-900 hover:bg-gray-900 hover:text-white transition-colors"
+          >
+            Обновить страницу
+          </button>
         </div>
       </div>
     );
   }
 
+  // Пустая корзина
   if (isEmpty) {
     return <EmptyCart />;
   }
 
+  // Корзина с товарами
   return (
     <div className="min-h-screen bg-white">
       {/* Заголовок */}
-      <section className="w-full bg-white border-b border-gray-100">
+      <section className="border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 py-16">
-          <div className="flex items-center mb-8">
-            <Link to="/catalog" className="text-gray-500 hover:text-gray-900 transition-colors duration-300">
-              ← Назад к каталогу
-            </Link>
-          </div>
-          <h1 className="text-4xl md:text-6xl font-light text-gray-900 mb-8 leading-tight">
+          <Link to="/catalog" className="text-gray-500 hover:text-gray-900 inline-block mb-8">
+            ← Назад к каталогу
+          </Link>
+          <h1 className="text-4xl md:text-6xl font-light text-gray-900 mb-4">
             Корзина
           </h1>
-          <p className="text-lg md:text-xl text-gray-600 font-light leading-relaxed max-w-2xl">
-            {`${calculations.totalItems} ${calculations.totalItems === 1 ? 'товар' :
-              calculations.totalItems < 5 ? 'товара' : 'товаров'
-              } на сумму ${calculations.subtotal.toLocaleString()} ₽`}
+          <p className="text-lg text-gray-600">
+            {calculations.totalItems} товаров на сумму {calculations.subtotal.toLocaleString()} ₽
           </p>
         </div>
       </section>
 
+      {/* Контент */}
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          {/* Список товаров */}
-          <div className="lg:col-span-2">
-            <div className="space-y-6">
-              {formattedCartItems.map((item) => (
-                <CartItem
-                  key={item.id}
-                  item={item}
-                />
-              ))}
-            </div>
+          {/* Товары */}
+          <div className="lg:col-span-2 space-y-6">
+            {items.map((item) => (
+              <CartItem key={item.id} item={item} />
+            ))}
           </div>
 
-          {/* Итого и оформление заказа */}
-          <div className="lg:col-span-1">
-            <div className="space-y-6">
-              <CartSummary />
-              <CartActions />
-            </div>
+          {/* Сайдбар */}
+          <div className="space-y-6">
+            <CartSummary calculations={calculations} />
+            <CartActions />
           </div>
         </div>
       </div>
