@@ -1,36 +1,30 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../auth/hooks/useAuth';
-import { useCart } from '../hooks/useCart';
+import { useCartApi } from '../hooks/useCartApi';
 
 export const CartActions = ({ className = '' }) => {
   const { isAuthenticated } = useAuth();
-  const { isEmpty, clearCart, isClearing } = useCart();
+  const { isEmpty, clearCart, isClearing } = useCartApi();
   const navigate = useNavigate();
 
   const handleCheckout = () => {
     if (!isAuthenticated) {
-      // Перенаправляем на страницу авторизации с указанием откуда пришли
-      navigate('/login', { 
-        state: { 
+      navigate('/login', {
+        state: {
           from: { pathname: '/cart' },
-          message: 'Для оформления заказа необходимо войти в аккаунт' 
+          message: 'Для оформления заказа необходимо войти в аккаунт'
         }
       });
       return;
     }
-
-    // Здесь будет логика оформления заказа для авторизованных пользователей
     console.log('Оформление заказа...');
-    // navigate('/checkout');
   };
 
-  const handleClearCart = async () => {
+  const handleClearCart = () => {
+    if (isClearing) return;
+    
     if (window.confirm('Вы уверены, что хотите очистить корзину?')) {
-      const result = await clearCart();
-      if (!result.success) {
-        console.error('Ошибка очистки корзины:', result.error);
-        // Здесь можно показать уведомление об ошибке
-      }
+      clearCart();
     }
   };
 
@@ -40,15 +34,14 @@ export const CartActions = ({ className = '' }) => {
 
   return (
     <div className={`space-y-4 ${className}`}>
-      {/* Основная кнопка оформления заказа */}
       <button
         onClick={handleCheckout}
-        className="w-full px-8 py-4 border-2 border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light transition-colors duration-300 text-lg"
+        disabled={isClearing}
+        className="w-full px-8 py-4 border-2 border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light transition-colors duration-300 text-lg disabled:opacity-50"
       >
         {isAuthenticated ? 'Оформить заказ' : 'Войти и оформить заказ'}
       </button>
 
-      {/* Дополнительные действия */}
       <div className="flex flex-col sm:flex-row gap-3">
         <Link
           to="/catalog"
@@ -73,7 +66,6 @@ export const CartActions = ({ className = '' }) => {
         </button>
       </div>
 
-      {/* Информация для неавторизованных */}
       {!isAuthenticated && (
         <div className="text-sm text-gray-500 bg-blue-50 border border-blue-200 p-4 rounded">
           <p className="font-light mb-2">
@@ -104,7 +96,6 @@ export const CartActions = ({ className = '' }) => {
         </div>
       )}
 
-      {/* Гарантии и информация */}
       <div className="text-xs text-gray-500 space-y-1 pt-4 border-t border-gray-200">
         <div className="flex items-center justify-center gap-4">
           <div className="flex items-center gap-1">

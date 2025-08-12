@@ -1,137 +1,128 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../auth/hooks/useAuth';
-import {
-  getCartApi,
-  addToCartApi,
-  updateCartItemApi,
-  removeFromCartApi,
-  clearCartApi,
-  syncCartApi,
-  getCartItemsInfoApi
-} from '../api/сart';
+import { useCartStore } from '../../../shared/store/cartStore';
+import { getCartApi, addToCartApi, updateCartItemApi, removeFromCartApi } from '../api/CartApi';
 
 export const useCartApi = () => {
-  const { isAuthenticated } = useAuth();
   const queryClient = useQueryClient();
+  const { isAuthenticated } = useAuth();
+  const { 
+    localItems, 
+    addToLocal, 
+    updateLocalQuantity, 
+    setOptimisticItems, 
+    clearOptimistic 
+  } = useCartStore();
 
-  // Получение корзины с сервера
+  // Получение корзины
   const {
     data: serverCart = [],
-    isLoading: isLoadingCart,
-    error: cartError,
-    refetch: refetchCart
+    isLoading,
+    error
   } = useQuery({
-    queryKey: ['cart', 'server'],
+    queryKey: ['cart'],
     queryFn: getCartApi,
     enabled: isAuthenticated,
-    staleTime: 1000 * 60 * 2, // 2 минуты
-    retry: (failureCount, error) => {
-      if (error.response?.status === 401 || error.response?.status === 403) {
-        return false;
+    staleTime: 1000 * 60 * 5, // 5 минут
+    gcTime: 1000 * 60 * 10, // 10 минут
+  });
+
+  // Мутация добавления в корзину
+  const addMutation = useMutation({
+    mutationFn: ({ productId, quantity }) => addToCartApi({ productId, quantity }),
+    onMutate: async ({ product, quantity }) => {
+      if (!isAuthenticated) {
+        addToLocal(product, quantity);
+        return;
       }
-      return failureCount < 2;
-    }
-  });
 
-  // Добавление товара в корзину на сервере
-  const addToServerCart = useMutation({
-    mutationFn: addToCartApi,
-    onSuccess: () => {
-      queryClient.invalidateQueries(['cart', 'server']);
+      // Optimistic update для сервера
+      await queryClient.cancelQueries({ queryKey: ['cart'] });
+      const previousCart = queryClient.getQueryData(['cart']);
+      
+      const optimisticCart = previousCart ? [...previousCart] : [];
+      const existingIndex = optimisticCart.findIndex(item => item.id === product.id);
+      
+      if (existingIndex >= 0) {
+        optimisticCart[existingIndex].quantity += quantity;
+      } else {
+        optimisticCart.push({ ...product, quantity });
+      }
+      
+      queryClient.setQueryData(['cart'], optimisticCart);
+      return { previousCart };
     },
-    onError: (error) => {
-      console.error('Ошибка добавления товара:', error);
-    }
-  });
-
-  // Обновление количества на сервере
-  const updateServerCartItem = useMutation({
-    mutationFn: updateCartItemApi,
-    onSuccess: () => {
-      queryClient.invalidateQueries(['cart', 'server']);
+    onError: (err, variables, context) => {
+      if (context?.previousCart) {
+        queryClient.setQueryData(['cart'], context.previousCart);
+      }
     },
-    onError: (error) => {
-      console.error('Ошибка обновления товара:', error);
-    }
-  });
-
-  // Удаление товара с сервера
-  const removeFromServerCart = useMutation({
-    mutationFn: removeFromCartApi,
     onSuccess: () => {
-      queryClient.invalidateQueries(['cart', 'server']);
-    },
-    onError: (error) => {
-      console.error('Ошибка удаления товара:', error);
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
     }
   });
 
-  // Очистка корзины на сервере
-  const clearServerCart = useMutation({
-    mutationFn: clearCartApi,
+  // Мутация обновления количества
+  const updateMutation = useMutation({
+    mutationFn: ({ productId, quantity }) => 
+      quantity === 0 
+        ? removeFromCartApi(productId)
+        : updateCartItemApi({ productId, quantity }),
+    onMutate: async ({ productId, quantity }) => {
+      if (!isAuthenticated) {
+        updateLocalQuantity(productId, quantity);
+        return;
+      }
+
+      await queryClient.cancelQueries({ queryKey: ['cart'] });
+      const previousCart = queryClient.getQueryData(['cart']);
+      
+      const optimisticCart = previousCart ? [...previousCart] : [];
+      if (quantity === 0) {
+        const filtered = optimisticCart.filter(item => item.id !== productId);
+        queryClient.setQueryData(['cart'], filtered);
+      } else {
+        const updated = optimisticCart.map(item => 
+          item.id === productId ? { ...item, quantity } : item
+        );
+        queryClient.setQueryData(['cart'], updated);
+      }
+      
+      return { previousCart };
+    },
+    onError: (err, variables, context) => {
+      if (context?.previousCart) {
+        queryClient.setQueryData(['cart'], context.previousCart);
+      }
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries(['cart', 'server']);
-    },
-    onError: (error) => {
-      console.error('Ошибка очистки корзины:', error);
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
     }
   });
 
-  // Синхронизация корзины при авторизации
-  const syncCart = useMutation({
-    mutationFn: syncCartApi,
+  // Синхронизация при авторизации
+  const syncMutation = useMutation({
+    mutationFn: (localItems) => syncCartApi(localItems),
     onSuccess: () => {
-      queryClient.invalidateQueries(['cart', 'server']);
-    },
-    onError: (error) => {
-      console.error('Ошибка синхронизации корзины:', error);
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
+      useCartStore.getState().clearLocal();
     }
-  });
-
-  // Получение расширенной информации о товарах
-  const getCartItemsInfo = useQuery({
-    queryKey: ['cart', 'items-info'],
-    queryFn: () => getCartItemsInfoApi(serverCart),
-    enabled: isAuthenticated && serverCart.length > 0,
-    staleTime: 1000 * 60 * 5 // 5 минут
   });
 
   return {
     // Данные
-    serverCart,
-    cartItemsInfo: getCartItemsInfo.data || [],
-    
-    // Состояния загрузки
-    isLoadingCart,
-    isLoadingItemsInfo: getCartItemsInfo.isLoading,
-    
-    // Ошибки
-    cartError,
-    itemsInfoError: getCartItemsInfo.error,
+    items: isAuthenticated ? serverCart : localItems,
+    isLoading: isAuthenticated ? isLoading : false,
+    error,
     
     // Мутации
-    addToServerCart: addToServerCart.mutateAsync,
-    updateServerCartItem: updateServerCartItem.mutateAsync,
-    removeFromServerCart: removeFromServerCart.mutateAsync,
-    clearServerCart: clearServerCart.mutateAsync,
-    syncCart: syncCart.mutateAsync,
+    addToCart: addMutation.mutate,
+    updateQuantity: updateMutation.mutate,
+    syncCart: syncMutation.mutate,
     
-    // Состояния мутаций
-    isAddingToCart: addToServerCart.isPending,
-    isUpdatingCart: updateServerCartItem.isPending,
-    isRemovingFromCart: removeFromServerCart.isPending,
-    isClearingCart: clearServerCart.isPending,
-    isSyncing: syncCart.isPending,
-    
-    // Ошибки мутаций
-    addError: addToServerCart.error,
-    updateError: updateServerCartItem.error,
-    removeError: removeFromServerCart.error,
-    clearError: clearServerCart.error,
-    syncError: syncCart.error,
-    
-    // Рефеч
-    refetchCart,
-    refetchItemsInfo: getCartItemsInfo.refetch
+    // Состояния загрузки
+    isAdding: addMutation.isPending,
+    isUpdating: updateMutation.isPending,
+    isSyncing: syncMutation.isPending,
   };
 };

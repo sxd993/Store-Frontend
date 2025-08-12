@@ -65,10 +65,10 @@ export const CartSummary = ({ className = '' }) => {
         <div className="border-t border-gray-200 pt-4">
           <div className="flex justify-between items-center">
             <span className="text-lg md:text-xl font-light text-gray-900">К оплате</span>
-            <PriceDisplay 
-              price={total} 
-              size="xl" 
-              className="font-medium text-gray-900" 
+            <PriceDisplay
+              price={total}
+              size="xl"
+              className="font-medium text-gray-900"
             />
           </div>
         </div>

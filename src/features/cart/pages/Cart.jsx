@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { CartItem } from '../components/CartItem';
 import { CartSummary } from '../components/CartSummary';
-import { EmptyCart } from '../components/EmptyCart';
+import { EmptyCart } from './EmptyCart';
+import { CartActions } from '../components/CartActions';
 import { useCart } from '../hooks/useCart';
-import { useCartStore } from '../../../shared/store/cartStore';
 
 export const Cart = () => {
   const {
@@ -15,17 +15,10 @@ export const Cart = () => {
     error
   } = useCart();
 
-  const { setCheckoutStep } = useCartStore((state) => ({
-    setCheckoutStep: state.setCheckoutStep
-  }));
-
-  // Сброс шага оформления при монтировании
   useEffect(() => {
-    setCheckoutStep('cart');
     window.scrollTo(0, 0);
-  }, [setCheckoutStep]);
+  }, []);
 
-  // Если идет загрузка
   if (isLoading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
@@ -37,7 +30,6 @@ export const Cart = () => {
     );
   }
 
-  // Если есть ошибка
   if (error) {
     return (
       <div className="min-h-screen bg-white">
@@ -48,8 +40,8 @@ export const Cart = () => {
             </svg>
             <h3 className="mt-4 text-lg font-light text-gray-900">Ошибка загрузки корзины</h3>
             <p className="mt-2 text-gray-500 font-light mb-8">{error}</p>
-            <button 
-              onClick={() => window.location.reload()} 
+            <button
+              onClick={() => window.location.reload()}
               className="inline-block border-2 border-gray-900 bg-white text-gray-900 px-8 py-4 font-medium hover:bg-gray-900 hover:text-white transition-colors duration-300"
             >
               Попробовать снова
@@ -60,7 +52,6 @@ export const Cart = () => {
     );
   }
 
-  // Если корзина пуста
   if (isEmpty) {
     return <EmptyCart />;
   }
@@ -79,10 +70,9 @@ export const Cart = () => {
             Корзина
           </h1>
           <p className="text-lg md:text-xl text-gray-600 font-light leading-relaxed max-w-2xl">
-            {`${calculations.totalItems} ${
-              calculations.totalItems === 1 ? 'товар' : 
+            {`${calculations.totalItems} ${calculations.totalItems === 1 ? 'товар' :
               calculations.totalItems < 5 ? 'товара' : 'товаров'
-            } на сумму ${calculations.subtotal.toLocaleString()} ₽`}
+              } на сумму ${calculations.subtotal.toLocaleString()} ₽`}
           </p>
         </div>
       </section>
@@ -93,8 +83,8 @@ export const Cart = () => {
           <div className="lg:col-span-2">
             <div className="space-y-6">
               {formattedCartItems.map((item) => (
-                <CartItem 
-                  key={item.id} 
+                <CartItem
+                  key={item.id}
                   item={item}
                 />
               ))}
@@ -103,7 +93,10 @@ export const Cart = () => {
 
           {/* Итого и оформление заказа */}
           <div className="lg:col-span-1">
-            <CartSummary />
+            <div className="space-y-6">
+              <CartSummary />
+              <CartActions />
+            </div>
           </div>
         </div>
       </div>
