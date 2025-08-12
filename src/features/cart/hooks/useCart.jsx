@@ -98,18 +98,12 @@ export const useCart = () => {
   const calculations = useMemo(() => {
     const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-    const shipping = subtotal >= 3000 ? 0 : 300;
-    const discount = subtotal >= 5000 ? subtotal * 0.05 : 0;
-    const total = subtotal + shipping - discount;
+    const total = subtotal;
 
     return {
       subtotal,
       totalItems,
-      shipping,
-      discount,
-      total,
-      hasDiscount: discount > 0,
-      hasFreeShipping: shipping === 0 && subtotal > 0
+      total
     };
   }, [items]);
 

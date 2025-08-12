@@ -84,10 +84,12 @@ export const Filter = memo(({ onFiltersApply }) => {
 
             {/* Мобильная версия */}
             <div className="flex md:hidden justify-center">
-                <FilterButton
-                    hasActiveFilters={isActive}
-                    onClick={handleOpenMobile}
-                />
+                <div className="w-full max-w-sm">
+                    <FilterButton
+                        hasActiveFilters={isActive}
+                        onClick={handleOpenMobile}
+                    />
+                </div>
             </div>
 
             {/* Десктопные фильтры */}

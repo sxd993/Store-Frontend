@@ -13,16 +13,18 @@ export const Cart = () => {
   // Если пользователь не авторизован
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center max-w-md">
-          <h2 className="text-2xl font-light mb-4">Необходима авторизация</h2>
-          <p className="text-gray-600 mb-6">
+      <div className="min-h-screen bg-white flex items-center justify-center px-4">
+        <div className="text-center max-w-sm">
+          <h2 className="text-2xl font-light text-gray-900 mb-4">
+            Необходима авторизация
+          </h2>
+          <p className="text-gray-600 mb-8 text-sm leading-relaxed">
             Для работы с корзиной необходимо войти в аккаунт
           </p>
           <Link
             to="/login"
             state={{ from: '/cart' }}
-            className="inline-block px-8 py-4 border-2 border-gray-900 hover:bg-gray-900 hover:text-white transition-colors"
+            className="inline-block px-8 py-3 border border-gray-200 text-gray-900 hover:bg-gray-50 transition-colors duration-300 text-sm"
           >
             Войти в аккаунт
           </Link>
@@ -36,8 +38,8 @@ export const Cart = () => {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4" />
-          <p className="text-gray-600">Загрузка корзины...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b border-gray-900 mx-auto mb-4" />
+          <p className="text-gray-600 text-sm">Загрузка корзины...</p>
         </div>
       </div>
     );
@@ -46,13 +48,13 @@ export const Cart = () => {
   // Ошибка
   if (error) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center">
-          <h3 className="text-lg font-light text-gray-900 mb-2">Ошибка загрузки</h3>
-          <p className="text-gray-600 mb-4">{error.message}</p>
+      <div className="min-h-screen bg-white flex items-center justify-center px-4">
+        <div className="text-center max-w-sm">
+          <h3 className="text-lg font-light text-gray-900 mb-3">Ошибка загрузки</h3>
+          <p className="text-gray-600 mb-6 text-sm">{error.message}</p>
           <button
             onClick={() => window.location.reload()}
-            className="px-6 py-3 border-2 border-gray-900 hover:bg-gray-900 hover:text-white transition-colors"
+            className="px-6 py-3 border border-gray-200 text-gray-900 hover:bg-gray-50 transition-colors duration-300 text-sm"
           >
             Обновить страницу
           </button>
@@ -68,39 +70,33 @@ export const Cart = () => {
 
   // Корзина с товарами
   return (
-    <div className="min-h-screen bg-white">
-      {/* Заголовок */}
-      <section className="border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-6 py-16">
-          <Link to="/catalog" className="text-gray-500 hover:text-gray-900 inline-block mb-8">
-            ← Назад к каталогу
-          </Link>
-          <h1 className="text-4xl md:text-6xl font-light text-gray-900 mb-4">
+    <section className="py-10 bg-white border-b border-gray-100">
+      <div className="container mx-auto px-4">
+        {/* Заголовок */}
+        <div className="text-center">
+          <h1 className="text-3xl md:text-5xl font-light text-gray-900 mb-8">
             Корзина
           </h1>
-          <p className="text-lg text-gray-600">
-            {calculations.totalItems} товаров на сумму {calculations.subtotal.toLocaleString()} ₽
-          </p>
         </div>
-      </section>
 
-      {/* Контент */}
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          {/* Товары */}
-          <div className="lg:col-span-2 space-y-6">
-            {items.map((item) => (
-              <CartItem key={item.id} item={item} />
-            ))}
-          </div>
+        {/* Контент */}
+        <div className="w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Товары */}
+            <div className="lg:col-span-2 space-y-4">
+              {items.map((item) => (
+                <CartItem key={item.id} item={item} />
+              ))}
+            </div>
 
-          {/* Сайдбар */}
-          <div className="space-y-6">
-            <CartSummary calculations={calculations} />
-            <CartActions />
+            {/* Сайдбар */}
+            <div className="space-y-4">
+              <CartSummary calculations={calculations} />
+              <CartActions />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };

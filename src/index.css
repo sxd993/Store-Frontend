@@ -33,3 +33,19 @@
   -webkit-line-clamp: 3;
   line-clamp: 3;
 }
+
+/* Скрываем стандартный текст "Reload Captcha" */
+#reload_href {
+  display: none !important;
+}
+
+/* Убираем стрелочки в полях ввода числа */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}

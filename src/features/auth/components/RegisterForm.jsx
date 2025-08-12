@@ -234,21 +234,56 @@ export const RegisterForm = ({ onSuccess }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-light text-gray-700 mb-2">Капча</label>
-        <div className="border border-gray-200 p-3 inline-block">
-          <LoadCanvasTemplate />
+        <label className="block text-sm font-light text-gray-700 mb-2">Подтвердите, что вы не робот</label>
+        
+        {/* Красивый блок с капчей */}
+        <div className="border border-gray-200 p-4 mb-5">
+          <div className="text-center mb-3">
+          </div>
+          
+          {/* Контейнер для капчи по центру */}
+          <div className="flex justify-center">
+            <div className="p-4">
+              <LoadCanvasTemplate />
+            </div>
+          </div>
+          
+          {/* Кнопка обновления капчи */}
+          <div className="text-center mt-3">
+            <button
+              type="button"
+              onClick={() => {
+                loadCaptchaEnginge(4);
+                setError('captcha', { type: 'manual', message: '' });
+              }}
+              className="text-gray-500 hover:text-gray-700 text-sm font-light transition-colors duration-200 flex items-center justify-center mx-auto"
+              title="Обновить капчу"
+            >
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Обновить капчу
+            </button>
+          </div>
         </div>
+        
+        {/* Поле ввода */}
         <input
           type="text"
           inputMode="text"
-          placeholder="Введите символы"
-          className={`mt-2 w-full px-4 py-3 border border-gray-200 focus:border-gray-900 outline-none transition-colors duration-200 font-light ${
-            errors.captcha?.message ? 'border-red-500' : ''
+          placeholder="Введите символы с изображения"
+          className={`w-full px-4 py-3 border border-gray-200 focus:border-gray-900 outline-none transition-colors duration-200 font-light ${
+            errors.captcha?.message ? 'border-red-500 bg-red-50' : ''
           }`}
           {...register('captcha', { required: 'Введите капчу' })}
         />
         {errors.captcha?.message && (
-          <p className="mt-2 text-sm text-red-600 font-light">{errors.captcha.message}</p>
+          <p className="mt-2 text-sm text-red-600 font-light flex items-center">
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            {errors.captcha.message}
+          </p>
         )}
       </div>
 
