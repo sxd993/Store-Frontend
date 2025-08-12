@@ -12,7 +12,7 @@ export const BestOffersProductCard = memo(({
   const { isAdmin } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [newProductId, setNewProductId] = useState('');
-
+  console.log(product)
   // Мемоизируем вычисляемые значения
   const formattedPrice = useMemo(() => 
     product ? formatPrice(product.price) : '', 
@@ -177,9 +177,9 @@ export const BestOffersProductCard = memo(({
           
           {/* Изображение товара */}
           <div className="h-80 flex flex-col items-center justify-center flex-shrink-0 relative pt-5">
-            {product.image && (
+            {product.images && (
               <img
-                src={product.image}
+                src={product.images[0].url}
                 alt={displayName}
                 className="w-full h-full object-contain p-3"
                 loading="lazy"

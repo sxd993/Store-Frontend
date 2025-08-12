@@ -11,18 +11,16 @@ export const Home = () => {
 
   // Предзагрузка данных для каталога
   useEffect(() => {
-    // Предзагружаем данные фильтров
     queryClient.prefetchQuery({
       queryKey: ['filterOptions'],
       queryFn: GetFilterCategory,
-      staleTime: 1000 * 60 * 30, // 30 минут
+      staleTime: 1000 * 60 * 30,
     });
 
-    // Предзагружаем первую страницу каталога
     queryClient.prefetchQuery({
       queryKey: ['catalog', 1, {}],
       queryFn: () => CatalogApi({ page: 1, per_page: 12 }),
-      staleTime: 1000 * 60 * 5, // 5 минут
+      staleTime: 1000 * 60 * 5,
     });
   }, [queryClient]);
 

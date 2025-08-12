@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useBestOffersLocal } from '../../../shared/hooks/useBestOffersLocal';
+import { useBestOffersLocal } from '../hooks/useBestOffersLocal';
 import { BestOffersProductCard } from './BestOffersProductCard';
 import { ProductApi } from '../../product/api/ProductApi';
 import { useAuth } from '../../auth/hooks/useAuth';
@@ -43,7 +43,7 @@ export const BestOffers = () => {
               Самые качественные товары с лучшими ценами и характеристиками
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-7xl mx-auto">
             {[1, 2, 3, 4].map((item) => (
               <div key={item} className="bg-white border border-gray-200 p-6 animate-pulse">
@@ -71,11 +71,11 @@ export const BestOffers = () => {
             Самые качественные товары с лучшими ценами и характеристиками
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-7xl mx-auto">
           {bestOfferIds.map((productId, index) => {
             const product = products[index];
-            
+
             return (
               <BestOffersProductCard
                 key={`${productId}-${index}`}
