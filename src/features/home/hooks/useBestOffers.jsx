@@ -1,48 +1,39 @@
-import { useState, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { ProductApi } from '../../product/api/ProductApi';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { bestOffersApi } from '../api/bestOffersApi';
 
 export const useBestOffers = () => {
-  const [bestOfferIds, setBestOfferIds] = useState(() => {
-    try {
-      const stored = localStorage.getItem('bestOffers');
-      return stored ? JSON.parse(stored) : [51, 52, 53, 54];
-    } catch {
-      return [51, 52, 53, 54];
-    }
-  });
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    localStorage.setItem('bestOffers', JSON.stringify(bestOfferIds));
-  }, [bestOfferIds]);
-
-  const { data: products = [], isLoading } = useQuery({
-    queryKey: ['bestOffers', bestOfferIds],
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['best-offers'],
     queryFn: async () => {
-      const productPromises = bestOfferIds.map(async (id) => {
-        try {
-          return await ProductApi(id);
-        } catch (error) {
-          return null;
-        }
-      });
-      return Promise.all(productPromises);
+      const response = await bestOffersApi.get();
+      return response.data;
     },
     staleTime: 1000 * 60 * 5
   });
 
-  const handleProductChange = (index, newProductId) => {
-    setBestOfferIds(prev => {
-      const newIds = [...prev];
-      newIds[index] = parseInt(newProductId);
-      return newIds;
-    });
+  const updateMutation = useMutation({
+    mutationFn: bestOffersApi.update,
+    onSuccess: (response) => {
+      queryClient.setQueryData(['best-offers'], response.data);
+    }
+  });
+
+  // Функция для обновления одного товара
+  const updateSingleOffer = (index, newId) => {
+    const currentIds = [...(data?.configuredIds || [])];
+    currentIds[index] = newId;
+    updateMutation.mutate(currentIds);
   };
 
   return {
-    bestOfferIds,
-    products,
+    products: data?.products || [],
+    configuredIds: data?.configuredIds || [],
     isLoading,
-    handleProductChange
+    error,
+    updateOffers: updateMutation.mutate,
+    updateSingleOffer,
+    isUpdating: updateMutation.isPending
   };
 };

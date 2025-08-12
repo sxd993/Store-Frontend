@@ -1,59 +1,96 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { formatPrice } from '../../../shared/utils/formatPrice';
-import { useAuth } from '../../auth/hooks/useAuth';
-import { useProductEdit } from '../hooks/useProductEdit';
+import { AdminGuard } from '../../auth/components/AdminGuard';
 
-export const BestOffersProductCard = ({ product, index, onProductChange }) => {
-  const { isAdmin } = useAuth();
-  const {
-    isEditing,
-    newProductId,
-    setNewProductId,
-    handleStartEdit,
-    handleSave,
-    handleCancel,
-    handleKeyPress
-  } = useProductEdit(product, index, onProductChange);
+export const BestOffersProductCard = ({ product, index, configuredId, onUpdateId, isUpdating }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editId, setEditId] = useState('');
+
+  const handleStartEdit = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setEditId(configuredId?.toString() || '');
+    setIsEditing(true);
+  };
+
+  const handleSave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const newId = parseInt(editId) || 0;
+    onUpdateId(index, newId);
+    setIsEditing(false);
+  };
+
+  const handleCancel = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsEditing(false);
+    setEditId('');
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') handleSave();
+    if (e.key === 'Escape') handleCancel();
+  };
 
   if (!product) {
     return (
       <div className="bg-white border border-red-200 overflow-hidden h-full flex flex-col text-center">
-        {isAdmin && (
-          <div className="bg-red-50 px-3 py-2 border-b border-red-200">
+                {/* Админ панель для несуществующего товара */}
+        <AdminGuard>
+          <div className="bg-red-50 px-3 py-2 border-b border-red-200 flex items-center justify-between">
+            <span className="text-xs text-red-600 font-mono">ID: {configuredId}</span>
+            {!isEditing && <span className="text-xs text-red-600">Товар не найден</span>}
             {isEditing ? (
               <div className="flex items-center gap-2">
                 <input
                   type="number"
-                  value={newProductId}
-                  onChange={(e) => setNewProductId(e.target.value)}
+                  value={editId}
+                  onChange={(e) => setEditId(e.target.value)}
                   onKeyDown={handleKeyPress}
                   placeholder="ID товара"
-                  className="flex-1 px-2 py-1 text-xs border border-red-300 focus:outline-none"
+                  className="px-2 py-1 text-xs border border-red-300 focus:outline-none rounded"
                   autoFocus
+                  disabled={isUpdating}
                 />
                 <button
                   onClick={handleSave}
-                  className="px-3 py-1 border border-gray-900 bg-white text-gray-900 text-xs hover:bg-gray-900 hover:text-white transition-colors duration-300"
+                  disabled={isUpdating}
+                  className="p-1 text-red-400 hover:text-red-600 transition-colors duration-300 disabled:opacity-50"
+                  type="button"
+                  aria-label="Сохранить"
                 >
-                  ✓
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
                 </button>
                 <button
                   onClick={handleCancel}
-                  className="px-3 py-1 border border-gray-400 bg-white text-gray-600 text-xs hover:bg-gray-400 hover:text-white transition-colors duration-300"
+                  disabled={isUpdating}
+                  className="p-1 text-red-400 hover:text-red-600 transition-colors duration-300 disabled:opacity-50"
+                  type="button"
+                  aria-label="Отмена"
                 >
-                  ✕
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
                 </button>
               </div>
             ) : (
               <button
                 onClick={handleStartEdit}
-                className="w-full text-left px-3 py-2 text-xs bg-white border border-red-300 hover:bg-red-50 transition-colors duration-200"
+                className="p-1 text-red-400 hover:text-red-600 transition-colors duration-300"
+                type="button"
+                aria-label="Редактировать ID товара"
               >
-                Товар не найден - введите ID
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
               </button>
             )}
           </div>
-        )}
+        </AdminGuard>
         
         <div className="flex-1 flex items-center justify-center p-8">
           <div className="text-center">
@@ -68,62 +105,66 @@ export const BestOffersProductCard = ({ product, index, onProductChange }) => {
   }
 
   return (
-    <div className="group h-full">
+        <div className="group h-full">
       <Link to={`/product/${product.id}`} className="block h-full">
         <div className="bg-white border border-gray-200 overflow-hidden h-full flex flex-col hover:border-gray-300 transition-colors duration-300 text-center">
           
-          {isAdmin && (
-            <div className="bg-gray-50 px-3 py-2 border-b border-gray-200">
+          {/* Админ панель внутри карточки */}
+          <AdminGuard>
+            <div className="bg-gray-50 px-3 py-2 border-b border-gray-200 flex items-center justify-between">
+              <span className="text-xs text-gray-600 font-mono">ID: {configuredId}</span>
               {isEditing ? (
-                <div className="flex items-center gap-2" onClick={(e) => e.preventDefault()}>
+                <div className="flex items-center gap-2">
                   <input
                     type="number"
-                    value={newProductId}
-                    onChange={(e) => setNewProductId(e.target.value)}
+                    value={editId}
+                    onChange={(e) => setEditId(e.target.value)}
                     onKeyDown={handleKeyPress}
                     placeholder="ID товара"
-                    className="flex-1 px-2 py-1 text-xs border border-gray-300 focus:outline-none"
-                    onClick={(e) => e.stopPropagation()}
+                    className="px-2 py-1 text-xs border border-gray-300 focus:outline-none rounded"
                     autoFocus
+                    disabled={isUpdating}
                   />
                   <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handleSave();
-                    }}
-                    className="px-3 py-1 border border-gray-900 bg-white text-gray-900 text-xs hover:bg-gray-900 hover:text-white transition-colors duration-300"
+                    onClick={handleSave}
+                    disabled={isUpdating}
+                    className="p-1 text-gray-400 hover:text-gray-600 transition-colors duration-300 disabled:opacity-50"
+                    type="button"
+                    aria-label="Сохранить"
                   >
-                    ✓
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
                   </button>
                   <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handleCancel();
-                    }}
-                    className="px-3 py-1 border border-gray-400 bg-white text-gray-600 text-xs hover:bg-gray-400 hover:text-white transition-colors duration-300"
+                    onClick={handleCancel}
+                    disabled={isUpdating}
+                    className="p-1 text-gray-400 hover:text-gray-600 transition-colors duration-300 disabled:opacity-50"
+                    type="button"
+                    aria-label="Отмена"
                   >
-                    ✕
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
                   </button>
                 </div>
               ) : (
                 <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleStartEdit();
-                  }}
-                  className="w-full text-left px-3 py-2 text-xs bg-white border border-gray-300 hover:bg-gray-50 transition-colors duration-200"
+                  onClick={handleStartEdit}
+                  className="p-1 text-gray-400 hover:text-gray-600 transition-colors duration-300"
+                  type="button"
+                  aria-label={`Редактировать ${product?.model || product?.name || 'товар'}`}
                 >
-                  ID: {product.id} - Изменить
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
                 </button>
               )}
             </div>
-          )}
+          </AdminGuard>
           
           <div className="h-80 flex flex-col items-center justify-center flex-shrink-0 relative pt-5">
-            {product.images && (
+            {product.images && product.images[0] && (
               <img
                 src={product.images[0].url}
                 alt={product.model || product.name}
