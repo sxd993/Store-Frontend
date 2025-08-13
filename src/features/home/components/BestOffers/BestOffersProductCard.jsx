@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { formatPrice } from '../../../shared/utils/formatPrice';
-import { AdminGuard } from '../../auth/components/AdminGuard';
+import { formatPrice } from '../../../../shared/utils/formatPrice';
+import { AdminGuard } from '../../../auth/components/AdminGuard';
 
 export const BestOffersProductCard = ({ product, index, configuredId, onUpdateId, isUpdating }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -37,7 +37,7 @@ export const BestOffersProductCard = ({ product, index, configuredId, onUpdateId
   if (!product) {
     return (
       <div className="bg-white border border-red-200 overflow-hidden h-full flex flex-col text-center">
-                {/* Админ панель для несуществующего товара */}
+        {/* Админ панель для несуществующего товара */}
         <AdminGuard>
           <div className="bg-red-50 px-3 py-2 border-b border-red-200 flex items-center justify-between">
             <span className="text-xs text-red-600 font-mono">ID: {configuredId}</span>
@@ -74,7 +74,7 @@ export const BestOffersProductCard = ({ product, index, configuredId, onUpdateId
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                  </svg>
                 </button>
               </div>
             ) : (
@@ -91,7 +91,7 @@ export const BestOffersProductCard = ({ product, index, configuredId, onUpdateId
             )}
           </div>
         </AdminGuard>
-        
+
         <div className="flex-1 flex items-center justify-center p-8">
           <div className="text-center">
             <svg className="w-12 h-12 text-red-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,10 +105,10 @@ export const BestOffersProductCard = ({ product, index, configuredId, onUpdateId
   }
 
   return (
-        <div className="group h-full">
+    <div className="group h-full">
       <Link to={`/product/${product.id}`} className="block h-full">
         <div className="bg-white border border-gray-200 overflow-hidden h-full flex flex-col hover:border-gray-300 transition-colors duration-300 text-center">
-          
+
           {/* Админ панель внутри карточки */}
           <AdminGuard>
             <div className="bg-gray-50 px-3 py-2 border-b border-gray-200 flex items-center justify-between">
@@ -162,7 +162,7 @@ export const BestOffersProductCard = ({ product, index, configuredId, onUpdateId
               )}
             </div>
           </AdminGuard>
-          
+
           <div className="h-80 flex flex-col items-center justify-center flex-shrink-0 relative pt-5">
             {product.images && product.images[0] && (
               <img
@@ -178,7 +178,7 @@ export const BestOffersProductCard = ({ product, index, configuredId, onUpdateId
             <h3 className="font-medium text-base text-gray-900 mb-2 group-hover:text-gray-700 transition-colors line-clamp-2 text-center">
               {product.model || product.name}
             </h3>
-            
+
             <div className="space-y-1 mb-3 text-xs text-gray-600 flex-1 text-center">
               {product.color && (
                 <p>
@@ -191,13 +191,13 @@ export const BestOffersProductCard = ({ product, index, configuredId, onUpdateId
                 </p>
               )}
             </div>
-            
+
             <div className="flex items-center justify-center pt-3 border-t border-gray-100 text-xl font-light text-gray-900 mt-auto w-full">
               <p className="text-center">
                 {formatPrice(product.price)}
               </p>
             </div>
-            
+
             <div className="flex items-center justify-center gap-2 mt-2 text-xs text-gray-500 group-hover:text-gray-700 transition-colors w-full">
               <span>Подробнее</span>
               <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

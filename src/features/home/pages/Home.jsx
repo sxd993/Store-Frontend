@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import Categories from '../components/Categories.jsx';
-import { BestOffers } from '../components/BestOffers.jsx';
-import { Testimonials } from '../components/Testimonials.jsx';
+import Categories from '../components/Categories/Categories.jsx';
+import { BestOffers } from '../components/BestOffers/BestOffers.jsx';
+import { Reviews } from '../components/Reviews.jsx';
 import { GetFilterCategory } from '../../catalog/api/filters.jsx';
 import { CatalogApi } from '../../catalog/api/catalog.jsx';
 
@@ -29,7 +29,7 @@ export const Home = () => {
       <div className="w-full max-w-7xl mx-auto px-4">
         <BestOffers />
         <Categories />
-        <Testimonials />
+        <Reviews />
       </div>
     </div>
   );
