@@ -38,15 +38,13 @@ export const ProductCard = memo(({ product, onEditClick }) => {
     onEditClick(product);
   }, [product, onEditClick]);
 
-
-
   return (
     <div className="group h-full">
       <Link
         to={productLink}
         className="block h-full"
       >
-        <div className="bg-white border border-gray-200 overflow-hidden h-full flex flex-col hover:border-gray-300 transition-colors duration-300 text-center">
+        <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden h-full flex flex-col hover:border-gray-400 transition-colors duration-300 text-center">
           
           <AdminGuard>
             <div className="bg-gray-50 px-3 py-2 border-b border-gray-200 flex items-center justify-between">
@@ -80,8 +78,6 @@ export const ProductCard = memo(({ product, onEditClick }) => {
                     }
                   }}
                 />
-                
-
               </>
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-gray-100">

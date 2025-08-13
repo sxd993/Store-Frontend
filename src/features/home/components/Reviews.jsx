@@ -18,7 +18,7 @@ export const Reviews = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-b from-gray-50 to-white border-b border-gray-100">
+    <section className="py-20 border-b border-gray-100">
       <div className="container mx-auto px-4">
         {/* Заголовок */}
         <div className="text-center mb-14">
@@ -37,9 +37,9 @@ export const Reviews = () => {
             return (
               <div
                 key={testimonial.id}
-                className="group h-full transform transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+                className="group h-full"
               >
-                <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm transition-colors duration-300 hover:border-indigo-200 h-full flex flex-col">
+                <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm transition-colors duration-300 hover:border-gray-400 h-full flex flex-col">
                   
                   {/* Рейтинг */}
                   <div className="flex mb-5">{renderStars(testimonial.rating)}</div>

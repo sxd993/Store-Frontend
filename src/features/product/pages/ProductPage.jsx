@@ -163,82 +163,47 @@ export const ProductPage = () => {
                 </div>
               )}
 
-              {/* Количество */}
-              {productAvailable && !inCart && (
-                <div className="flex items-center space-x-4 pt-3">
-                  <span className="text-gray-700 font-light">Количество:</span>
-                  <div className="flex items-center border border-gray-200 rounded">
-                    <button
-                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="px-4 py-2 text-gray-600 hover:bg-gray-50 transition-colors duration-300"
-                      disabled={quantity <= 1}
-                    >
-                      -
-                    </button>
-                    <span className="px-6 py-2 font-light min-w-[60px] text-center border-x border-gray-200">
-                      {quantity}
-                    </span>
-                    <button
-                      onClick={() => setQuantity(Math.min(10, quantity + 1))}
-                      className="px-4 py-2 text-gray-600 hover:bg-gray-50 transition-colors duration-300"
-                      disabled={quantity >= 10}
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* В корзине */}
-              {inCart && (
-                <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg">
-                  <p className="text-gray-800 font-light text-center">
-                    ✓ В корзине: {cartQuantity} шт.
-                  </p>
-                </div>
-              )}
-
-              {/* Кнопки */}
-              <div className="space-y-3 pt-4">
-                <button
-                  onClick={handleBuy}
-                  disabled={!productAvailable}
-                  className="w-full px-4 py-3 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors duration-300 rounded-lg font-light disabled:opacity-50"
-                >
-                  {productAvailable ? 'Купить сейчас' : 'Нет в наличии'}
-                </button>
-
+              {/* Количество и кнопки */}
+              <div className="pt-4">
                 {productAvailable && (
                   inCart ? (
                     <button
                       onClick={handleGoToCart}
-                      className="w-full px-4 py-3 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors duration-300 rounded-lg font-light"
+                      className="w-full px-4 py-3 border border-green-400 text-gray-700 hover:bg-gray-50 transition-colors duration-300 rounded-lg font-light"
                     >
                       Перейти в корзину
                     </button>
                   ) : (
-                    <button
-                      onClick={handleAddToCart}
-                      disabled={isAdding}
-                      className="w-full flex items-center justify-center gap-2 bg-green-700 hover:bg-green-800 text-white font-medium px-5 py-3 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-[1.02] active:scale-95 disabled:opacity-50"
-                    >
-                      {isAdding ? (
-                        <div className="flex items-center justify-center">
-                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                          Добавление...
-                        </div>
-                      ) : (
-                        <>
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.2 6h12.8M7 13h10m-6 6a1 1 0 11-2 0 1 1 0 012 0z" />
-                          </svg>
-                          Добавить в корзину
-                        </>
-                      )}
-                    </button>
+                    <div className="flex flex-row gap-4">
+                      <div className="flex items-center border border-gray-200 rounded">
+                        <button
+                          onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                          className="px-4 py-2 text-gray-600 hover:bg-gray-50 transition-colors duration-300"
+                          disabled={quantity <= 1}
+                        >
+                          -
+                        </button>
+                        <span className="px-6 py-2 font-light min-w-[60px] text-center border-x border-gray-200">
+                          {quantity}
+                        </span>
+                        <button
+                          onClick={() => setQuantity(Math.min(10, quantity + 1))}
+                          className="px-4 py-2 text-gray-600 hover:bg-gray-50 transition-colors duration-300"
+                          disabled={quantity >= 10}
+                        >
+                          +
+                        </button>
+                      </div>
+                      <button
+                        onClick={handleAddToCart}
+                        disabled={isAdding}
+                        className="flex-1 px-4 py-3 bg-green-700 text-white hover:bg-green-800 transition-colors duration-300 rounded-lg font-light disabled:opacity-50"
+                      >
+                        {isAdding ? 'Добавление...' : 'Добавить в корзину'}
+                      </button>
+                    </div>
                   )
                 )}
-
               </div>
             </div>
           </div>
