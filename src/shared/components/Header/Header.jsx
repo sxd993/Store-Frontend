@@ -30,7 +30,7 @@ const Header = memo(() => {
           {/* Объединенный каталог и поиск (desktop) */}
           <div className="hidden md:flex flex-1 justify-center">
             <div className="w-[70%] max-w-2xl">
-              <div className="flex items-center border border-gray-600 bg-white">
+              <div className="flex items-center border border-gray-600 bg-white rounded-2xl overflow-hidden">
                 {/* Кнопка каталога */}
                 <Link
                   to="/catalog"

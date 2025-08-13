@@ -21,20 +21,20 @@ const FilterField = memo(({ filter, data, value, onChange }) => {
 
 FilterField.displayName = 'FilterField';
 
-// Мемоизированные кнопки действий
+// Компактные кнопки действий в стиле пользователя
 const FilterActions = memo(({ onApply, onReset, isLoading }) => (
-  <div className="flex justify-center gap-3 pt-4 border-t border-gray-200">
+  <div className="flex gap-2 pt-3 border-t border-gray-100">
     <button
       onClick={onReset}
       disabled={isLoading}
-      className="px-4 py-2 border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 font-light transition-colors duration-300 text-sm disabled:opacity-50"
+      className="flex-1 px-3 py-2 border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 font-light transition-colors duration-300 text-sm disabled:opacity-50 rounded-2xl"
     >
       Сбросить
     </button>
     <button
       onClick={onApply}
       disabled={isLoading}
-      className="px-4 py-2 border border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light transition-colors duration-300 text-sm disabled:opacity-50"
+      className="flex-1 px-3 py-2 border border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light transition-colors duration-300 text-sm disabled:opacity-50 rounded-2xl"
     >
       {isLoading ? 'Применяем...' : 'Применить'}
     </button>
@@ -43,7 +43,7 @@ const FilterActions = memo(({ onApply, onReset, isLoading }) => (
 
 FilterActions.displayName = 'FilterActions';
 
-// ✅ Универсальный компонент фильтров
+// ✅ Компактный универсальный компонент фильтров
 export const UniversalFilter = memo(({ 
   data, 
   filterValues, 
@@ -69,7 +69,7 @@ export const UniversalFilter = memo(({
   );
 
   return (
-    <div className={`space-y-2 ${className}`}>
+    <div className={`space-y-3 ${className}`}>
       {filterFields}
       <FilterActions 
         onApply={onApply} 

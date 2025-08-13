@@ -6,7 +6,7 @@ export const FilterButton = memo(({ hasActiveFilters, onClick }) => {
       type="button"
       aria-label="Открыть фильтры"
       onClick={onClick}
-      className="w-full bg-white border border-gray-200 rounded-lg p-3 hover:bg-gray-50 transition-colors duration-300 text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-2"
+      className="w-full bg-white border border-gray-200 rounded-2xl p-3 hover:bg-gray-50 transition-colors duration-300 text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-2"
     >
       <div className="flex items-center justify-center gap-2">
         <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

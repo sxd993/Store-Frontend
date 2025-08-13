@@ -9,7 +9,7 @@ export const Reviews = () => {
         <FaStar
           key={i}
           className={`w-4 h-4 ${
-            i <= rating ? 'text-yellow-400 drop-shadow-sm' : 'text-gray-300'
+            i <= rating ? 'text-yellow-300' : 'text-gray-300'
           }`}
         />
       );
@@ -39,7 +39,7 @@ export const Reviews = () => {
                 key={testimonial.id}
                 className="group h-full"
               >
-                <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm transition-colors duration-300 hover:border-gray-400 h-full flex flex-col">
+                <div className="bg-white rounded-2xl border border-gray-200 p-8 transition-colors duration-300 hover:border-gray-400 h-full flex flex-col">
                   
                   {/* Рейтинг */}
                   <div className="flex mb-5">{renderStars(testimonial.rating)}</div>
@@ -53,7 +53,7 @@ export const Reviews = () => {
                   <div className="flex items-center mt-auto">
                     <div className="flex items-center justify-center mr-4">
                       {AvatarIcon && (
-                        <AvatarIcon className="w-8 h-8 text-indigo-500" />
+                        <AvatarIcon className="w-8 h-8 text-gray-700" />
                       )}
                     </div>
                     <div>

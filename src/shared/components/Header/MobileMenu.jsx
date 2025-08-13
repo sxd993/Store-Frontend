@@ -98,36 +98,49 @@ const MobileMenu = ({ open, onClose }) => {
           isAnimating ? 'transform translate-x-0' : 'transform translate-x-full'
         }`}
       >
-        <header className="pt-[4%] pb-[6%] px-[5%]">
-          <div className="flex justify-end mb-4">
-            <button
-              onClick={onClose}
-              className="p-[3%] hover:bg-gray-100 rounded-full text-black transition-colors"
-              aria-label="Закрыть меню"
-            >
-              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-              </svg>
-            </button>
-          </div>
-          
-          {/* Логотип по центру */}
-          <div className="flex justify-center mb-2">
-            <Link to="/" className="flex items-center gap-1" onClick={onClose}>
-              <svg className="w-10 h-10 -mt-2.5" fill="black" viewBox="0 0 24 24">
-                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-              </svg>
-              <div className="text-3xl logo-font text-black">NNV</div>
-            </Link>
+        <header className="px-[5%] py-4">
+          {/* Контейнер хедера с равномерным распределением */}
+          <div className="flex flex-col gap-4">
+            {/* Первый ряд: логотип по центру и кнопка закрыть справа на одной высоте */}
+            <div className="flex items-center justify-between">
+              {/* Пустой div для баланса */}
+              <div className="w-12"></div>
+              
+              {/* Логотип по центру */}
+              <Link to="/" className="flex items-center gap-1" onClick={onClose}>
+                <svg className="w-10 h-10 -mt-2.5" fill="black" viewBox="0 0 24 24">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                </svg>
+                <div className="text-3xl logo-font text-black">NNV</div>
+              </Link>
+              
+              {/* Кнопка закрыть справа */}
+              <button
+                onClick={onClose}
+                className="p-3 hover:bg-gray-100 rounded-full text-black transition-colors"
+                aria-label="Закрыть меню"
+              >
+                <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+              </button>
+            </div>
+            
+            {/* Второй ряд: поиск по центру */}
+            <div className="flex justify-center">
+              <Search className="h-12 px-6 text-lg" />
+            </div>
           </div>
         </header>
         
-        <main className="flex-1 flex flex-col w-full max-w-[90vw] mx-auto overflow-y-auto relative">
-          <div className="flex-1 flex flex-col justify-center items-center">
-            <div className="w-full max-w-sm flex flex-col">
+        <main className="flex-1 flex flex-col px-[5%] overflow-y-auto">
+          {/* Контейнер основного меню с равномерным распределением */}
+          <div className="flex-1 flex flex-col justify-between py-6">
+            {/* Навигационные ссылки */}
+            <div className="flex flex-col gap-1">
               <Link 
                 to="/" 
-                className="py-[6%] px-[6%] text-black font-bold text-xl md:text-base border-b border-gray-200 hover:bg-gray-100 transition-colors flex items-center relative" 
+                className="py-4 px-6 text-black font-bold text-xl border-b border-gray-200 hover:bg-gray-100 transition-colors flex items-center" 
                 onClick={onClose}
               >
                 <HomeIcon />
@@ -137,7 +150,7 @@ const MobileMenu = ({ open, onClose }) => {
               {isAdmin && (
                 <Link 
                   to="/admin" 
-                  className="py-[6%] px-[6%] text-black font-bold text-xl md:text-base border-b border-gray-200 hover:bg-gray-100 transition-colors flex items-center relative" 
+                  className="py-4 px-6 text-black font-bold text-xl border-b border-gray-200 hover:bg-gray-100 transition-colors flex items-center" 
                   onClick={onClose}
                 >
                   <AdminIcon />
@@ -147,7 +160,7 @@ const MobileMenu = ({ open, onClose }) => {
               
               <Link 
                 to="/profile" 
-                className="py-[6%] px-[6%] text-black font-bold text-xl md:text-base border-b border-gray-200 hover:bg-gray-100 transition-colors flex items-center relative" 
+                className="py-4 px-6 text-black font-bold text-xl border-b border-gray-200 hover:bg-gray-100 transition-colors flex items-center" 
                 onClick={onClose}
               >
                 <ProfileIcon />
@@ -156,7 +169,7 @@ const MobileMenu = ({ open, onClose }) => {
               
               <Link 
                 to="/catalog" 
-                className="py-[6%] px-[6%] text-black font-bold text-xl md:text-base border-b border-gray-200 hover:bg-gray-100 transition-colors flex items-center relative" 
+                className="py-4 px-6 text-black font-bold text-xl border-b border-gray-200 hover:bg-gray-100 transition-colors flex items-center" 
                 onClick={onClose}
               >
                 <CatalogIcon />
@@ -165,7 +178,7 @@ const MobileMenu = ({ open, onClose }) => {
               
               <Link 
                 to="/cart" 
-                className="py-[6%] px-[6%] text-black font-bold text-xl md:text-base border-b border-gray-200 hover:bg-gray-100 transition-colors flex items-center relative" 
+                className="py-4 px-6 text-black font-bold text-xl border-b border-gray-200 hover:bg-gray-100 transition-colors flex items-center" 
                 onClick={onClose}
               >
                 <CartIcon />
@@ -176,24 +189,25 @@ const MobileMenu = ({ open, onClose }) => {
                 href="https://t.me/your_username" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="py-[6%] px-[6%] text-black font-bold text-xl md:text-base hover:bg-gray-100 transition-colors flex items-center relative" 
+                className="py-4 px-6 text-black font-bold text-xl hover:bg-gray-100 transition-colors flex items-center" 
                 onClick={onClose}
               >
                 <TelegramIcon />
                 <span className="flex-1 text-center mr-5">Телеграм</span>
               </a>
             </div>
-          </div>
-          
-          <div className="mt-auto pb-[20%] text-center space-y-4">
-            <a href="mailto:info@example.com" className="flex items-center justify-center gap-2 text-gray-600 text-lg">
-              <EmailIcon />
-              <span>info@example.com</span>
-            </a>
-            <a href="tel:+71234567890" className="flex items-center justify-center gap-2 text-gray-600 text-lg">
-              <PhoneIcon />
-              <span>+7 (123) 456-78-90</span>
-            </a>
+            
+            {/* Контактная информация */}
+            <div className="flex flex-col gap-4 pt-8">
+              <a href="mailto:info@example.com" className="flex items-center justify-center gap-2 text-gray-600 text-lg">
+                <EmailIcon />
+                <span>info@example.com</span>
+              </a>
+              <a href="tel:+71234567890" className="flex items-center justify-center gap-2 text-gray-600 text-lg">
+                <PhoneIcon />
+                <span>+7 (123) 456-78-90</span>
+              </a>
+            </div>
           </div>
         </main>
       </div>

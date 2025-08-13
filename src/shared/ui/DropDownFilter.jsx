@@ -36,16 +36,16 @@ export const DropDownFilter = ({
   }, []);
 
   return (
-    <div className="mb-4">
+    <div className="mb-3">
       <h4 className="text-sm font-light text-gray-900 mb-2">{title}</h4>
       <div className="relative" ref={dropdownRef}>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full flex items-center justify-between px-4 py-3 border border-gray-200 bg-white text-left text-sm font-light text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 transition-colors duration-300"
+          className="w-full flex items-center justify-between px-3 py-2 border border-gray-200 bg-white text-left text-sm font-light text-gray-900 hover:bg-gray-50 focus:outline-none transition-colors duration-300 rounded-2xl"
         >
           <span>{getDisplayValue()}</span>
           <svg
-            className={`h-5 w-5 text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+            className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -55,11 +55,11 @@ export const DropDownFilter = ({
         </button>
 
         {isOpen && (
-          <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
+          <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-2xl shadow-lg max-h-48 overflow-auto">
             <div className="py-1">
               <button
                 onClick={() => handleSelect('all')}
-                className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 font-light transition-colors duration-300 ${
+                className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-100 font-light transition-colors duration-300 ${
                   selectedValue === 'all' ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
                 }`}
               >
@@ -69,7 +69,7 @@ export const DropDownFilter = ({
                 <button
                   key={option}
                   onClick={() => handleSelect(option)}
-                  className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 font-light transition-colors duration-300 ${
+                  className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-100 font-light transition-colors duration-300 ${
                     selectedValue === option ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
                   }`}
                 >

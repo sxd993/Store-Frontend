@@ -156,10 +156,15 @@ export const ProductPage = () => {
 
               {/* Описание */}
               {currentProduct?.description && (
-                <div className="pt-3">
-                  <p className="text-base text-gray-600 font-light leading-relaxed">
-                    {currentProduct.description}
-                  </p>
+                <div className="space-y-3">
+                  <h2 className="text-lg font-light text-gray-900">Описание</h2>
+                  <div className="space-y-2">
+                    <div className="py-1.5 border-b border-gray-50">
+                      <p className="text-gray-600 font-light leading-relaxed">
+                        {currentProduct.description}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               )}
 
