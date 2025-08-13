@@ -9,12 +9,24 @@ const FilterField = memo(({ filter, data, value, onChange }) => {
   
   const FilterComponent = filter.type === 'radio' ? RadioFilter : DropDownFilter;
   
+  // Компактный режим для цвета и памяти
+  const isCompact = filter.key === 'color' || filter.key === 'memory';
+  
+  // Правильные формы для грамматики
+  const getDefaultText = (filterKey) => {
+    if (filterKey === 'memory') return 'Любая';
+    if (filterKey === 'color') return 'Любой';
+    return `Все ${filter.title.toLowerCase()}`;
+  };
+  
   return (
     <FilterComponent
       title={filter.title}
       options={options}
       selectedValue={value}
       onChange={onChange}
+      compact={isCompact}
+      defaultText={getDefaultText(filter.key)}
     />
   );
 });

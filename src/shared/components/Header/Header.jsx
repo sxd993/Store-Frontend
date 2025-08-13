@@ -1,6 +1,7 @@
 import React, { useState, memo, useCallback } from "react";
 import Navigation from "./Navigation";
 import MobileMenu from "./MobileMenu";
+import Search from "./Search"; // Добавляем импорт
 import { Logo } from "./HeaderIcons";
 import { Link } from "react-router-dom";
 
@@ -30,32 +31,8 @@ const Header = memo(() => {
           {/* Объединенный каталог и поиск (desktop) */}
           <div className="hidden md:flex flex-1 justify-center">
             <div className="w-[70%] max-w-2xl">
-              <div className="flex items-center border border-gray-600 bg-white rounded-2xl overflow-hidden">
-                {/* Кнопка каталога */}
-                <Link
-                  to="/catalog"
-                  className="flex items-center gap-2 px-6 py-2 text-gray-700 hover:bg-gray-50 font-light transition-colors duration-300">
-                  <span className="tracking-wide text-base">Каталог</span>
-                </Link>
-
-                {/* Разделитель */}
-                <div className="w-px h-8 bg-gray-200"></div>
-
-                {/* Поиск */}
-                <div className="flex-1 flex items-center px-4 py-2">
-                  <input
-                    type="text"
-                    placeholder="Поиск товаров..."
-                    className="outline-none bg-transparent text-sm text-black placeholder-gray-500 w-full font-light"
-                  />
-                  <button type="submit" className="p-1 text-gray-600 ml-2">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-                      <circle cx="11" cy="11" r="8" />
-                      <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
+              {/* Заменяем весь блок поиска на компонент Search */}
+              <Search className="rounded-2xl" />
             </div>
           </div>
 

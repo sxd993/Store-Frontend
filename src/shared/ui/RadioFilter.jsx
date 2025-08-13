@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-export const RadioFilter = ({ title, options, selectedValue, onChange }) => {
+export const RadioFilter = ({ title, options, selectedValue, onChange, compact = false, defaultText }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -11,7 +11,7 @@ export const RadioFilter = ({ title, options, selectedValue, onChange }) => {
 
   const getDisplayValue = () => {
     if (selectedValue === 'all') {
-      return `Все ${title.toLowerCase()}`;
+      return defaultText || `Все ${title.toLowerCase()}`;
     }
     return selectedValue;
   };
@@ -29,6 +29,36 @@ export const RadioFilter = ({ title, options, selectedValue, onChange }) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  // Компактный режим для цвета и памяти
+  if (compact) {
+    return (
+      <div className="mb-3">
+        <h4 className="text-sm font-light text-gray-900 mb-2">{title}</h4>
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => handleSelect('all')}
+            className={`px-3 py-1.5 text-xs border bg-white font-light transition-colors duration-300 rounded-2xl ${
+              selectedValue === 'all' ? 'border-gray-400 text-gray-900' : 'border-gray-200 text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            {defaultText || `Все ${title.toLowerCase()}`}
+          </button>
+          {options?.map(option => (
+            <button
+              key={option}
+              onClick={() => handleSelect(option)}
+              className={`px-3 py-1.5 text-xs border bg-white font-light transition-colors duration-300 rounded-2xl ${
+                selectedValue === option ? 'border-gray-400 text-gray-900' : 'border-gray-200 text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mb-3">
@@ -58,7 +88,7 @@ export const RadioFilter = ({ title, options, selectedValue, onChange }) => {
                   selectedValue === 'all' ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
                 }`}
               >
-                Все {title.toLowerCase()}
+                {defaultText || `Все ${title.toLowerCase()}`}
               </button>
               {options?.map(option => (
                 <button

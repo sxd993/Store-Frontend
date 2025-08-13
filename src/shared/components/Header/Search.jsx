@@ -73,7 +73,7 @@ const Search = ({ className = "" }) => {
 
   return (
     <div ref={searchRef} className={`relative ${className}`}>
-      <form onSubmit={handleSubmit} className="flex items-center border border-gray-600 bg-white">
+      <form onSubmit={handleSubmit} className={`flex items-center border border-gray-600 bg-white overflow-hidden ${className.includes('rounded') ? className : 'rounded-2xl'}`}>
         {/* Кнопка каталога */}
         <Link
           to="/catalog"
@@ -111,7 +111,7 @@ const Search = ({ className = "" }) => {
 
       {/* Выпадающий список результатов */}
       {isOpen && query.length >= 2 && (
-        <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 border-t-0 shadow-lg max-h-96 overflow-y-auto z-50">
+        <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 border-t-0 shadow-lg max-h-96 overflow-y-auto z-50 rounded-b-2xl">
           {isLoading ? (
             <div className="p-4 text-center text-gray-500">
               <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900 mx-auto mb-2"></div>
