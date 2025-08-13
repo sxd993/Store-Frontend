@@ -56,7 +56,6 @@ export const ProductPage = () => {
   // Быстрая покупка
   const handleBuy = () => {
     if (!isAuthenticated) {
-      alert('ЗАРЕГАЙСЯ ЧМО')
       navigate('/login', {
         state: {
           from: { pathname: `/catalog/${id}` },
@@ -71,14 +70,13 @@ export const ProductPage = () => {
   // Добавление в корзину
   const handleAddToCart = () => {
     if (!isAuthenticated) {
-      alert('ЗАРЕГАЙСЯ ЧМО');
       navigate('/login', {
         state: {
           from: { pathname: `/catalog/${id}` },
           message: 'Для покупки необходимо войти в аккаунт'
         }
       });
-      return; // чтобы дальше не шло выполнение
+      return;
     }
 
     if (!currentProduct) return;
@@ -97,7 +95,6 @@ export const ProductPage = () => {
     );
   };
 
-
   // Переход в корзину
   const handleGoToCart = () => {
     navigate('/cart');
@@ -113,15 +110,9 @@ export const ProductPage = () => {
   const productSpecs = getProductSpecs(currentProduct);
 
   return (
-    <section className="py-16 bg-white border-b border-gray-100">
+    <section className="py-12 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
-          {/* Хлебные крошки */}
-          <div className="mb-8">
-            <Link to="/catalog" className="text-gray-500 hover:text-gray-900 transition-colors font-light">
-              ← Назад к каталогу
-            </Link>
-          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Галерея */}
@@ -133,56 +124,63 @@ export const ProductPage = () => {
             </div>
 
             {/* Инфо */}
-            <div className="space-y-8">
-              {/* Название и описание */}
+            <div className="space-y-6">
+              {/* Название */}
               <div>
                 <h1 className="text-3xl md:text-5xl font-light text-gray-900 mb-4 leading-tight">
                   {productDisplayName}
                 </h1>
-                <p className="text-base md:text-lg text-gray-600 font-light leading-relaxed">
-                  {currentProduct?.description || 'Описание товара недоступно.'}
+              </div>
+
+              {/* Цена */}
+              <div className="border-b border-gray-100 pb-4">
+                <p className="text-4xl font-light text-gray-900">
+                  {currentProduct?.price?.toLocaleString() || 0} ₽
                 </p>
               </div>
 
               {/* Характеристики */}
               {productSpecs.length > 0 && (
-                <div>
-                  <h2 className="text-xl font-light text-gray-900 mb-4">Характеристики</h2>
-                  <div className="space-y-3">
+                <div className="space-y-3">
+                  <h2 className="text-lg font-light text-gray-900">Характеристики</h2>
+                  <div className="space-y-2">
                     {productSpecs.map((spec, index) => (
-                      <p key={index} className="text-gray-600 font-light">
-                        <span className="font-medium">{spec.label}:</span> {spec.value}
-                      </p>
+                      <div key={index} className="flex justify-between py-1.5 border-b border-gray-50">
+                        <span className="text-gray-600 font-light">{spec.label}</span>
+                        <span className="text-gray-900 font-light">{spec.value}</span>
+                      </div>
                     ))}
                   </div>
                 </div>
               )}
 
-              {/* Цена */}
-              <div>
-                <p className="text-3xl font-light text-gray-900">
-                  {currentProduct?.price?.toLocaleString() || 0} ₽
-                </p>
-              </div>
+              {/* Описание */}
+              {currentProduct?.description && (
+                <div className="pt-3">
+                  <p className="text-base text-gray-600 font-light leading-relaxed">
+                    {currentProduct.description}
+                  </p>
+                </div>
+              )}
 
               {/* Количество */}
               {productAvailable && !inCart && (
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-4 pt-3">
                   <span className="text-gray-700 font-light">Количество:</span>
-                  <div className="flex items-center border border-gray-300">
+                  <div className="flex items-center border border-gray-200 rounded">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="px-3 py-2 text-gray-600 hover:bg-gray-50"
+                      className="px-4 py-2 text-gray-600 hover:bg-gray-50 transition-colors duration-300"
                       disabled={quantity <= 1}
                     >
                       -
                     </button>
-                    <span className="px-4 py-2 font-light min-w-[50px] text-center">
+                    <span className="px-6 py-2 font-light min-w-[60px] text-center border-x border-gray-200">
                       {quantity}
                     </span>
                     <button
                       onClick={() => setQuantity(Math.min(10, quantity + 1))}
-                      className="px-3 py-2 text-gray-600 hover:bg-gray-50"
+                      className="px-4 py-2 text-gray-600 hover:bg-gray-50 transition-colors duration-300"
                       disabled={quantity >= 10}
                     >
                       +
@@ -193,68 +191,48 @@ export const ProductPage = () => {
 
               {/* В корзине */}
               {inCart && (
-                <div className="bg-green-50 border border-green-200 p-4 rounded">
-                  <p className="text-green-800 font-light">
+                <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                  <p className="text-gray-800 font-light text-center">
                     ✓ В корзине: {cartQuantity} шт.
                   </p>
                 </div>
               )}
 
               {/* Кнопки */}
-              <div className="space-y-4">
-                <div className="flex gap-4">
-                  <button
-                    onClick={handleBuy}
-                    disabled={!productAvailable}
-                    className="flex-1 px-8 py-4 border-2 border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light disabled:opacity-50"
-                  >
-                    {productAvailable ? 'Купить сейчас' : 'Нет в наличии'}
-                  </button>
+              <div className="space-y-3 pt-4">
+                <button
+                  onClick={handleBuy}
+                  disabled={!productAvailable}
+                  className="w-full px-4 py-3 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors duration-300 rounded-lg font-light disabled:opacity-50"
+                >
+                  {productAvailable ? 'Купить сейчас' : 'Нет в наличии'}
+                </button>
 
-                  {productAvailable && (
-                    inCart ? (
-                      <button
-                        onClick={handleGoToCart}
-                        className="flex-1 px-8 py-4 border-2 border-green-600 bg-green-600 text-white hover:bg-green-700 font-light"
-                      >
-                        Перейти в корзину
-                      </button>
-                    ) : (
-                      <button
-                        onClick={handleAddToCart}
-                        disabled={isAdding}
-                        className="flex-1 px-8 py-4 border-2 border-gray-200 bg-white text-gray-700 hover:bg-gray-50 font-light disabled:opacity-50"
-                      >
-                        {isAdding ? (
-                          <div className="flex items-center justify-center">
-                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-current mr-2"></div>
-                            Добавление...
-                          </div>
-                        ) : (
-                          'Добавить в корзину'
-                        )}
-                      </button>
-                    )
-                  )}
-                </div>
-
-                {/* Гарантии */}
-                <div className="text-xs text-gray-500 space-y-2 pt-4 border-t border-gray-200">
-                  <div className="flex items-center justify-center gap-6">
-                    <div className="flex items-center gap-1">
-                      <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <span className="font-light">Гарантия качества</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h1.586a1 1 0 01.707.293l1.414 1.414a1 1 0 00.707.293H15a2 2 0 012 2v0M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m0 0V6a2 2 0 00-2-2H9.414a1 1 0 00-.707.293L7.293 5.707A1 1 0 006.586 6H5a2 2 0 00-2 2v0" />
-                      </svg>
-                      <span className="font-light">Быстрая доставка</span>
-                    </div>
-                  </div>
-                </div>
+                {productAvailable && (
+                  inCart ? (
+                    <button
+                      onClick={handleGoToCart}
+                      className="w-full px-4 py-3 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors duration-300 rounded-lg font-light"
+                    >
+                      Перейти в корзину
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleAddToCart}
+                      disabled={isAdding}
+                      className="w-full px-4 py-3 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors duration-300 rounded-lg font-light disabled:opacity-50"
+                    >
+                      {isAdding ? (
+                        <div className="flex items-center justify-center">
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-current mr-2"></div>
+                          Добавление...
+                        </div>
+                      ) : (
+                        'Добавить в корзину'
+                      )}
+                    </button>
+                  )
+                )}
               </div>
             </div>
           </div>

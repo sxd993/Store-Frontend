@@ -87,9 +87,9 @@ const CategoryCard = ({ category }) => {
         </div>
         
         {/* Контент */}
-        <div className="p-6 flex flex-col flex-1 text-center">
+        <div className="p-6 flex flex-col flex-1">
           {/* Иконка и название */}
-          <div className="flex items-center justify-center gap-3 mb-3">
+          <div className="flex items-center gap-3 mb-6">
             <div className="flex-shrink-0 group-hover:text-gray-900 transition-colors duration-300">
               {category.icon}
             </div>
@@ -131,7 +131,7 @@ const Categories = () => {
         </div>
 
         {/* Сетка категорий - 4 столбца */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-7xl mx-auto">
           {CATEGORIES_CONFIG.map((category) => (
             <CategoryCard key={category.id} category={category} />
           ))}

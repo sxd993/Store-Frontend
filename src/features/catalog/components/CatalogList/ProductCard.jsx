@@ -31,7 +31,6 @@ export const ProductCard = memo(({ product, onEditClick }) => {
   }, [product.images, product.image]);
 
   const currentImage = productImages[currentImageIndex] || null;
-  const hasMultipleImages = productImages.length > 1;
 
   const handleEditClick = useCallback((e) => {
     e.preventDefault();
@@ -39,17 +38,7 @@ export const ProductCard = memo(({ product, onEditClick }) => {
     onEditClick(product);
   }, [product, onEditClick]);
 
-  const nextImage = useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setCurrentImageIndex(prev => (prev + 1) % productImages.length);
-  }, [productImages.length]);
 
-  const prevImage = useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setCurrentImageIndex(prev => prev === 0 ? productImages.length - 1 : prev - 1);
-  }, [productImages.length]);
 
   return (
     <div className="group h-full">
@@ -92,40 +81,7 @@ export const ProductCard = memo(({ product, onEditClick }) => {
                   }}
                 />
                 
-                {hasMultipleImages && (
-                  <>
-                    <button
-                      onClick={prevImage}
-                      className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-1 shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
-                      type="button"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                      </svg>
-                    </button>
-                    
-                    <button
-                      onClick={nextImage}
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-1 shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
-                      type="button"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </button>
-                    
-                    <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1">
-                      {productImages.map((_, index) => (
-                        <div
-                          key={index}
-                          className={`w-2 h-2 rounded-full transition-colors ${
-                            index === currentImageIndex ? 'bg-blue-500' : 'bg-gray-300'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  </>
-                )}
+
               </>
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-gray-100">
