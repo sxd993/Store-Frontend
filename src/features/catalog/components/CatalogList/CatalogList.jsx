@@ -4,7 +4,7 @@ import { CatalogApi } from '../../api/catalog';
 import { EditItem } from './EditItem';
 import { Modal } from '../../../../shared/ui/Modal';
 import { ProductsGrid } from './ProductsGrid';
-import { Pagination } from './Pagination';
+import { Pagination } from '../../../../shared/components/Pagination';
 import { NotificationAlert } from '../../../../shared/ui/SuccessAlert'
 
 export const CatalogList = memo(({ filters = {} }) => {

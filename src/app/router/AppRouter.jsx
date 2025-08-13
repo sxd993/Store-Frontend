@@ -8,7 +8,9 @@ import { ProductPage } from '../../features/product/pages/ProductPage.jsx';
 import { Cart } from '../../features/cart/pages/Cart.jsx';
 import { ProfilePage } from '../../features/profile/pages/Profile.jsx';
 import { AuthPage } from '../../features/auth/pages/Auth.jsx';
+import { AdminPage } from '../../features/admin_panel/pages/AdminPage';
 import { AccessDenied } from '../../shared/pages/AccessDenied.jsx';
+
 
 export const AppRouter = () => {
   return (
@@ -34,10 +36,7 @@ export const AppRouter = () => {
         path="/admin"
         element={
           <ProtectedRoute permission="admin">
-            <div className="p-8 text-center">
-              <h1 className="text-2xl font-light mb-4">Панель администратора</h1>
-              <p>Здесь будет админская панель</p>
-            </div>
+            <AdminPage />
           </ProtectedRoute>
         }
       />
