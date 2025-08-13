@@ -3,7 +3,7 @@ import { cartApi } from '../api/CartApi';
 import { useAuth } from '../../auth/hooks/useAuth';
 import { useMemo } from 'react';
 
-const CART_QUERY_KEY = ['cart'];
+export const CART_QUERY_KEY = ['cart'];
 
 export const useCart = () => {
   const queryClient = useQueryClient();
