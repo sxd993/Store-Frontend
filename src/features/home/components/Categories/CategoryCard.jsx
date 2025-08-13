@@ -6,14 +6,14 @@ export const CategoryCard = ({ category }) => {
 
     return (
         <Link to={catalogUrl} className="group block h-full">
-            <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
+            <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden h-full flex flex-col">
 
                 {/* Изображение с анимацией увеличения */}
                 <div className="aspect-square overflow-hidden bg-gray-100">
                     <img
                         src={category.image}
                         alt={category.name}
-                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 ease-out"
+                        className="w-full h-full object-cover ease-out"
                         loading="lazy"
                     />
                 </div>
@@ -24,7 +24,7 @@ export const CategoryCard = ({ category }) => {
                         <div className="flex-shrink-0 text-gray-500 group-hover:text-indigo-500 transition-colors duration-300">
                             {category.icon}
                         </div>
-                        <h3 className="font-medium text-lg text-gray-900 group-hover:text-indigo-600 transition-colors duration-300">
+                        <h3 className="font-medium text-lg text-gray-900">
                             {category.name}
                         </h3>
                     </div>

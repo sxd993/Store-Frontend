@@ -3,7 +3,7 @@ import { CategoryCard } from './CategoryCard'
 
 const Categories = () => {
   return (
-    <section className="py-20 bg-gradient-to-b from-gray-50 to-white border-b border-gray-100">
+    <section className="py-20 border-b border-gray-100">
       <div className="container mx-auto px-4">
 
         {/* Заголовок */}

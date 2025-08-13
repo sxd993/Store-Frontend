@@ -20,7 +20,7 @@ import {
   getProductDisplayName,
   getProductSpecs,
   isProductAvailable
-} from '../utils/prdouctUtils';
+} from '../utils/productUtils';
 
 export const ProductPage = () => {
   const { id } = useParams();
@@ -220,19 +220,25 @@ export const ProductPage = () => {
                     <button
                       onClick={handleAddToCart}
                       disabled={isAdding}
-                      className="w-full px-4 py-3 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors duration-300 rounded-lg font-light disabled:opacity-50"
+                      className="w-full flex items-center justify-center gap-2 bg-green-700 hover:bg-green-800 text-white font-medium px-5 py-3 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-[1.02] active:scale-95 disabled:opacity-50"
                     >
                       {isAdding ? (
                         <div className="flex items-center justify-center">
-                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-current mr-2"></div>
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
                           Добавление...
                         </div>
                       ) : (
-                        'Добавить в корзину'
+                        <>
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.2 6h12.8M7 13h10m-6 6a1 1 0 11-2 0 1 1 0 012 0z" />
+                          </svg>
+                          Добавить в корзину
+                        </>
                       )}
                     </button>
                   )
                 )}
+
               </div>
             </div>
           </div>

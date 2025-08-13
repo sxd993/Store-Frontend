@@ -20,7 +20,7 @@ export const CartActions = () => {
     <div className="space-y-3">
       <button
         onClick={handleCheckout}
-        className="w-full px-4 py-3 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors duration-300 rounded-lg font-light disabled:opacity-50"
+        className="w-full px-4 py-3 bg-green-700 text-white hover:bg-green-800 transition-colors duration-300 rounded-lg font-light disabled:opacity-50"
       >
         Оформить заказ
       </button>
@@ -28,7 +28,7 @@ export const CartActions = () => {
       <button
         onClick={handleClear}
         disabled={isClearing}
-        className="w-full px-4 py-3 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors duration-300 rounded-lg font-light disabled:opacity-50"
+        className="w-full px-4 py-3 border-red-700 border-[1px] text-gray-700 hover:bg-red-50 transition-colors duration-300 rounded-lg font-light disabled:opacity-50"
       >
         {isClearing ? 'Очистка...' : 'Очистить корзину'}
       </button>

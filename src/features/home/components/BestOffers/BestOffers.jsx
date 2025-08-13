@@ -6,7 +6,7 @@ export const BestOffers = () => {
 
   if (isLoading) {
     return (
-      <section className="py-10 bg-gradient-to-b from-gray-50 to-white border-b border-gray-100">
+      <section className="py-10 border-b border-gray-100">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 text-center tracking-tight">
             Лучшие предложения
@@ -32,7 +32,7 @@ export const BestOffers = () => {
   }
 
   return (
-    <section className="py-10 bg-gradient-to-b from-gray-50 to-white border-b border-gray-100">
+    <section className="py-15 border-b border-gray-100">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-5 text-center tracking-tight">
           Лучшие предложения
@@ -42,7 +42,7 @@ export const BestOffers = () => {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 max-w-7xl mx-auto">
           {products.map((product, index) => (
-            <div className="transform transition duration-300 hover:scale-105 hover:shadow-xl rounded-2xl bg-white border border-gray-100">
+            <div className="bg-white border border-gray-100">
               <BestOffersProductCard
                 key={index}
                 product={product}

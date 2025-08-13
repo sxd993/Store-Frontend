@@ -61,9 +61,6 @@ const MobileMenu = ({ open, onClose }) => {
               </svg>
             </button>
           </div>
-                     <div className="flex justify-center py-5">
-              <Search className="h-12 px-6 text-lg" />
-            </div>
         </header>
         
         <main className="flex-1 flex flex-col w-full max-w-[90vw] mx-auto overflow-y-auto relative">

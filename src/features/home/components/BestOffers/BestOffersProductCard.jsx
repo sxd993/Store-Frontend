@@ -107,7 +107,7 @@ export const BestOffersProductCard = ({ product, index, configuredId, onUpdateId
   return (
     <div className="group h-full">
       <Link to={`/product/${product.id}`} className="block h-full">
-        <div className="bg-white border border-gray-200 overflow-hidden h-full flex flex-col hover:border-gray-300 transition-colors duration-300 text-center">
+        <div className="bg-white border border-gray-200 overflow-hidden h-full flex flex-col hover:border-gray-400 transition-colors duration-300 text-center">
 
           {/* Админ панель внутри карточки */}
           <AdminGuard>
