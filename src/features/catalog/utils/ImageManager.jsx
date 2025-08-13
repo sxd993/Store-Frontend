@@ -55,17 +55,14 @@ export const ImageManager = ({ images, onChange }) => {
                     onChange={(e) => setNewImageUrl(e.target.value)}
                     onKeyPress={handleKeyPress}
                     placeholder="Вставьте URL изображения"
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1 px-3 py-2 border border-gray-200 bg-white text-gray-900 placeholder-gray-500 font-light focus:outline-none transition-colors duration-300 rounded-2xl"
                 />
                 <button
                     type="button"
                     onClick={handleAddImage}
                     disabled={!newImageUrl.trim()}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center gap-2"
+                    className="px-3 py-2 border border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light transition-colors duration-300 text-sm rounded-2xl"
                 >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                    </svg>
                     Добавить
                 </button>
             </div>
@@ -123,12 +120,6 @@ export const ImageManager = ({ images, onChange }) => {
                             </div>
                         ))}
                     </div>
-                </div>
-            )}
-
-            {images.length === 0 && (
-                <div className="text-center py-8 border-2 border-dashed border-gray-300 rounded-lg">
-                    <p className="text-gray-500">Добавьте изображения для товара</p>
                 </div>
             )}
         </div>

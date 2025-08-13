@@ -92,9 +92,27 @@ export const Catalog = () => {
     <section className="py-10 bg-white border-b border-gray-100">
       <div className="container mx-auto px-4">
         <div className="w-full">
+          {/* Админская кнопка над заголовком */}
+          <AdminGuard>
+            <div className="w-full mb-6">
+              <div className="flex justify-center">
+                <div className="w-full max-w-[150px]">
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="w-full border border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light transition-colors duration-300 text-center rounded-2xl py-2.5"
+                  >
+                    <div className="flex items-center justify-center gap-2">
+                      <span className="text-sm font-light">Добавить товар</span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </AdminGuard>
+
           {/* Заголовок */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl md:text-5xl font-light text-gray-900 mb-4">
+            <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
               {getPageTitle()}
             </h1>
             
@@ -135,45 +153,6 @@ export const Catalog = () => {
               </div>
             )}
           </div>
-
-          {/* Админская кнопка */}
-          <AdminGuard>
-            <div className="w-full mb-6">
-              {/* Десктопная версия */}
-              <div className="hidden md:flex justify-end">
-                <div className="w-full md:max-w-xs">
-                  <button
-                    onClick={() => setIsModalOpen(true)}
-                    className="w-full bg-white border border-gray-200 rounded-lg p-3 hover:bg-gray-50 transition-colors duration-300 text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-2"
-                  >
-                    <div className="flex items-center justify-center gap-2">
-                      <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
-                      </svg>
-                      <span className="text-sm font-light text-gray-900">Добавить товар</span>
-                    </div>
-                  </button>
-                </div>
-              </div>
-
-              {/* Мобильная версия */}
-              <div className="flex md:hidden justify-center">
-                <div className="w-full max-w-sm">
-                  <button
-                    onClick={() => setIsModalOpen(true)}
-                    className="w-full bg-white border border-gray-200 rounded-lg p-3 hover:bg-gray-50 transition-colors duration-300 text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-2"
-                  >
-                    <div className="flex items-center justify-center gap-2">
-                      <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
-                      </svg>
-                      <span className="text-sm font-light text-gray-900">Добавить товар</span>
-                    </div>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </AdminGuard>
 
           {/* Фильтры */}
           <Filter onFiltersApply={handleFiltersApply} />

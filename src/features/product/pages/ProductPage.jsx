@@ -179,8 +179,8 @@ export const ProductPage = () => {
                       Перейти в корзину
                     </button>
                   ) : (
-                    <div className="flex flex-row gap-4">
-                      <div className="flex items-center border border-gray-200 rounded">
+                    <div className="flex flex-row gap-10">
+                      <div className="flex items-center border border-gray-200 rounded-2xl">
                         <button
                           onClick={() => setQuantity(Math.max(1, quantity - 1))}
                           className="px-4 py-2 text-gray-600 hover:bg-gray-50 transition-colors duration-300"
@@ -202,7 +202,7 @@ export const ProductPage = () => {
                       <button
                         onClick={handleAddToCart}
                         disabled={isAdding}
-                        className="flex-1 px-4 py-3 bg-green-700 text-white hover:bg-green-800 transition-colors duration-300 rounded-lg font-light disabled:opacity-50"
+                        className="flex-1 px-4 py-3 bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-300 rounded-2xl font-light disabled:opacity-50"
                       >
                         {isAdding ? 'Добавление...' : 'Добавить в корзину'}
                       </button>

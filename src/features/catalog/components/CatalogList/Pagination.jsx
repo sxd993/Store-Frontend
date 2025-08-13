@@ -33,15 +33,17 @@ export const Pagination = ({
   const isLastPage = currentPage === totalPages;
 
   return (
-    <div className="flex items-center justify-center gap-2 mt-12">
+    <div className="flex items-center justify-center gap-3 mt-12">
       {/* Кнопка "Назад" */}
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={isFirstPage}
-        className="px-4 py-2 border-2 border-gray-200 bg-white text-gray-700 font-light hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-300"
+        className="px-4 py-2 border border-gray-200 bg-white text-gray-700 font-light hover:bg-gray-50 hover:border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 rounded-2xl"
         aria-label="Предыдущая страница"
       >
-        ←
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
       </button>
 
       {/* Первая страница и многоточие */}
@@ -49,12 +51,12 @@ export const Pagination = ({
         <>
           <button
             onClick={() => onPageChange(1)}
-            className="px-4 py-2 border-2 border-gray-200 bg-white text-gray-700 hover:bg-gray-50 font-light transition-colors duration-300"
+            className="px-4 py-2 border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-300 font-light transition-all duration-300 rounded-2xl"
           >
             1
           </button>
           {visiblePages[0] > 2 && (
-            <span className="px-2 py-2 text-gray-500">...</span>
+            <span className="px-3 py-2 text-gray-400 font-light">...</span>
           )}
         </>
       )}
@@ -64,10 +66,10 @@ export const Pagination = ({
         <button
           key={page}
           onClick={() => onPageChange(page)}
-          className={`px-4 py-2 border-2 font-light transition-colors duration-300 ${
+          className={`px-4 py-2 border font-light transition-all duration-300 rounded-2xl ${
             currentPage === page
               ? 'border-gray-900 bg-gray-900 text-white'
-              : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50'
+              : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-300'
           }`}
           aria-label={`Страница ${page}`}
           aria-current={currentPage === page ? 'page' : undefined}
@@ -80,11 +82,11 @@ export const Pagination = ({
       {visiblePages[visiblePages.length - 1] < totalPages && (
         <>
           {visiblePages[visiblePages.length - 1] < totalPages - 1 && (
-            <span className="px-2 py-2 text-gray-500">...</span>
+            <span className="px-3 py-2 text-gray-400 font-light">...</span>
           )}
           <button
             onClick={() => onPageChange(totalPages)}
-            className="px-4 py-2 border-2 border-gray-200 bg-white text-gray-700 hover:bg-gray-50 font-light transition-colors duration-300"
+            className="px-4 py-2 border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-300 font-light transition-all duration-300 rounded-2xl"
           >
             {totalPages}
           </button>
@@ -95,10 +97,12 @@ export const Pagination = ({
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={isLastPage}
-        className="px-4 py-2 border-2 border-gray-200 bg-white text-gray-700 font-light hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-300"
+        className="px-4 py-2 border border-gray-200 bg-white text-gray-700 font-light hover:bg-gray-50 hover:border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 rounded-2xl"
         aria-label="Следующая страница"
       >
-        →
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
       </button>
     </div>
   );

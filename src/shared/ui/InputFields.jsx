@@ -8,8 +8,8 @@ export const InputField = ({
   step,
   rows 
 }) => {
-  const baseClass = "w-full px-4 py-2 border border-gray-200 bg-white text-gray-900 placeholder-gray-500 font-light focus:outline-none focus:border-gray-900 transition-colors duration-300";
-  const errorClass = error ? "border-red-300 focus:border-red-500" : "";
+  const baseClass = "w-full px-4 py-2 border border-gray-200 bg-white text-gray-900 placeholder-gray-500 font-light focus:outline-none transition-colors duration-300 rounded-2xl";
+  const errorClass = error ? "border-red-300" : "";
   
   return (
     <div className="space-y-2">

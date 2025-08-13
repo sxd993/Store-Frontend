@@ -73,7 +73,7 @@ export const Filter = memo(({ onFiltersApply }) => {
     return (
         <div className="w-full mb-6">
             {/* Десктопная версия */}
-            <div className="hidden md:flex justify-end">
+            <div className="hidden md:flex justify-center">
                 <div className="w-full md:max-w-xs">
                     <FilterButton
                         hasActiveFilters={isActive}
