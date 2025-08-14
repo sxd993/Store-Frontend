@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useAuth } from './features/auth/hooks/useAuth';
-import Header from './shared/components/Header/Header';
-import Footer from './shared/components/Footer/Footer';
+import Header from './app/layout/Header/Header';
+import Footer from './app/layout/Footer/Footer';
 import { AppRouter } from './app/router/AppRouter';
 
 function App() {

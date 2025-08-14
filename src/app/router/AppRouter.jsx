@@ -2,13 +2,13 @@ import { Routes, Route } from 'react-router-dom';
 import { ProtectedRoute } from '../../shared/components/ProtectedRoute.jsx';
 
 // Импорты страниц
-import { Home } from '../../features/home/pages/Home.jsx';
-import { Catalog } from '../../features/catalog/pages/Catalog.jsx';
-import { ProductPage } from '../../features/product/pages/ProductPage.jsx';
-import { Cart } from '../../features/cart/pages/Cart.jsx';
-import { ProfilePage } from '../../features/profile/pages/Profile.jsx';
-import { AuthPage } from '../../features/auth/pages/Auth.jsx';
-import { AdminPage } from '../../features/admin_panel/pages/AdminPage';
+import { Home } from '../../pages/Home.jsx';
+import { Catalog } from '../../pages/Catalog.jsx';
+import { ProductPage } from '../../pages/Product';
+import { Cart } from '../../pages/Cart.jsx';
+import { ProfilePage } from '../../pages/Profile.jsx';
+import { AuthPage } from '../../pages/Auth.jsx';
+import { AdminPage } from '../../pages/Admin';
 import { AccessDenied } from '../../shared/pages/AccessDenied.jsx';
 
 
