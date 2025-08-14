@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../features/auth/hooks/useAuth';
+import { usePermissions } from '../../features/auth/hooks/usePermissions';
 
 export const AccessDenied = () => {
-  const { userRole } = useAuth();
+  const { userRole } = usePermissions();
   
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">

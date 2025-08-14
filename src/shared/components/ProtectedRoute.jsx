@@ -1,4 +1,5 @@
 import { useAuth } from '../../features/auth/hooks/useAuth';
+import { usePermissions } from '../../features/auth/hooks/usePermissions';
 import { Navigate, useLocation } from 'react-router-dom';
 
 export const ProtectedRoute = ({
@@ -8,7 +9,8 @@ export const ProtectedRoute = ({
   permission = null,
   redirectTo = null
 }) => {
-  const { isAuthenticated, hasPermission, isLoading, user } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
+  const { hasPermission } = usePermissions();
   const location = useLocation();
 
   if (isLoading) {

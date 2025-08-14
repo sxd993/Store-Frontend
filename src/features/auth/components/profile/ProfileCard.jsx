@@ -1,4 +1,5 @@
 import { useAuth } from '../../hooks/useAuth';
+import { useAuthActions } from '../../hooks/useAuthActions';
 import { Link } from 'react-router-dom';
 
 const UserInfo = ({ user }) => (
@@ -68,7 +69,8 @@ const QuickActions = ({ onLogout, isLogoutLoading }) => (
 );
 
 export const ProfileCard = () => {
-  const { user, logout, isLogoutLoading } = useAuth();
+  const { user } = useAuth();
+  const { logout, isLogoutLoading } = useAuthActions();
 
   const handleLogout = async () => {
     try {

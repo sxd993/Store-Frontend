@@ -1,11 +1,11 @@
 import { memo, useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { formatPrice } from '../../../../../shared/utils/formatPrice';
-import { useAuth } from '../../../../auth/hooks/useAuth';
+import { usePermissions } from '../../../../auth/hooks/usePermissions';
 import { AdminGuard } from '../../../../../shared/components/AdminGuard';
 
 export const ProductCard = memo(({ product, onEditClick }) => {
-  const { isAdmin } = useAuth();
+  const { isAdmin } = usePermissions();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const formattedPrice = useMemo(() =>

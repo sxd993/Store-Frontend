@@ -1,11 +1,11 @@
-import { useAuth } from '../../features/auth/hooks/useAuth.jsx';
+import { usePermissions } from '../../features/auth/hooks/usePermissions';
 
 export const AdminGuard = ({
   children,
   fallback = null,
   permission = 'admin'
 }) => {
-  const { hasPermission } = useAuth();
+  const { hasPermission } = usePermissions();
 
   if (!hasPermission(permission)) {
     return fallback;

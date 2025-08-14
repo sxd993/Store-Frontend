@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import Search from "../../../shared/components/Search";
-import { useAuth } from "../../../features/auth/hooks/useAuth";
+import { usePermissions } from "../../../features/auth/hooks/usePermissions";
 
 const MobileMenu = ({ open, onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  const { isAdmin } = useAuth();
+  const { isAdmin } = usePermissions();
 
   useEffect(() => {
     if (open) {
