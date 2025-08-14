@@ -1,73 +1,17 @@
-import { useForm, Controller } from 'react-hook-form';
-import { useAuth } from '../../hooks/useAuth';
-import { useEffect, useState } from 'react';
-import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
+import { LoadCanvasTemplate, loadCaptchaEnginge } from 'react-simple-captcha';
+import { Controller } from 'react-hook-form'; // Добавляем импорт Controller
 
-export const RegisterForm = ({ onSuccess }) => {
-  const { register: registerUser, isRegisterLoading, registerError } = useAuth();
-  const [formError, setFormError] = useState('');
-
-  const {
-    register,
-    handleSubmit,
-    watch,
-    control,
-    setError,
-    formState: { errors },
-  } = useForm({
-    mode: 'onChange',
-    reValidateMode: 'onChange',
-  });
-
-  const password = watch('password') || '';
-
-  useEffect(() => {
-    loadCaptchaEnginge(4);
-  }, []);
-
-  // Форматирование телефонов под +7 (XXX) XXX-XX-XX и нормализация
-  const formatPhone = (rawValue) => {
-    const digitsOnly = String(rawValue || '').replace(/\D/g, '');
-    let normalized = digitsOnly;
-    if (normalized.startsWith('8')) normalized = '7' + normalized.slice(1);
-    if (normalized.startsWith('7')) normalized = normalized.slice(1);
-    const rest = normalized.slice(0, 10);
-
-    let result = '+7';
-    if (rest.length > 0) result += ' (' + rest.slice(0, 3);
-    if (rest.length >= 3) result += ') ' + rest.slice(3, 6);
-    if (rest.length >= 6) result += '-' + rest.slice(6, 8);
-    if (rest.length >= 8) result += '-' + rest.slice(8, 10);
-    return result;
-  };
-
-  const normalizePhone = (formatted) => {
-    const digits = String(formatted || '').replace(/\D/g, '');
-    if (!digits) return '';
-    if (digits.length < 11) return '';
-    return '+7' + digits.slice(-10);
-  };
-
-  const onSubmit = async (data) => {
-    try {
-      setFormError('');
-      if (!validateCaptcha(data.captcha)) {
-        setError('captcha', { type: 'manual', message: 'Неверная капча' });
-        loadCaptchaEnginge(4);
-        return;
-      }
-      const { confirmPassword: _, ...userData } = data;
-      {
-        const normalized = normalizePhone(userData.phone);
-        userData.phone = normalized;
-      }
-      await registerUser(userData);
-      onSuccess?.();
-    } catch (error) {
-      setFormError(error.message);
-    }
-  };
-
+export const RegisterForm = ({
+  handleSubmit,
+  onSubmit,
+  register,
+  errors,
+  control,
+  password,
+  formatPhone,
+  registerError,
+  isRegisterLoading,
+}) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
@@ -80,7 +24,7 @@ export const RegisterForm = ({ onSuccess }) => {
           autoComplete="email"
           placeholder="Введите email"
           className={`w-full px-4 py-3 border border-gray-200 focus:border-gray-900 outline-none transition-colors duration-200 font-light ${
-            errors.email?.message ? 'border-red-500' : ''
+            errors.email ? 'border-red-500' : ''
           }`}
           {...register('email', {
             required: 'Email обязателен',
@@ -90,7 +34,7 @@ export const RegisterForm = ({ onSuccess }) => {
             },
           })}
         />
-        {errors.email?.message && (
+        {errors.email && (
           <p className="mt-2 text-sm text-red-600 font-light">{errors.email.message}</p>
         )}
       </div>
@@ -105,25 +49,19 @@ export const RegisterForm = ({ onSuccess }) => {
           autoComplete="given-name"
           placeholder="Введите ваше имя"
           className={`w-full px-4 py-3 border border-gray-200 focus:border-gray-900 outline-none transition-colors duration-200 font-light ${
-            errors.name?.message ? 'border-red-500' : ''
+            errors.name ? 'border-red-500' : ''
           }`}
           {...register('name', {
             required: 'Имя обязательно',
-            minLength: {
-              value: 2,
-              message: 'Имя должно содержать минимум 2 символа',
-            },
-            maxLength: {
-              value: 50,
-              message: 'Имя не должно превышать 50 символов',
-            },
+            minLength: { value: 2, message: 'Имя должно содержать минимум 2 символа' },
+            maxLength: { value: 50, message: 'Имя не должно превышать 50 символов' },
             pattern: {
               value: /^[а-яёa-z\s-]+$/i,
               message: 'Имя может содержать только буквы, пробелы и дефисы',
             },
           })}
         />
-        {errors.name?.message && (
+        {errors.name && (
           <p className="mt-2 text-sm text-red-600 font-light">{errors.name.message}</p>
         )}
       </div>
@@ -139,7 +77,8 @@ export const RegisterForm = ({ onSuccess }) => {
             required: 'Номер телефона обязателен',
             validate: (value) => {
               const digits = String(value || '').replace(/\D/g, '');
-              if (!(digits.startsWith('7') || digits.startsWith('8'))) return 'Телефон должен начинаться с +7';
+              if (!(digits.startsWith('7') || digits.startsWith('8')))
+                return 'Телефон должен начинаться с +7';
               return digits.length === 11 || 'Введите номер полностью';
             },
           }}
@@ -157,12 +96,12 @@ export const RegisterForm = ({ onSuccess }) => {
               autoComplete="tel"
               placeholder="+7 (999) 123-45-67"
               className={`w-full px-4 py-3 border border-gray-200 focus:border-gray-900 outline-none transition-colors duration-200 font-light ${
-                errors.phone?.message ? 'border-red-500' : ''
+                errors.phone ? 'border-red-500' : ''
               }`}
             />
           )}
         />
-        {errors.phone?.message && (
+        {errors.phone && (
           <p className="mt-2 text-sm text-red-600 font-light">{errors.phone.message}</p>
         )}
       </div>
@@ -177,21 +116,18 @@ export const RegisterForm = ({ onSuccess }) => {
           autoComplete="new-password"
           placeholder="Минимум 8 символов"
           className={`w-full px-4 py-3 border border-gray-200 focus:border-gray-900 outline-none transition-colors duration-200 font-light ${
-            errors.password?.message ? 'border-red-500' : ''
+            errors.password ? 'border-red-500' : ''
           }`}
           {...register('password', {
             required: 'Пароль обязателен',
-            minLength: {
-              value: 8,
-              message: 'Пароль должен содержать минимум 8 символов',
-            },
+            minLength: { value: 8, message: 'Пароль должен содержать минимум 8 символов' },
             validate: {
               hasUppercase: (v) => /[A-ZА-Я]/.test(v || '') || 'Добавьте заглавную букву',
               hasNumber: (v) => /\d/.test(v || '') || 'Добавьте цифру',
             },
           })}
         />
-        {errors.password?.message && (
+        {errors.password && (
           <p className="mt-2 text-sm text-red-600 font-light">{errors.password.message}</p>
         )}
         <ul className="mt-2 space-y-1 text-xs font-light">
@@ -220,76 +156,75 @@ export const RegisterForm = ({ onSuccess }) => {
           autoComplete="new-password"
           placeholder="Повторите пароль"
           className={`w-full px-4 py-3 border border-gray-200 focus:border-gray-900 outline-none transition-colors duration-200 font-light ${
-            errors.confirmPassword?.message ? 'border-red-500' : ''
+            errors.confirmPassword ? 'border-red-500' : ''
           }`}
           {...register('confirmPassword', {
             required: 'Подтвердите пароль',
-            validate: (value) =>
-              value === password || 'Пароли не совпадают',
+            validate: (value) => value === password || 'Пароли не совпадают',
           })}
         />
-        {errors.confirmPassword?.message && (
+        {errors.confirmPassword && (
           <p className="mt-2 text-sm text-red-600 font-light">{errors.confirmPassword.message}</p>
         )}
       </div>
 
       <div>
-        <label className="block text-sm font-light text-gray-700 mb-2">Подтвердите, что вы не робот</label>
-        
-        {/* Красивый блок с капчей */}
+        <label className="block text-sm font-light text-gray-700 mb-2">
+          Подтвердите, что вы не робот
+        </label>
         <div className="border border-gray-200 p-4 mb-5">
-          <div className="text-center mb-3">
-          </div>
-          
-          {/* Контейнер для капчи по центру */}
           <div className="flex justify-center">
             <div className="p-4">
-              <LoadCanvasTemplate />
+              <LoadCanvasTemplate reloadText="Обновить капчу" reloadColor="#6b7280" />
             </div>
           </div>
-          
-          {/* Кнопка обновления капчи */}
           <div className="text-center mt-3">
             <button
               type="button"
-              onClick={() => {
-                loadCaptchaEnginge(4);
-                setError('captcha', { type: 'manual', message: '' });
-              }}
+              onClick={() => loadCaptchaEnginge(4)}
               className="text-gray-500 hover:text-gray-700 text-sm font-light transition-colors duration-200 flex items-center justify-center mx-auto"
               title="Обновить капчу"
             >
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                />
               </svg>
               Обновить капчу
             </button>
           </div>
         </div>
-        
-        {/* Поле ввода */}
         <input
           type="text"
-          inputMode="text"
           placeholder="Введите символы с изображения"
           className={`w-full px-4 py-3 border border-gray-200 focus:border-gray-900 outline-none transition-colors duration-200 font-light ${
-            errors.captcha?.message ? 'border-red-500 bg-red-50' : ''
+            errors.captcha ? 'border-red-500 bg-red-50' : ''
           }`}
           {...register('captcha', { required: 'Введите капчу' })}
         />
-        {errors.captcha?.message && (
+        {errors.captcha && (
           <p className="mt-2 text-sm text-red-600 font-light flex items-center">
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
             {errors.captcha.message}
           </p>
         )}
       </div>
 
-      {(formError || registerError?.message) && (
+      {(errors.form || registerError) && (
         <div className="p-4 bg-red-50 border border-red-200">
-          <p className="text-red-700 text-sm font-light">{formError || registerError?.message}</p>
+          <p className="text-red-700 text-sm font-light">
+            {errors.form?.message || registerError?.message}
+          </p>
         </div>
       )}
 

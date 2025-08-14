@@ -4,7 +4,7 @@ import { CatalogList } from '../features/catalog/components/Catalog/CatalogList/
 import { Filter } from '../features/catalog/components/Catalog/Filter/Filter';
 import { Modal } from '../shared/ui/Modal';
 import { AddProductForm } from '../features/catalog/components/Catalog/CatalogList/AddProductForm';
-import { AdminGuard } from '../features/auth/components/shared/AdminGuard';
+import { AdminGuard } from '../shared/components/AdminGuard';
 
 // Маппинг категорий для отображения пользователю
 const CATEGORY_DISPLAY_NAMES = {
@@ -14,7 +14,7 @@ const CATEGORY_DISPLAY_NAMES = {
   'часы': 'Часы'
 };
 
-export const Catalog = () => {
+export const CatalogPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentFilters, setCurrentFilters] = useState({});

@@ -1,24 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
-import { getAllOrders } from "../api/adminApi";
-import { useState } from "react";
 import { Pagination } from "../../../shared/components/Pagination";
 import { Link } from "react-router-dom";
 
-export const OrderList = () => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const perPage = 20;
-
-    const { data, error, isLoading } = useQuery({
-        queryKey: ["orders", currentPage],
-        queryFn: () => getAllOrders({ page: currentPage, per_page: perPage }),
-        staleTime: 5 * 60 * 1000
-    });
-
+export const OrderList = ({
+    orders,
+    pagination,
+    isLoading,
+    error,
+    currentPage,
+    onPageChange
+}) => {
     if (isLoading) return <p>Загрузка...</p>;
     if (error) return <p>Ошибка загрузки заказов</p>;
-
-    const orders = data?.data?.items || [];
-    const pagination = data?.data?.pagination || {};
 
     return (
         <div>
@@ -64,9 +56,9 @@ export const OrderList = () => {
 
             {/* Пагинация */}
             <Pagination
-                currentPage={pagination.page || 1}
+                currentPage={currentPage}
                 totalPages={pagination.pages || 1}
-                onPageChange={setCurrentPage}
+                onPageChange={onPageChange}
             />
         </div>
     );

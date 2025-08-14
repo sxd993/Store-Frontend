@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { formatPrice } from '../../../../shared/utils/formatPrice';
-import { AdminGuard } from '../../../auth/components/shared/AdminGuard';
+import { AdminGuard } from '../../../../shared/components/AdminGuard';
 
 export const BestOffersProductCard = ({ product, index, configuredId, onUpdateId, isUpdating }) => {
   const [isEditing, setIsEditing] = useState(false);

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { LoadingState } from '../features/auth/components/profile/ProfileStates.jsx';
 import { UnauthorizedState } from '../features/auth/components/profile/ProfileStates.jsx';
 
-export const Profile = () => {
+export const ProfilePage = () => {
   const { user, isLoading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 

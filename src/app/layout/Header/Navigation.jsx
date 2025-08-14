@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { CartIcon, UserMenu, MessageIcon } from "./HeaderIcons";
-import { AdminGuard } from "../../../features/auth/components/shared/AdminGuard";
+import { AdminGuard } from "../../../shared/components/AdminGuard";
 import { useCart } from '../../../features/commerce/hooks/useCart';
 
 const Navigation = () => {

@@ -6,7 +6,7 @@ import { CartActions } from '../features/commerce/components/CartActions';
 import { EmptyCart } from '../features/commerce/ui/EmptyCart';
 import { useAuth } from '../features/auth/hooks/useAuth';
 
-export const Cart = () => {
+export const CartPage = () => {
   const { items, isEmpty, isLoading, error, calculations } = useCart();
   const { isAuthenticated } = useAuth();
 

@@ -6,7 +6,7 @@ import { Reviews } from '../features/marketing/components/Reviews.jsx';
 import { GetFilterCategory } from '../features/catalog/api/filters.jsx';
 import { CatalogApi } from '../features/catalog/api/catalog.jsx';
 
-export const Home = () => {
+export const HomePage = () => {
   const queryClient = useQueryClient();
 
   // Предзагрузка данных для каталога

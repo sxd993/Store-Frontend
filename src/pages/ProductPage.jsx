@@ -22,7 +22,7 @@ import {
   isProductAvailable
 } from '../features/catalog/utils/productUtils';
 
-export const Product = () => {
+export const ProductPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();

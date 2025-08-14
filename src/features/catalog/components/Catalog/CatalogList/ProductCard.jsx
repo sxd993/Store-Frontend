@@ -2,7 +2,7 @@ import { memo, useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { formatPrice } from '../../../../../shared/utils/formatPrice';
 import { useAuth } from '../../../../auth/hooks/useAuth';
-import { AdminGuard } from '../../../../auth/components/shared/AdminGuard';
+import { AdminGuard } from '../../../../../shared/components/AdminGuard';
 
 export const ProductCard = memo(({ product, onEditClick }) => {
   const { isAdmin } = useAuth();

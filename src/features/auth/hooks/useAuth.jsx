@@ -1,11 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
-import { 
-  GetProfileApi, 
-  LoginApi, 
-  RegisterApi, 
-  LogoutApi 
-} from '../api/auth';
+import {
+  LoginApi,
+  RegisterApi,
+  LogoutApi
+} from '../api/AuthApi';
+import { GetProfileApi } from '../api/ProfileApi'
 
 export const useAuth = (options = {}) => {
   const queryClient = useQueryClient();
@@ -43,10 +43,7 @@ export const useAuth = (options = {}) => {
     enabled: !skipInitialLoad,
   });
 
-  // ИСПРАВЛЕННАЯ система ролей и прав
   const isAuthenticated = !!user;
-  
-  // Современная проверка админа через hasPermission
   const isAdmin = isAuthenticated && hasPermission('admin');
 
   const getUserRole = () => {
@@ -55,13 +52,10 @@ export const useAuth = (options = {}) => {
     return 'user';
   };
 
-  // Централизованная система прав доступа
   function hasPermission(permission) {
     if (!isAuthenticated || !user) return false;
-    
-    // Определяем админа через is_admin поле
     const userIsAdmin = user.is_admin === 1;
-    
+
     switch (permission) {
       case 'admin':
         return userIsAdmin;
@@ -88,7 +82,6 @@ export const useAuth = (options = {}) => {
     return true;
   };
 
-  // Возможность вручную проверить актуальное состояние авторизации
   const checkAuth = useCallback(async () => {
     try {
       await refetch();
@@ -97,26 +90,29 @@ export const useAuth = (options = {}) => {
     }
   }, [refetch]);
 
-  // Мутации
+  // ИСПРАВЛЕННАЯ мутация логина
   const loginMutation = useMutation({
     mutationFn: LoginApi,
-    onSuccess: (authData) => {
-      queryClient.setQueryData(['user', 'current'], authData.user);
-      
+    onSuccess: async (authData) => {
+      // Сохраняем токен ПЕРВЫМ делом
       if (authData.token) {
         localStorage.setItem('token', authData.token);
       }
-      
-      queryClient.invalidateQueries({ 
-        queryKey: ['user'], 
+
+      // Устанавливаем данные пользователя
+      queryClient.setQueryData(['user', 'current'], authData.user);
+
+      // КРИТИЧНО: Ждем синхронизации перед вызовом колбэков
+      await queryClient.invalidateQueries({
+        queryKey: ['user'],
         exact: false,
-        refetchType: 'none'
+        refetchType: 'active' // Изменено с 'none' на 'active'
       });
     },
     onError: (error) => {
       queryClient.removeQueries(['user', 'current']);
       localStorage.removeItem('token');
-      
+
       if (error.response?.status === 401) {
         console.warn('Неверный email или пароль');
       } else if (error.response?.status === 429) {
@@ -125,25 +121,26 @@ export const useAuth = (options = {}) => {
     },
   });
 
+  // ИСПРАВЛЕННАЯ мутация регистрации
   const registerMutation = useMutation({
     mutationFn: RegisterApi,
-    onSuccess: (authData) => {
-      queryClient.setQueryData(['user', 'current'], authData.user);
-      
+    onSuccess: async (authData) => {
       if (authData.token) {
         localStorage.setItem('token', authData.token);
       }
-      
-      queryClient.invalidateQueries({ 
-        queryKey: ['user'], 
+
+      queryClient.setQueryData(['user', 'current'], authData.user);
+
+      await queryClient.invalidateQueries({
+        queryKey: ['user'],
         exact: false,
-        refetchType: 'none'
+        refetchType: 'active'
       });
     },
     onError: (error) => {
       queryClient.removeQueries(['user', 'current']);
       localStorage.removeItem('token');
-      
+
       if (error.response?.status === 429) {
         console.warn('Слишком много попыток регистрации. Подождите 15 минут.');
       }
@@ -163,6 +160,60 @@ export const useAuth = (options = {}) => {
     },
   });
 
+  // НОВЫЙ метод для правильного логина с редиректом
+  const loginWithRedirect = useCallback(async (credentials, onSuccess) => {
+    try {
+      const result = await loginMutation.mutateAsync(credentials);
+      
+      // Ждем обновления состояния React Query
+      await new Promise(resolve => {
+        const unsubscribe = queryClient.getQueryCache().subscribe((event) => {
+          if (event.query.queryKey[0] === 'user' && event.type === 'updated') {
+            unsubscribe();
+            resolve();
+          }
+        });
+        
+        // Фоллбэк через setTimeout
+        setTimeout(resolve, 100);
+      });
+
+      // Теперь безопасно вызываем onSuccess
+      if (onSuccess) {
+        onSuccess(result.user);
+      }
+      
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }, [loginMutation, queryClient]);
+
+  const registerWithRedirect = useCallback(async (userData, onSuccess) => {
+    try {
+      const result = await registerMutation.mutateAsync(userData);
+      
+      // Аналогично для регистрации
+      await new Promise(resolve => {
+        const unsubscribe = queryClient.getQueryCache().subscribe((event) => {
+          if (event.query.queryKey[0] === 'user' && event.type === 'updated') {
+            unsubscribe();
+            resolve();
+          }
+        });
+        setTimeout(resolve, 100);
+      });
+
+      if (onSuccess) {
+        onSuccess(result.user);
+      }
+      
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }, [registerMutation, queryClient]);
+
   return {
     user,
     isLoading: !skipInitialLoad && isLoading,
@@ -175,6 +226,9 @@ export const useAuth = (options = {}) => {
     login: loginMutation.mutateAsync,
     register: registerMutation.mutateAsync,
     logout: logoutMutation.mutateAsync,
+    // Новые методы для правильной работы с редиректом
+    loginWithRedirect,
+    registerWithRedirect,
     isLoginLoading: loginMutation.isPending,
     isRegisterLoading: registerMutation.isPending,
     isLogoutLoading: logoutMutation.isPending,
@@ -183,10 +237,9 @@ export const useAuth = (options = {}) => {
   };
 };
 
-// ИСПРАВЛЕНИЕ: getSmartRedirect теперь правильно использует userData
-const getSmartRedirect = (userData) => {
+export const getSmartRedirect = (userData) => {
   if (userData?.is_admin === 1) {
-    return '/catalog'; // Админы в каталог
+    return '/catalog';
   }
-  return '/profile'; // Пользователи в профиль
+  return '/profile';
 };
