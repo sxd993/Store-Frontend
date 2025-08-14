@@ -1,185 +1,177 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useCallback } from 'react';
-import {
-  LoginApi,
-  RegisterApi,
-  LogoutApi
-} from '../api/AuthApi';
-import { GetProfileApi } from '../api/ProfileApi'
+import { useCallback, useMemo } from 'react';
+import { LoginApi, RegisterApi, LogoutApi } from '../api/AuthApi';
+import { GetProfileApi } from '../api/ProfileApi';
+
+// Константы для query keys
+const QUERY_KEYS = {
+  USER: ['user', 'current']
+};
+
+// Утилиты для работы с токенами
+const tokenUtils = {
+  get: () => localStorage.getItem('token'),
+  set: (token) => localStorage.setItem('token', token),
+  remove: () => localStorage.removeItem('token')
+};
+
+// Утилиты для редиректов
+const redirectUtils = {
+  getSmartRedirect: (userData) => {
+    return userData?.is_admin === 1 ? '/catalog' : '/profile';
+  }
+};
 
 export const useAuth = (options = {}) => {
   const queryClient = useQueryClient();
   const { skipInitialLoad = false } = options;
 
+  // =================== ОСНОВНОЙ QUERY ===================
   const {
     data: user,
     isLoading,
     error,
     refetch,
   } = useQuery({
-    queryKey: ['user', 'current'],
+    queryKey: QUERY_KEYS.USER,
     queryFn: async () => {
+      const token = tokenUtils.get();
+      if (!token) return null;
+
       try {
         return await GetProfileApi();
       } catch (error) {
-        if (error.response?.status === 401 || error.response?.status === 403) {
-          localStorage.removeItem('token');
-          return null;
-        }
-        if (error.response?.status === 429) {
-          console.warn('Аккаунт заблокирован на 15 минут из-за слишком многих попыток');
+        // Автоматическая очистка при ошибках аутентификации
+        if ([401, 403, 429].includes(error.response?.status)) {
+          tokenUtils.remove();
           return null;
         }
         throw error;
       }
     },
     retry: (failureCount, error) => {
-      if (error.response?.status === 401 || error.response?.status === 403 || error.response?.status === 429) {
-        return false;
-      }
+      // Не повторяем запросы при ошибках аутентификации
+      if ([401, 403, 429].includes(error?.response?.status)) return false;
       return failureCount < 2;
     },
-    staleTime: 5 * 60 * 1000,
+    staleTime: 5 * 60 * 1000, // 5 минут
     enabled: !skipInitialLoad,
   });
 
-  const isAuthenticated = !!user;
-  const isAdmin = isAuthenticated && hasPermission('admin');
+  // =================== ВЫЧИСЛЯЕМЫЕ ЗНАЧЕНИЯ ===================
+  const authState = useMemo(() => {
+    const isAuthenticated = !!user;
+    const isAdmin = isAuthenticated && user?.is_admin === 1;
+    
+    const getUserRole = () => {
+      if (!isAuthenticated) return 'guest';
+      return isAdmin ? 'admin' : 'user';
+    };
 
-  const getUserRole = () => {
-    if (!isAuthenticated) return 'guest';
-    if (hasPermission('admin')) return 'admin';
-    return 'user';
-  };
+    const hasPermission = (permission) => {
+      if (!isAuthenticated) return false;
+      
+      switch (permission) {
+        case 'admin':
+        case 'edit_products':
+        case 'view_analytics':
+        case 'manage_users':
+        case 'access_dashboard':
+          return isAdmin;
+        default:
+          return false;
+      }
+    };
 
-  function hasPermission(permission) {
-    if (!isAuthenticated || !user) return false;
-    const userIsAdmin = user.is_admin === 1;
+    const requireAdminAccess = (action = 'выполнить это действие') => {
+      if (!isAuthenticated) {
+        throw new Error('Необходима авторизация');
+      }
+      if (!hasPermission('admin')) {
+        throw new Error(`Недостаточно прав для: ${action}`);
+      }
+      return true;
+    };
 
-    switch (permission) {
-      case 'admin':
-        return userIsAdmin;
-      case 'edit_products':
-        return userIsAdmin;
-      case 'view_analytics':
-        return userIsAdmin;
-      case 'manage_users':
-        return userIsAdmin;
-      case 'access_dashboard':
-        return userIsAdmin;
-      default:
-        return false;
-    }
-  }
+    return {
+      isAuthenticated,
+      isAdmin,
+      userRole: getUserRole(),
+      hasPermission,
+      requireAdminAccess
+    };
+  }, [user]);
 
-  const requireAdminAccess = (action = 'выполнить это действие') => {
-    if (!isAuthenticated) {
-      throw new Error('Необходима авторизация');
-    }
-    if (!hasPermission('admin')) {
-      throw new Error(`Недостаточно прав для: ${action}`);
-    }
-    return true;
-  };
+  // =================== МУТАЦИИ ===================
+  
+  // Утилита для обновления кеша пользователя
+  const updateUserCache = useCallback((userData, token = null) => {
+    if (token) tokenUtils.set(token);
+    queryClient.setQueryData(QUERY_KEYS.USER, userData);
+  }, [queryClient]);
 
-  const checkAuth = useCallback(async () => {
-    try {
-      await refetch();
-    } catch (_) {
-      // игнорируем, обработка ошибок уже есть в queryFn
-    }
-  }, [refetch]);
+  // Утилита для очистки кеша
+  const clearUserCache = useCallback(() => {
+    tokenUtils.remove();
+    queryClient.setQueryData(QUERY_KEYS.USER, null);
+    queryClient.removeQueries(); // Очищаем все queries
+  }, [queryClient]);
 
-  // ИСПРАВЛЕННАЯ мутация логина
+  // LOGIN мутация
   const loginMutation = useMutation({
     mutationFn: LoginApi,
-    onSuccess: async (authData) => {
-      // Сохраняем токен ПЕРВЫМ делом
-      if (authData.token) {
-        localStorage.setItem('token', authData.token);
-      }
-
-      // Устанавливаем данные пользователя
-      queryClient.setQueryData(['user', 'current'], authData.user);
-
-      // КРИТИЧНО: Ждем синхронизации перед вызовом колбэков
-      await queryClient.invalidateQueries({
-        queryKey: ['user'],
-        exact: false,
-        refetchType: 'active' // Изменено с 'none' на 'active'
-      });
-    },
-    onError: (error) => {
-      queryClient.removeQueries(['user', 'current']);
-      localStorage.removeItem('token');
-
-      if (error.response?.status === 401) {
-        console.warn('Неверный email или пароль');
-      } else if (error.response?.status === 429) {
-        console.warn('Аккаунт заблокирован на 15 минут из-за слишком многих попыток входа');
-      }
-    },
-  });
-
-  // ИСПРАВЛЕННАЯ мутация регистрации
-  const registerMutation = useMutation({
-    mutationFn: RegisterApi,
-    onSuccess: async (authData) => {
-      if (authData.token) {
-        localStorage.setItem('token', authData.token);
-      }
-
-      queryClient.setQueryData(['user', 'current'], authData.user);
-
-      await queryClient.invalidateQueries({
-        queryKey: ['user'],
-        exact: false,
-        refetchType: 'active'
-      });
-    },
-    onError: (error) => {
-      queryClient.removeQueries(['user', 'current']);
-      localStorage.removeItem('token');
-
-      if (error.response?.status === 429) {
-        console.warn('Слишком много попыток регистрации. Подождите 15 минут.');
-      }
-    },
-  });
-
-  const logoutMutation = useMutation({
-    mutationFn: LogoutApi,
-    onSuccess: () => {
-      queryClient.setQueryData(['user', 'current'], null);
-      queryClient.removeQueries();
-      localStorage.removeItem('token');
+    onSuccess: ({ user: userData, token }) => {
+      updateUserCache(userData, token);
     },
     onError: () => {
-      queryClient.setQueryData(['user', 'current'], null);
-      localStorage.removeItem('token');
-    },
+      clearUserCache();
+    }
   });
 
-  // НОВЫЙ метод для правильного логина с редиректом
-  const loginWithRedirect = useCallback(async (credentials, onSuccess) => {
+  // REGISTER мутация  
+  const registerMutation = useMutation({
+    mutationFn: RegisterApi,
+    onSuccess: ({ user: userData, token }) => {
+      updateUserCache(userData, token);
+    },
+    onError: () => {
+      clearUserCache();
+    }
+  });
+
+  // LOGOUT мутация
+  const logoutMutation = useMutation({
+    mutationFn: LogoutApi,
+    onSettled: () => {
+      clearUserCache(); // Очищаем независимо от результата
+    }
+  });
+
+  // =================== ПУБЛИЧНЫЕ МЕТОДЫ ===================
+  
+  // Упрощенный checkAuth
+  const checkAuth = useCallback(async () => {
+    if (!tokenUtils.get()) {
+      clearUserCache();
+      return null;
+    }
+    
+    try {
+      const userData = await refetch();
+      return userData.data;
+    } catch (error) {
+      clearUserCache();
+      return null;
+    }
+  }, [refetch, clearUserCache]);
+
+  // Универсальный login с поддержкой callback
+  const login = useCallback(async (credentials, onSuccess) => {
     try {
       const result = await loginMutation.mutateAsync(credentials);
       
-      // Ждем обновления состояния React Query
-      await new Promise(resolve => {
-        const unsubscribe = queryClient.getQueryCache().subscribe((event) => {
-          if (event.query.queryKey[0] === 'user' && event.type === 'updated') {
-            unsubscribe();
-            resolve();
-          }
-        });
-        
-        // Фоллбэк через setTimeout
-        setTimeout(resolve, 100);
-      });
-
-      // Теперь безопасно вызываем onSuccess
-      if (onSuccess) {
+      // Вызываем callback если предоставлен
+      if (onSuccess && typeof onSuccess === 'function') {
         onSuccess(result.user);
       }
       
@@ -187,24 +179,15 @@ export const useAuth = (options = {}) => {
     } catch (error) {
       throw error;
     }
-  }, [loginMutation, queryClient]);
+  }, [loginMutation]);
 
-  const registerWithRedirect = useCallback(async (userData, onSuccess) => {
+  // Универсальный register с поддержкой callback
+  const register = useCallback(async (userData, onSuccess) => {
     try {
       const result = await registerMutation.mutateAsync(userData);
       
-      // Аналогично для регистрации
-      await new Promise(resolve => {
-        const unsubscribe = queryClient.getQueryCache().subscribe((event) => {
-          if (event.query.queryKey[0] === 'user' && event.type === 'updated') {
-            unsubscribe();
-            resolve();
-          }
-        });
-        setTimeout(resolve, 100);
-      });
-
-      if (onSuccess) {
+      // Вызываем callback если предоставлен
+      if (onSuccess && typeof onSuccess === 'function') {
         onSuccess(result.user);
       }
       
@@ -212,34 +195,38 @@ export const useAuth = (options = {}) => {
     } catch (error) {
       throw error;
     }
-  }, [registerMutation, queryClient]);
+  }, [registerMutation]);
 
+  // Упрощенный logout
+  const logout = useCallback(async () => {
+    return logoutMutation.mutateAsync();
+  }, [logoutMutation]);
+
+  // =================== ВОЗВРАЩАЕМЫЙ ОБЪЕКТ ===================
   return {
+    // Данные пользователя
     user,
+    ...authState,
+
+    // Состояния загрузки
     isLoading: !skipInitialLoad && isLoading,
-    isAuthenticated,
-    isAdmin,
-    userRole: getUserRole(),
-    hasPermission,
-    requireAdminAccess,
+    
+    // Методы
     checkAuth,
-    login: loginMutation.mutateAsync,
-    register: registerMutation.mutateAsync,
-    logout: logoutMutation.mutateAsync,
-    // Новые методы для правильной работы с редиректом
-    loginWithRedirect,
-    registerWithRedirect,
+    login,
+    register,
+    logout,
+
+    // Состояния мутаций
     isLoginLoading: loginMutation.isPending,
     isRegisterLoading: registerMutation.isPending,
     isLogoutLoading: logoutMutation.isPending,
+
+    // Ошибки мутаций
     loginError: loginMutation.error,
     registerError: registerMutation.error,
   };
 };
 
-export const getSmartRedirect = (userData) => {
-  if (userData?.is_admin === 1) {
-    return '/catalog';
-  }
-  return '/profile';
-};
+// Экспортируем утилиту для компонентов
+export const getSmartRedirect = redirectUtils.getSmartRedirect;

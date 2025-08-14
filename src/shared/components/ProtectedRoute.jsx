@@ -1,4 +1,5 @@
-import { useAuth } from '../../features/auth/hooks/useAuth';
+// src/shared/components/ProtectedRoute.jsx
+import { useAuth, getSmartRedirect } from '../../features/auth/hooks/useAuth';
 import { Navigate, useLocation } from 'react-router-dom';
 
 export const ProtectedRoute = ({
@@ -30,23 +31,15 @@ export const ProtectedRoute = ({
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // ИСПРАВЛЕНИЕ: Используем hasPermission вместо isAdmin
+  // Используем hasPermission вместо isAdmin
   if (requireAdmin && !hasPermission('admin')) {
     return <Navigate to="/access-denied" replace />;
   }
 
-  // ДОБАВЛЕНИЕ: Проверка конкретных разрешений
+  // Проверка конкретных разрешений
   if (permission && !hasPermission(permission)) {
     return <Navigate to="/access-denied" replace />;
   }
 
   return children;
-};
-
-// ИСПРАВЛЕНИЕ: правильное использование параметра user
-const getSmartRedirect = (user) => {
-  if (user?.is_admin === 1) {
-    return '/catalog'; // Админы в каталог
-  }
-  return '/profile'; // Пользователи в профиль
 };

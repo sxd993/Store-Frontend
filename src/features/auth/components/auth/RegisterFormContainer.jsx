@@ -1,18 +1,20 @@
 import { useForm, Controller } from 'react-hook-form';
 import { useAuth } from '../../hooks/useAuth';
-import { useEffect, useCallback } from 'react';
-import { loadCaptchaEnginge, validateCaptcha } from 'react-simple-captcha';
+import { useCallback, useState } from 'react';
 import { RegisterForm } from '../../ui/auth/RegisterForm';
 import { normalizePhone, formatPhone } from '../../utils/registerValidation';
 
 export const RegisterFormContainer = ({ onSuccess }) => {
   const { register: registerUser, isRegisterLoading, registerError } = useAuth();
+  const [captchaToken, setCaptchaToken] = useState(null);
+  
   const {
     register,
     handleSubmit,
     watch,
     control,
     setError,
+    clearErrors,
     formState: { errors },
   } = useForm({
     mode: 'onChange',
@@ -21,37 +23,67 @@ export const RegisterFormContainer = ({ onSuccess }) => {
 
   const password = watch('password') || '';
 
-  // Загрузка капчи после монтирования
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      loadCaptchaEnginge(4);
-    }, 0);
-    return () => {
-      clearTimeout(timer);
-      loadCaptchaEnginge(0);
-    };
-  }, []);
+  // Обработчики hCaptcha
+  const handleCaptchaVerify = useCallback((token) => {
+    setCaptchaToken(token);
+    clearErrors('captcha');
+  }, [clearErrors]);
+
+  const handleCaptchaExpire = useCallback(() => {
+    setCaptchaToken(null);
+    setError('captcha', { type: 'manual', message: 'Капча истекла, решите заново' });
+  }, [setError]);
+
+  const handleCaptchaError = useCallback((error) => {
+    setCaptchaToken(null);
+    setError('captcha', { type: 'manual', message: 'Ошибка загрузки капчи' });
+    console.error('hCaptcha error:', error);
+  }, [setError]);
 
   const onSubmit = useCallback(
     async (data) => {
       try {
-        if (!validateCaptcha(data.captcha)) {
-          setError('captcha', { type: 'manual', message: 'Неверная капча' });
-          loadCaptchaEnginge(4);
+        // Проверяем капчу
+        if (!captchaToken) {
+          setError('captcha', { type: 'manual', message: 'Решите капчу для продолжения' });
           return;
         }
+
+        // Проверка совпадения паролей
+        if (data.password !== data.confirmPassword) {
+          setError('confirmPassword', { type: 'manual', message: 'Пароли не совпадают' });
+          return;
+        }
+        
         const { confirmPassword, ...userData } = data;
         userData.phone = normalizePhone(userData.phone);
-        await registerUser(userData);
-        onSuccess?.();
+        userData.hcaptcha_token = captchaToken; // Добавляем токен капчи
+        
+        // Используем оптимизированный API с callback
+        await registerUser(userData, (user) => {
+          onSuccess?.(user);
+        });
+        
       } catch (error) {
+        // Сбрасываем капчу при ошибке
+        setCaptchaToken(null);
+        
+        const status = error.response?.status;
+        const messages = {
+          422: 'Некорректные данные регистрации',
+          409: 'Пользователь с таким email уже существует',
+          429: 'Слишком много попыток. Попробуйте позже.',
+          400: 'Неверная капча',
+          default: 'Произошла ошибка при регистрации',
+        };
+        
         setError('form', {
           type: 'manual',
-          message: error.message || 'Произошла ошибка при регистрации',
+          message: messages[status] || error.message || messages.default,
         });
       }
     },
-    [registerUser, setError, onSuccess]
+    [registerUser, setError, onSuccess, captchaToken]
   );
 
   return (
@@ -65,6 +97,10 @@ export const RegisterFormContainer = ({ onSuccess }) => {
       formatPhone={formatPhone}
       registerError={registerError}
       isRegisterLoading={isRegisterLoading}
+      captchaToken={captchaToken}
+      onCaptchaVerify={handleCaptchaVerify}
+      onCaptchaExpire={handleCaptchaExpire}
+      onCaptchaError={handleCaptchaError}
     />
   );
 };

@@ -1,4 +1,4 @@
-import { LoadCanvasTemplate, loadCaptchaEnginge } from 'react-simple-captcha';
+import { HCaptchaWrapper } from '../../../../shared/components/HCaptchaWrapper';
 
 export const LoginForm = ({
   handleSubmit,
@@ -7,6 +7,10 @@ export const LoginForm = ({
   errors,
   loginError,
   isLoginLoading,
+  captchaToken,
+  onCaptchaVerify,
+  onCaptchaExpire,
+  onCaptchaError,
 }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -54,43 +58,19 @@ export const LoginForm = ({
         )}
       </div>
 
+      {/* Переиспользуемый компонент hCAPTCHA */}
       <div>
         <label className="block text-sm font-light text-gray-700 mb-2">
           Подтвердите, что вы не робот
         </label>
-        <div className="border border-gray-200 p-4 mb-5">
-          <div className="flex justify-center">
-            <div className="p-4">
-              <LoadCanvasTemplate reloadText="Обновить капчу" reloadColor="#6b7280" />
-            </div>
-          </div>
-          <div className="text-center mt-3">
-            <button
-              type="button"
-              onClick={() => loadCaptchaEnginge(4)}
-              className="text-gray-500 hover:text-gray-700 text-sm font-light transition-colors duration-200 flex items-center justify-center mx-auto"
-              title="Обновить капчу"
-            >
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                />
-              </svg>
-              Обновить капчу
-            </button>
-          </div>
+        <div className="flex justify-center p-4 border border-gray-200 rounded">
+          <HCaptchaWrapper
+            onVerify={onCaptchaVerify}
+            onExpire={onCaptchaExpire}
+            onError={onCaptchaError}
+            disabled={isLoginLoading}
+          />
         </div>
-        <input
-          type="text"
-          placeholder="Введите символы с изображения"
-          className={`w-full px-4 py-3 border border-gray-200 focus:border-gray-900 outline-none transition-colors duration-200 font-light ${
-            errors.captcha ? 'border-red-500 bg-red-50' : ''
-          }`}
-          {...register('captcha', { required: 'Введите капчу' })}
-        />
         {errors.captcha && (
           <p className="mt-2 text-sm text-red-600 font-light flex items-center">
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -107,7 +87,7 @@ export const LoginForm = ({
       </div>
 
       {(errors.form || loginError) && (
-        <div className="p-4 bg-red-50 border border-red-200">
+        <div className="p-4 bg-red-50 border border-red-200 rounded">
           <p className="text-red-700 text-sm font-light">
             {errors.form?.message || loginError?.message}
           </p>
@@ -116,7 +96,7 @@ export const LoginForm = ({
 
       <button
         type="submit"
-        disabled={isLoginLoading}
+        disabled={isLoginLoading || !captchaToken}
         className="w-full px-6 py-3 border border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
       >
         {isLoginLoading ? (

@@ -1,6 +1,7 @@
+// src/pages/AuthPage.jsx
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../features/auth/hooks/useAuth';
+import { useAuth, getSmartRedirect } from '../features/auth/hooks/useAuth';
 import { LoginFormContainer } from '../features/auth/components/auth/LoginFormContainer';
 import { RegisterFormContainer } from '../features/auth/components/auth/RegisterFormContainer';
 
@@ -8,9 +9,6 @@ export const AuthPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated, isLoading, user } = useAuth();
-  
-  // Флаг для предотвращения двойного редиректа
-  const [hasRedirected, setHasRedirected] = useState(false);
 
   const [mode, setMode] = useState(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -18,40 +16,21 @@ export const AuthPage = () => {
     return modeParam === 'register' || location.pathname === '/register' ? 'register' : 'login';
   });
 
-  const getSmartRedirect = useCallback((userData) => {
-    return userData?.is_admin === 1 ? '/catalog' : '/profile';
-  }, []);
-
-  // ИСПРАВЛЕННЫЙ useEffect для автоматического редиректа
+  // УПРОЩЕННЫЙ useEffect для автоматического редиректа
   useEffect(() => {
-    if (!isLoading && isAuthenticated && user && !hasRedirected) {
-      setHasRedirected(true);
+    if (!isLoading && isAuthenticated && user) {
       const redirectTo = location.state?.from?.pathname || getSmartRedirect(user);
-      
-      // Используем setTimeout для избежания конфликтов рендеринга
-      setTimeout(() => {
-        navigate(redirectTo, { replace: true });
-      }, 0);
-    }
-  }, [isAuthenticated, isLoading, navigate, location, user, getSmartRedirect, hasRedirected]);
-
-  // ИСПРАВЛЕННЫЙ обработчик успешной авторизации
-  const handleSuccess = useCallback((userData) => {
-    if (!userData || hasRedirected) return;
-    
-    setHasRedirected(true);
-    const redirectTo = location.state?.from?.pathname || getSmartRedirect(userData);
-    
-    // Микро-задержка для синхронизации состояния
-    setTimeout(() => {
       navigate(redirectTo, { replace: true });
-    }, 50);
-  }, [navigate, location, getSmartRedirect, hasRedirected]);
+    }
+  }, [isAuthenticated, isLoading, navigate, location, user]);
 
-  // Сброс флага при смене режима
-  useEffect(() => {
-    setHasRedirected(false);
-  }, [mode]);
+  // УПРОЩЕННЫЙ обработчик успешной авторизации
+  const handleSuccess = useCallback((userData) => {
+    if (!userData) return;
+    
+    const redirectTo = location.state?.from?.pathname || getSmartRedirect(userData);
+    navigate(redirectTo, { replace: true });
+  }, [navigate, location]);
 
   const config = useMemo(
     () => ({
@@ -90,7 +69,7 @@ export const AuthPage = () => {
   );
 
   // Показ загрузки только при начальной проверке авторизации
-  if (isLoading && !hasRedirected) {
+  if (isLoading) {
     return (
       <section className="py-16 bg-white border-b border-gray-100">
         <div className="container mx-auto px-4">
