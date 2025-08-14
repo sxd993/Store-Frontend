@@ -1,10 +1,10 @@
 import { useAuth } from '../features/auth/hooks/useAuth.jsx';
 import { ProfileCard } from '../features/auth/components/profile/ProfileCard.jsx';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { LoadingState } from '../features/auth/components/profile/ProfileStates.jsx';
 import { UnauthorizedState } from '../features/auth/components/profile/ProfileStates.jsx';
 
-export const ProfilePage = () => {
+export const Profile = () => {
   const { user, isLoading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 

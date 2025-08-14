@@ -1,5 +1,5 @@
 import { CART_QUERY_KEY } from './useCart';
-import { createOrder } from '../../../shared/api/orderApi';
+import { createOrder } from '../api/OrderApi.jsx'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const useCreateOrder = () => {

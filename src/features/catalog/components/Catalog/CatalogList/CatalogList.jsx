@@ -1,11 +1,11 @@
 import { useEffect, useState, useCallback, memo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { CatalogApi } from '../../api/catalog';
+import { CatalogApi } from '../../../api/catalog';
 import { EditItem } from './EditItem';
-import { Modal } from '../../../../shared/ui/Modal';
+import { Modal } from '../../../../../shared/ui/Modal';
 import { ProductsGrid } from './ProductsGrid';
-import { Pagination } from '../../../../shared/components/Pagination';
-import { NotificationAlert } from '../../../../shared/ui/SuccessAlert'
+import { Pagination } from '../../../../../shared/components/Pagination';
+import { NotificationAlert } from '../../../../../shared/ui/SuccessAlert'
 
 export const CatalogList = memo(({ filters = {} }) => {
   const [currentPage, setCurrentPage] = useState(1);

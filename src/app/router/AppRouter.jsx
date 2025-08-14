@@ -2,14 +2,14 @@ import { Routes, Route } from 'react-router-dom';
 import { ProtectedRoute } from '../../shared/components/ProtectedRoute.jsx';
 
 // Импорты страниц
-import { Home } from '../../pages/Home.jsx';
-import { Catalog } from '../../pages/Catalog.jsx';
-import { ProductPage } from '../../pages/Product';
-import { Cart } from '../../pages/Cart.jsx';
-import { ProfilePage } from '../../pages/Profile.jsx';
-import { AuthPage } from '../../pages/Auth.jsx';
+import { Home } from '../../pages/Home';
+import { Catalog } from '../../pages/Catalog';
+import { Product } from '../../pages/Product';
+import { Cart } from '../../pages/Cart';
+import { Profile } from '../../pages/Profile';
+import { AuthPage } from '../../pages/Auth';
 import { AdminPage } from '../../pages/Admin';
-import { AccessDenied } from '../../shared/pages/AccessDenied.jsx';
+import { AccessDenied } from '../../shared/pages/AccessDenied';
 
 
 export const AppRouter = () => {
@@ -18,7 +18,7 @@ export const AppRouter = () => {
       {/* Публичные маршруты */}
       <Route path="/" element={<Home />} />
       <Route path="/catalog" element={<Catalog />} />
-      <Route path="/product/:id" element={<ProductPage />} />
+      <Route path="/product/:id" element={<Product />} />
       <Route path="/cart" element={<Cart />} />
 
       {/* Защищенные маршруты для авторизованных пользователей */}
@@ -26,7 +26,7 @@ export const AppRouter = () => {
         path="/profile"
         element={
           <ProtectedRoute>
-            <ProfilePage />
+            <Profile />
           </ProtectedRoute>
         }
       />

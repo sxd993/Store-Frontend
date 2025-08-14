@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useEditItem } from "../../hooks/useEditItem";
-import { InputField } from "../../../../shared/ui/InputFields";
-import { ImageManager } from '../../utils/ImageManager';
+import { useEditItem } from "../../../hooks/useEditItem";
+import { InputField } from "../../../../../shared/ui/InputFields";
+import { ImageManager } from '../../../utils/ImageManager';
 
 export const EditItem = ({ item, onClose }) => {
     const [images, setImages] = useState(item?.images?.map(img => img.url || img) || []);

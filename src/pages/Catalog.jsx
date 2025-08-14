@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { CatalogList } from '../features/catalog/components/Catalog/CatalogList/CatalogList';
 import { Filter } from '../features/catalog/components/Catalog/Filter/Filter';
 import { Modal } from '../shared/ui/Modal';
-import { AddProductForm } from '../components/CatalogList/AddProductForm';
+import { AddProductForm } from '../features/catalog/components/Catalog/CatalogList/AddProductForm';
 import { AdminGuard } from '../features/auth/components/shared/AdminGuard';
 
 // Маппинг категорий для отображения пользователю

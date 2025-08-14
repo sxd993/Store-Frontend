@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Modal } from '../../../../shared/ui/Modal.jsx';
+import { Modal } from '../../../../../shared/ui/Modal.jsx';
 import { UniversalFilter } from './UniversalFilter.jsx';
 
 export const FilterModal = memo(({

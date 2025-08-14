@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { useAddProductForm } from '../../hooks/useAddProductForm.jsx';
-import { InputField } from '../../../../shared/ui/InputFields.jsx';
-import { ImageManager } from '../../utils/ImageManager';
+import { useAddProductForm } from '../../../hooks/useAddProductForm.jsx';
+import { InputField } from '../../../../../shared/ui/InputFields.jsx';
+import { ImageManager } from '../../../utils/ImageManager';
 
 export const AddProductForm = ({ onClose }) => {
   const [images, setImages] = useState([]);

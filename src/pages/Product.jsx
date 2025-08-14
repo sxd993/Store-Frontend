@@ -6,9 +6,9 @@ import { useEffect, useState } from 'react';
 import { ProductApi } from '../features/catalog/api/ProductApi';
 
 // Компоненты
-import { ProductImageGallery } from '../features/catalog/components/ProductImageGallery';
-import { ProductLoading } from '../features/catalog/components/ProductLoading';
-import { ProductError } from '../features/catalog/components/ProductError';
+import { ProductImageGallery } from '../features/catalog/components/Product/ProductImageGallery';
+import { ProductLoading } from '../features/catalog/components/Product/ProductLoading';
+import { ProductError } from '../features/catalog/components/Product/ProductError';
 
 // Хуки
 import { useCart } from '../features/commerce/hooks/useCart';
@@ -22,7 +22,7 @@ import {
   isProductAvailable
 } from '../features/catalog/utils/productUtils';
 
-export const ProductPage = () => {
+export const Product = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();

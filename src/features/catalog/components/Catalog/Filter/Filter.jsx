@@ -1,6 +1,6 @@
 import { useState, useCallback, memo } from "react";
-import { useFilterData } from '../../hooks/useFilterData.jsx';
-import { useOptimizedFilters } from '../../hooks/useOptimizedFilters.jsx';
+import { useFilterData } from '../../../hooks/useFilterData.jsx';
+import { useOptimizedFilters } from '../../../hooks/useOptimizedFilters.jsx';
 import { FilterButton } from './FilterButton.jsx';
 import { FilterModal } from './FilterModal.jsx';
 import { MobileFilter } from './MobileFilter.jsx';
@@ -65,7 +65,7 @@ export const Filter = memo(({ onFiltersApply }) => {
     if (isLoading) {
         return <FilterLoadingState />;
     }
-    
+
     if (error) {
         return <FilterErrorState error={error} />;
     }
