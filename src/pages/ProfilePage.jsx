@@ -1,48 +1,46 @@
-import { useAuth } from '../features/auth/hooks/useAuth.jsx';
-import { ProfileCard } from '../features/auth/components/profile/ProfileCard.jsx';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LoadingState } from '../features/auth/components/profile/ProfileStates.jsx';
-import { UnauthorizedState } from '../features/auth/components/profile/ProfileStates.jsx';
+
+import { Sidebar } from '../features/auth/ui/profile/Sidebar.jsx';
+import { UserInfo } from '../features/auth/ui/profile/UserInfo.jsx';
+import { UserOrders } from '../features/auth/ui/profile/UserOrders.jsx';
+import { useAuth } from '../features/auth/hooks/useAuth.jsx';
+import { LoadingState, UnauthorizedState } from '../features/auth/ui/profile/states/ProfileStates.jsx';
 
 export const ProfilePage = () => {
-  const { user, isLoading, isAuthenticated } = useAuth();
+  const { user, isLoading, isAuthenticated } = useAuth()
+  const orders = [{ id: 1, date: '2025-08-10', status: 'Доставлен', total: '5 000 ₽' }, { id: 2, date: '2025-08-05', status: 'В пути', total: '3 200 ₽' },];
   const navigate = useNavigate();
+  const [activeSection, setActiveSection] = useState('info');
 
   const handleLoginClick = () => {
     navigate('/login', { state: { from: { pathname: '/profile' } } });
   };
 
-  if (isLoading) {
-    return <LoadingState />;
-  }
+  const handleLogout = () => {
+    navigate('/');
+  };
 
-  if (!isAuthenticated) {
-    return <UnauthorizedState onLoginClick={handleLoginClick} />;
-  }
+  if (isLoading) return <LoadingState />;
+  if (!isAuthenticated) return <UnauthorizedState onLoginClick={handleLoginClick} />;
 
   return (
-    <section className="py-16 bg-white border-b border-gray-100">
-      <div className="container mx-auto px-4">
-        {/* Заголовок */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-6">
-            <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-          </div>
-          <h1 className="text-3xl md:text-5xl font-light text-gray-900 mb-4">
-            Личный кабинет
-          </h1>
-          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Добро пожаловать, {user.name}
-          </p>
-        </div>
+    <div className="flex justify-center items-start bg-gray-50 py-10">
+      <main className="flex w-full max-w-6xl bg-white shadow-xl rounded-xl overflow-hidden min-h-[90vh]">
+        {/* Сайдбар */}
+        <Sidebar
+          user={user}
+          activeSection={activeSection}
+          onSectionChange={setActiveSection}
+          onLogout={handleLogout}
+        />
 
-        {/* Контент профиля */}
-        <div className="max-w-4xl mx-auto">
-          <ProfileCard />
-        </div>
-      </div>
-    </section>
+        {/* Секции сайдбара */}
+        <section className="flex-1 p-8 space-y-6">
+          {activeSection === 'info' && <UserInfo user={user} />}
+          {activeSection === 'orders' && <UserOrders orders={orders} />}
+        </section>
+      </main>
+    </div>
   );
 };

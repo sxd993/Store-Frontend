@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 export const LoadingState = () => (
   <section className="py-16 bg-white border-b border-gray-100">
