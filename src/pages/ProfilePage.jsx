@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Sidebar } from '../features/auth/ui/profile/Sidebar.jsx';
+import { Sidebar } from '../features/auth/ui/profile/SideBar.jsx';
 import { UserInfo } from '../features/auth/ui/profile/UserInfo.jsx';
 import { UserOrders } from '../features/auth/ui/profile/UserOrders.jsx';
 import { useAuth } from '../features/auth/hooks/useAuth.jsx';

@@ -1,8 +1,8 @@
 import { memo, useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { formatPrice } from '../../../../../shared/utils/formatPrice';
-import { usePermissions } from '../../../../auth/hooks/usePermissions';
-import { AdminGuard } from '../../../../../shared/components/AdminGuard';
+import { formatPrice } from '../../../../shared/utils/formatPrice';
+import { usePermissions } from '../../../auth/hooks/usePermissions';
+import { AdminGuard } from '../../../../shared/components/AdminGuard';
 
 export const ProductCard = memo(({ product, onEditClick }) => {
   const { isAdmin } = usePermissions();
@@ -35,8 +35,16 @@ export const ProductCard = memo(({ product, onEditClick }) => {
   const handleEditClick = useCallback((e) => {
     e.preventDefault();
     e.stopPropagation();
-    onEditClick(product);
+    if (onEditClick) {
+      onEditClick(product);
+    }
   }, [product, onEditClick]);
+
+  const handleImageError = useCallback(() => {
+    if (currentImageIndex < productImages.length - 1) {
+      setCurrentImageIndex(prev => prev + 1);
+    }
+  }, [currentImageIndex, productImages.length]);
 
   return (
     <div className="group h-full">
@@ -66,19 +74,13 @@ export const ProductCard = memo(({ product, onEditClick }) => {
 
           <div className="h-80 flex flex-col items-center justify-center flex-shrink-0 relative pt-5">
             {currentImage ? (
-              <>
-                <img
-                  src={currentImage}
-                  alt={displayName}
-                  className="w-full h-full object-contain p-3"
-                  loading="lazy"
-                  onError={(e) => {
-                    if (currentImageIndex < productImages.length - 1) {
-                      setCurrentImageIndex(prev => prev + 1);
-                    }
-                  }}
-                />
-              </>
+              <img
+                src={currentImage}
+                alt={displayName}
+                className="w-full h-full object-contain p-3"
+                loading="lazy"
+                onError={handleImageError}
+              />
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-gray-100">
                 <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -6,9 +6,9 @@ import { useEffect, useState } from 'react';
 import { ProductApi } from '../features/catalog/api/ProductApi';
 
 // Компоненты
-import { ProductImageGallery } from '../features/catalog/components/Product/ProductImageGallery';
-import { ProductLoading } from '../features/catalog/components/Product/ProductLoading';
-import { ProductError } from '../features/catalog/components/Product/ProductError';
+import { ProductImageGallery } from '../features/catalog/ui/Product/ProductImageGallery';
+import { ProductLoading } from '../features/catalog/ui/Product/states/ProductLoading';
+import { ProductError } from '../features/catalog/ui/Product/states/ProductError';
 
 // Хуки
 import { useCart } from '../features/commerce/hooks/useCart';

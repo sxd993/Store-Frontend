@@ -1,12 +1,17 @@
-import { useState } from 'react';
-import { useAddProductForm } from '../../../hooks/useAddProductForm.jsx';
-import { InputField } from '../../../../../shared/ui/InputFields.jsx';
-import { ImageManager } from '../../../utils/ImageManager';
+import { memo } from 'react';
+import { InputField } from '../../../../shared/ui/InputFields';
+import { ImageManager } from '../../utils/ImageManager';
 
-export const AddProductForm = ({ onClose }) => {
-  const [images, setImages] = useState([]);
-  const { handleSubmit, register, formState, mutation } = useAddProductForm(onClose, images);
-
+export const AddProductForm = memo(({ 
+  onClose, 
+  images,
+  onImagesChange,
+  onSubmit,
+  register,
+  formState,
+  isLoading = false,
+  error = null
+}) => {
   return (
     <div className="p-4">
       {/* Компактный заголовок в стиле фильтров */}
@@ -29,7 +34,7 @@ export const AddProductForm = ({ onClose }) => {
 
       {/* Контент формы */}
       <div className="space-y-3">
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={onSubmit} className="space-y-4">
           {/* Основное */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <InputField
@@ -89,7 +94,7 @@ export const AddProductForm = ({ onClose }) => {
           </div>
 
           {/* Изображения */}
-          <ImageManager images={images} onChange={setImages} />
+          <ImageManager images={images} onChange={onImagesChange} />
 
           {/* Описание */}
           <InputField
@@ -111,22 +116,22 @@ export const AddProductForm = ({ onClose }) => {
             </button>
             <button
               type="submit"
-              disabled={mutation.isLoading}
+              disabled={isLoading}
               className="flex-1 px-3 py-2 border border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light transition-colors duration-300 text-sm disabled:opacity-50 rounded-2xl"
             >
-              {mutation.isLoading ? 'Добавляем...' : 'Добавить'}
+              {isLoading ? 'Добавляем...' : 'Добавить'}
             </button>
           </div>
         </form>
 
-        {mutation.isError && (
+        {error && (
           <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-2xl">
             <p className="text-red-700 text-sm">
-              {mutation.error?.message || 'Ошибка добавления товара'}
+              {error?.message || 'Ошибка добавления товара'}
             </p>
           </div>
         )}
       </div>
     </div>
   );
-};
+});

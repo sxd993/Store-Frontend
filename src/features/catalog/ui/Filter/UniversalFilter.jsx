@@ -1,24 +1,24 @@
 import { memo, useMemo } from 'react';
-import { FILTER_CONFIG } from '../../../../../shared/config/filterConfig';
-import { RadioFilter } from '../../../../../shared/ui/RadioFilter.jsx';
-import { DropDownFilter } from '../../../../../shared/ui/DropDownFilter.jsx';
+import { FILTER_CONFIG } from '../../../../shared/config/filterConfig.js';
+import { RadioFilter } from '../../../../shared/ui/RadioFilter.jsx';
+import { DropDownFilter } from '../../../../shared/ui/DropDownFilter.jsx';
 
 // Мемоизированный компонент одного фильтра
 const FilterField = memo(({ filter, data, value, onChange }) => {
   const options = data?.[filter.dataKey] || [];
-  
+
   const FilterComponent = filter.type === 'radio' ? RadioFilter : DropDownFilter;
-  
+
   // Компактный режим для цвета и памяти
   const isCompact = filter.key === 'color' || filter.key === 'memory';
-  
+
   // Правильные формы для грамматики
   const getDefaultText = (filterKey) => {
     if (filterKey === 'memory') return 'Любая';
     if (filterKey === 'color') return 'Любой';
     return `Все ${filter.title.toLowerCase()}`;
   };
-  
+
   return (
     <FilterComponent
       title={filter.title}
@@ -56,18 +56,18 @@ const FilterActions = memo(({ onApply, onReset, isLoading }) => (
 FilterActions.displayName = 'FilterActions';
 
 // ✅ Компактный универсальный компонент фильтров
-export const UniversalFilter = memo(({ 
-  data, 
-  filterValues, 
-  filterSetters, 
-  onApply, 
-  onReset, 
+export const UniversalFilter = memo(({
+  data,
+  filterValues,
+  filterSetters,
+  onApply,
+  onReset,
   isLoading = false,
   className = ""
 }) => {
-  
+
   // Мемоизируем конфигурацию фильтров
-  const filterFields = useMemo(() => 
+  const filterFields = useMemo(() =>
     FILTER_CONFIG.map(filter => (
       <FilterField
         key={filter.key}
@@ -76,16 +76,16 @@ export const UniversalFilter = memo(({
         value={filterValues[filter.key]}
         onChange={filterSetters[filter.key]}
       />
-    )), 
+    )),
     [data, filterValues, filterSetters]
   );
 
   return (
     <div className={`space-y-3 ${className}`}>
       {filterFields}
-      <FilterActions 
-        onApply={onApply} 
-        onReset={onReset} 
+      <FilterActions
+        onApply={onApply}
+        onReset={onReset}
         isLoading={isLoading}
       />
     </div>

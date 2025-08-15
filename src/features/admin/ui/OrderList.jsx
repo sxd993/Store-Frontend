@@ -1,5 +1,6 @@
 import { Pagination } from "../../../shared/components/Pagination";
 import { Link } from "react-router-dom";
+import { ORDER_STATUSES } from "../utils/StatuConst";
 
 export const OrderList = ({
     orders,
@@ -14,13 +15,7 @@ export const OrderList = ({
     if (isLoading) return <p>Загрузка...</p>;
     if (error) return <p>Ошибка загрузки заказов</p>;
 
-    const ORDER_STATUSES = [
-        'Ожидает оплаты',
-        'Оплачен',
-        'Отправлен',
-        'Доставлен',
-        'Отменён'
-    ];
+
 
     return (
         <div>
