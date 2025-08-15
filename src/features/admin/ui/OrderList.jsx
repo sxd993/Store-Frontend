@@ -7,10 +7,20 @@ export const OrderList = ({
     isLoading,
     error,
     currentPage,
-    onPageChange
+    onPageChange,
+    updateOrder,
+    statusPending
 }) => {
     if (isLoading) return <p>Загрузка...</p>;
     if (error) return <p>Ошибка загрузки заказов</p>;
+
+    const ORDER_STATUSES = [
+        'Ожидает оплаты',
+        'Оплачен',
+        'Отправлен',
+        'Доставлен',
+        'Отменён'
+    ];
 
     return (
         <div>
@@ -34,7 +44,19 @@ export const OrderList = ({
                                 <td className="p-2 border-b">{order.id}</td>
                                 <td className="p-2 border-b">{order.user_id}</td>
                                 <td className="p-2 border-b">{order.total_price.toLocaleString()} ₽</td>
-                                <td className="p-2 border-b">{order.status}</td>
+                                <td className="p-2 border-b">
+                                    <select
+                                        className="border border-gray-300 rounded-md px-2 py-1 text-sm disabled:opacity-60"
+                                        value={order.status}
+                                        onChange={(e) => updateOrder({ orderId: order.id, status: e.target.value })}
+                                        disabled={statusPending}
+                                        aria-label={`Изменить статус заказа #${order.id}`}
+                                    >
+                                        {ORDER_STATUSES.map(s => (
+                                            <option key={s} value={s}>{s}</option>
+                                        ))}
+                                    </select>
+                                </td>
                                 <td className="p-2 border-b">{new Date(order.created_at).toLocaleString()}</td>
                                 <td className="p-2 border-b">{new Date(order.updated_at).toLocaleString()}</td>
                                 <td className="p-2 border-b">
@@ -46,7 +68,7 @@ export const OrderList = ({
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="6" className="text-center p-4">
+                            <td colSpan="7" className="text-center p-4">
                                 Заказы не найдены
                             </td>
                         </tr>
