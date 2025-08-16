@@ -9,11 +9,11 @@ export const CategoryCard = ({ category }) => {
             <div className="rounded-2xl bg-white border border-gray-200 overflow-hidden h-full flex flex-col hover:border-gray-400 transition-colors duration-300 text-center">
                 
                 {/* Изображение в стиле BestOffers */}
-                <div className="relative h-80 flex-shrink-0">
+                <div className="relative h-80 flex-shrink-0 overflow-hidden">
                     <img
                         src={category.image}
                         alt={category.name}
-                        className="absolute inset-0 w-full h-full object-cover m-0"
+                        className="absolute inset-0 w-full h-full object-cover m-0 group-hover:scale-105 transition-transform duration-500"
                         loading="lazy"
                     />
                 </div>

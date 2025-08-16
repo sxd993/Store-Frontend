@@ -53,7 +53,7 @@ export const Reviews = () => {
                   <div className="flex items-center mt-auto">
                     <div className="flex items-center justify-center mr-4">
                       {AvatarIcon && (
-                        <AvatarIcon className="w-8 h-8 text-gray-700" />
+                        <AvatarIcon className="w-8 h-8 text-blue-600" />
                       )}
                     </div>
                     <div>

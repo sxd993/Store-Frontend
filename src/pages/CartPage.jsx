@@ -15,16 +15,16 @@ export const CartPage = () => {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center px-4">
         <div className="text-center max-w-sm">
-          <h2 className="text-2xl font-light text-gray-900 mb-4">
+          <h2 className="text-3xl font-light text-gray-900 mb-4">
             Необходима авторизация
           </h2>
-          <p className="text-gray-600 mb-8 text-sm leading-relaxed">
+          <p className="text-gray-600 mb-8 text-base leading-relaxed">
             Для работы с корзиной необходимо войти в аккаунт
           </p>
           <Link
             to="/login"
             state={{ from: '/cart' }}
-            className="inline-block px-8 py-3 border border-gray-200 text-gray-900 hover:bg-gray-50 transition-colors duration-300 text-sm"
+            className="inline-block px-8 py-3 border border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white transition-colors duration-300 text-sm rounded-2xl"
           >
             Войти в аккаунт
           </Link>

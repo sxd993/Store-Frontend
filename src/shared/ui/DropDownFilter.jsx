@@ -1,85 +1,49 @@
-import { useState, useEffect, useRef } from 'react';
+// src/shared/ui/DropDownFilter.jsx
+import { memo } from 'react';
 
-export const DropDownFilter = ({ 
+export const DropDownFilter = memo(({ 
   title, 
-  options, 
+  options = [], 
   selectedValue, 
-  onChange 
+  onChange, 
+  compact = false,
+  defaultText = 'Выберите',
+  disabled = false
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef(null);
-
-  const handleSelect = (value) => {
-    onChange(value);
-    setIsOpen(false);
-  };
-
-  const getDisplayValue = () => {
-    if (selectedValue === 'all') {
-      return `Все ${title.toLowerCase()}`;
+  const handleChange = (e) => {
+    if (onChange) {
+      onChange(e.target.value);
     }
-    return selectedValue;
   };
-
-  // Закрытие при клике вне области
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
 
   return (
-    <div className="mb-3">
-      <h4 className="text-sm font-light text-gray-900 mb-2">{title}</h4>
-      <div className="relative" ref={dropdownRef}>
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="w-full flex items-center justify-between px-3 py-2 border border-gray-200 bg-white text-left text-sm font-light text-gray-900 hover:bg-gray-50 focus:outline-none transition-colors duration-300 rounded-2xl"
-        >
-          <span>{getDisplayValue()}</span>
-          <svg
-            className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-
-        {isOpen && (
-          <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-2xl shadow-lg max-h-48 overflow-auto">
-            <div className="py-1">
-              <button
-                onClick={() => handleSelect('all')}
-                className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-100 font-light transition-colors duration-300 ${
-                  selectedValue === 'all' ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
-                }`}
-              >
-                Все {title.toLowerCase()}
-              </button>
-              {options?.map(option => (
-                <button
-                  key={option}
-                  onClick={() => handleSelect(option)}
-                  className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-100 font-light transition-colors duration-300 ${
-                    selectedValue === option ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
-                  }`}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
+    <div className={compact ? "space-y-1" : "space-y-2"}>
+      <label className="text-xs text-gray-600 font-light">
+        {title} {options.length > 0 && `(${options.length})`}
+      </label>
+      <select
+        value={selectedValue || 'all'}
+        onChange={handleChange}
+        disabled={disabled || options.length === 0}
+        className={`
+          w-full px-3 py-2 
+          bg-white border border-gray-200 rounded-lg
+          text-sm text-gray-900 font-light
+          focus:outline-none focus:border-gray-400
+          transition-colors duration-200
+          ${disabled || options.length === 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:border-gray-300'}
+        `}
+      >
+        <option value="all">{defaultText}</option>
+        {options.map(option => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+      {options.length === 0 && (
+        <p className="text-xs text-gray-500 mt-1">Нет доступных опций</p>
+      )}
     </div>
   );
-};
+});

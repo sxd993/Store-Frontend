@@ -9,9 +9,9 @@ export const LoginForm = ({
   isLoginLoading,
 }) => {
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
       <div>
-        <label htmlFor="email" className="block text-sm font-light text-gray-700 mb-2">
+        <label htmlFor="email" className="block text-sm font-light text-gray-700 mb-1">
           Email
         </label>
         <input
@@ -19,8 +19,8 @@ export const LoginForm = ({
           type="email"
           autoComplete="email"
           placeholder="Введите email"
-          className={`w-full px-4 py-3 border border-gray-200 focus:border-gray-900 outline-none transition-colors duration-200 font-light ${
-            errors.email ? 'border-red-500' : ''
+          className={`w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none transition-all duration-300 font-light ${
+            errors.email ? 'border-red-300 bg-red-50' : 'hover:border-gray-300'
           }`}
           {...register('email', {
             required: 'Email обязателен',
@@ -31,12 +31,12 @@ export const LoginForm = ({
           })}
         />
         {errors.email && (
-          <p className="mt-2 text-sm text-red-600 font-light">{errors.email.message}</p>
+          <p className="mt-1 text-sm text-red-600 font-light">{errors.email.message}</p>
         )}
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-sm font-light text-gray-700 mb-2">
+        <label htmlFor="password" className="block text-sm font-light text-gray-700 mb-1">
           Пароль
         </label>
         <input
@@ -44,40 +44,35 @@ export const LoginForm = ({
           type="password"
           autoComplete="current-password"
           placeholder="Введите пароль"
-          className={`w-full px-4 py-3 border border-gray-200 focus:border-gray-900 outline-none transition-colors duration-200 font-light ${
-            errors.password ? 'border-red-500' : ''
+          className={`w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none transition-all duration-300 font-light ${
+            errors.password ? 'border-red-300 bg-red-50' : 'hover:border-gray-300'
           }`}
           {...register('password', { required: 'Пароль обязателен' })}
         />
         {errors.password && (
-          <p className="mt-2 text-sm text-red-600 font-light">{errors.password.message}</p>
+          <p className="mt-1 text-sm text-red-600 font-light">{errors.password.message}</p>
         )}
       </div>
 
       <div>
-        <label className="block text-sm font-light text-gray-700 mb-2">
+        <label className="block text-sm font-light text-gray-700 mb-1">
           Подтвердите, что вы не робот
         </label>
-        <div className="border border-gray-200 p-4 mb-5">
+        <div className="border border-gray-200 rounded-xl p-3 mb-3 bg-white">
           <div className="flex justify-center">
-            <div className="p-4">
+            <div className="p-1">
               <LoadCanvasTemplate reloadText="Обновить капчу" reloadColor="#6b7280" />
             </div>
           </div>
-          <div className="text-center mt-3">
+          <div className="text-center mt-2">
             <button
               type="button"
               onClick={() => loadCaptchaEnginge(4)}
-              className="text-gray-500 hover:text-gray-700 text-sm font-light transition-colors duration-200 flex items-center justify-center mx-auto"
+              className="text-gray-500 hover:text-gray-700 text-sm font-light transition-colors duration-300 flex items-center justify-center mx-auto group"
               title="Обновить капчу"
             >
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                />
+              <svg className="w-4 h-4 mr-2 group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
               Обновить капчу
             </button>
@@ -86,28 +81,18 @@ export const LoginForm = ({
         <input
           type="text"
           placeholder="Введите символы с изображения"
-          className={`w-full px-4 py-3 border border-gray-200 focus:border-gray-900 outline-none transition-colors duration-200 font-light ${
-            errors.captcha ? 'border-red-500 bg-red-50' : ''
+          className={`w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none transition-all duration-300 font-light ${
+            errors.captcha ? 'border-red-300 bg-red-50' : 'hover:border-gray-300'
           }`}
           {...register('captcha', { required: 'Введите капчу' })}
         />
         {errors.captcha && (
-          <p className="mt-2 text-sm text-red-600 font-light flex items-center">
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            {errors.captcha.message}
-          </p>
+          <p className="mt-1 text-sm text-red-600 font-light">{errors.captcha.message}</p>
         )}
       </div>
 
       {(errors.form || loginError) && (
-        <div className="p-4 bg-red-50 border border-red-200">
+        <div className="p-3 bg-red-50 border border-red-200 rounded-xl">
           <p className="text-red-700 text-sm font-light">
             {errors.form?.message || loginError?.message}
           </p>
@@ -117,7 +102,7 @@ export const LoginForm = ({
       <button
         type="submit"
         disabled={isLoginLoading}
-        className="w-full px-6 py-3 border border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+        className="w-full px-4 py-2 border border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-300 rounded-xl"
       >
         {isLoginLoading ? (
           <div className="flex items-center justify-center">

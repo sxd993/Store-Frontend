@@ -1,4 +1,5 @@
-import { memo, useMemo } from 'react';
+// src/features/catalog/ui/Filter/UniversalFilter.jsx
+import { memo, useMemo, useEffect } from 'react';
 import { FILTER_CONFIG } from '../../../../shared/config/filterConfig.js';
 import { RadioFilter } from '../../../../shared/ui/RadioFilter.jsx';
 import { DropDownFilter } from '../../../../shared/ui/DropDownFilter.jsx';
@@ -6,6 +7,17 @@ import { DropDownFilter } from '../../../../shared/ui/DropDownFilter.jsx';
 // Мемоизированный компонент одного фильтра
 const FilterField = memo(({ filter, data, value, onChange }) => {
   const options = data?.[filter.dataKey] || [];
+  
+  // Проверяем, доступно ли текущее значение в новых опциях
+  useEffect(() => {
+    if (value && value !== filter.defaultValue && value !== 'all') {
+      const isValueAvailable = options.includes(value);
+      if (!isValueAvailable && options.length > 0) {
+        console.log(`Значение "${value}" больше недоступно для фильтра ${filter.key}, сбрасываем`);
+        onChange(filter.defaultValue);
+      }
+    }
+  }, [options, value, filter.defaultValue, filter.key, onChange]);
 
   const FilterComponent = filter.type === 'radio' ? RadioFilter : DropDownFilter;
 
@@ -16,6 +28,7 @@ const FilterField = memo(({ filter, data, value, onChange }) => {
   const getDefaultText = (filterKey) => {
     if (filterKey === 'memory') return 'Любая';
     if (filterKey === 'color') return 'Любой';
+    if (filterKey === 'model') return 'Все модели';
     return `Все ${filter.title.toLowerCase()}`;
   };
 
@@ -27,6 +40,7 @@ const FilterField = memo(({ filter, data, value, onChange }) => {
       onChange={onChange}
       compact={isCompact}
       defaultText={getDefaultText(filter.key)}
+      disabled={options.length === 0}
     />
   );
 });
@@ -55,7 +69,7 @@ const FilterActions = memo(({ onApply, onReset, isLoading }) => (
 
 FilterActions.displayName = 'FilterActions';
 
-// ✅ Компактный универсальный компонент фильтров
+// Компактный универсальный компонент фильтров
 export const UniversalFilter = memo(({
   data,
   filterValues,
@@ -65,7 +79,6 @@ export const UniversalFilter = memo(({
   isLoading = false,
   className = ""
 }) => {
-
   // Мемоизируем конфигурацию фильтров
   const filterFields = useMemo(() =>
     FILTER_CONFIG.map(filter => (

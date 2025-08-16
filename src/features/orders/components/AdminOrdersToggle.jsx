@@ -21,7 +21,7 @@ export const AdminOrdersToggle = () => {
             onClick={() => setViewMode('personal')}
             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
               viewMode === 'personal'
-                ? 'bg-white text-gray-900 shadow-sm'
+                ? 'bg-white text-gray-900  '
                 : 'text-gray-600 hover:text-gray-900'
             }`}
           >
@@ -31,7 +31,7 @@ export const AdminOrdersToggle = () => {
             onClick={() => setViewMode('all')}
             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
               viewMode === 'all'
-                ? 'bg-white text-gray-900 shadow-sm'
+                ? 'bg-white text-gray-900  '
                 : 'text-gray-600 hover:text-gray-900'
             }`}
           >

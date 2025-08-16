@@ -18,7 +18,7 @@ export const BestOffers = () => {
             {[1, 2, 3, 4].map(item => (
               <div
                 key={item}
-                className="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm animate-pulse"
+                className="bg-white border border-gray-200 p-6 rounded-2xl   animate-pulse"
               >
                 <div className="bg-gray-200 h-48 rounded-xl mb-4"></div>
                 <div className="bg-gray-200 h-4 rounded mb-2"></div>
