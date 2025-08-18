@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useFilters } from '../hooks/Filters/useFilters';
 import { FilterSidebar } from '../ui/Filter/FilterSidebar';
+import { FilterToggleButton } from '../ui/Filter/FilterToggleButton';
 import { FILTER_CONFIG } from '../../../shared/config/filterConfig';
 
 export const FiltersContainer = ({ onFiltersChange }) => {
@@ -15,6 +16,7 @@ export const FiltersContainer = ({ onFiltersChange }) => {
     clearAllFilters
   } = useFilters();
   const [expandedGroups, setExpandedGroups] = useState(['category', 'brand']);
+  const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
 
   useEffect(() => {
     if (onFiltersChange) {
@@ -30,19 +32,37 @@ export const FiltersContainer = ({ onFiltersChange }) => {
       return [...prev, groupKey];
     });
   }, []);
+
+  const handleFiltersToggle = useCallback(() => {
+    setIsFiltersExpanded(prev => !prev);
+  }, []);
+
   return (
-    <FilterSidebar
-      filters={filters}
-      filterOptions={filterOptions}
-      filterConfig={FILTER_CONFIG}
-      expandedGroups={expandedGroups}
-      hasActiveFilters={hasActiveFilters}
-      isLoading={optionsLoading}
-      error={optionsError}
-      onFilterChange={handleFilterChange}
-      onRemoveFilter={removeFilter}
-      onClearAll={clearAllFilters}
-      onGroupToggle={handleGroupToggle}
-    />
+    <div className="w-full">
+      {/* Кнопка переключения фильтров */}
+      <div className="flex justify-end mb-4">
+        <FilterToggleButton
+          isOpen={isFiltersExpanded}
+          onClick={handleFiltersToggle}
+          hasActiveFilters={hasActiveFilters ? filters : null}
+        />
+      </div>
+
+      {/* Фильтры */}
+      <FilterSidebar
+        filters={filters}
+        filterOptions={filterOptions}
+        filterConfig={FILTER_CONFIG}
+        expandedGroups={expandedGroups}
+        hasActiveFilters={hasActiveFilters}
+        isLoading={optionsLoading}
+        error={optionsError}
+        onFilterChange={handleFilterChange}
+        onRemoveFilter={removeFilter}
+        onClearAll={clearAllFilters}
+        onGroupToggle={handleGroupToggle}
+        isExpanded={isFiltersExpanded}
+      />
+    </div>
   );
-}
+};
