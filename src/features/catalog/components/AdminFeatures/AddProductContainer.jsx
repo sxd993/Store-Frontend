@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useAddProductForm } from '../hooks/useAddProductForm';
-import { AddProductForm } from '../ui/AdminFeatures/AddProductForm';
+import { useAddProductForm } from '../../hooks/Catalog/useAddProductForm';
+import { AddProductForm } from '../../ui/AdminFeatures/AddProductForm';
 
 export const AddProductContainer = ({ onClose }) => {
   const [images, setImages] = useState([]);

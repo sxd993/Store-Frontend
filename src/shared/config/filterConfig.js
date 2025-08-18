@@ -1,38 +1,43 @@
 export const FILTER_CONFIG = [
   {
     key: 'category',
-    title: 'Категории',
+    title: 'Категория',
     type: 'radio',
     dataKey: 'category',
-    defaultValue: 'Все категории'
+    defaultValue: 'all',
+    showInMobile: true
   },
   {
     key: 'brand',
-    title: 'Бренды',
+    title: 'Бренд',
     type: 'dropdown',
     dataKey: 'brand',
-    defaultValue: 'Все бренды'
+    defaultValue: 'all',
+    showInMobile: true
   },
   {
     key: 'model',
-    title: 'Модели',
+    title: 'Модель',
     type: 'dropdown',
     dataKey: 'model',
-    defaultValue: 'all'
-  },
-  {
-    key: 'color',
-    title: 'Цвет',
-    type: 'dropdown',
-    dataKey: 'colors',
-    defaultValue: 'Любой'
+    defaultValue: 'all',
+    showInMobile: false
   },
   {
     key: 'memory',
     title: 'Память',
-    type: 'dropdown',
+    type: 'radio',
     dataKey: 'memory',
-    defaultValue: 'Любая'
+    defaultValue: 'Любая',
+    showInMobile: true
+  },
+  {
+    key: 'color',
+    title: 'Цвет',
+    type: 'radio',
+    dataKey: 'colors',
+    defaultValue: 'Любой',
+    showInMobile: false
   }
 ];
 
@@ -43,15 +48,18 @@ export const getDefaultFilterValues = () => {
   }, {});
 };
 
-export const hasActiveFilters = (filterValues) => {
-  return FILTER_CONFIG.some(filter => {
-    const value = filterValues[filter.key];
-    return value && 
-           value !== filter.defaultValue && 
-           value !== 'all' &&
-           value !== 'Все категории' &&
-           value !== 'Все бренды' &&
-           value !== 'Любой' &&
-           value !== 'Любая';
-  });
+export const DISPLAY_NAMES = {
+  category: {
+    'телефон': 'Телефоны',
+    'наушники': 'Наушники',
+    'ноутбук': 'Ноутбуки',
+    'часы': 'Часы'
+  }
+};
+
+export const getDisplayName = (filterKey, value) => {
+  if (DISPLAY_NAMES[filterKey] && DISPLAY_NAMES[filterKey][value]) {
+    return DISPLAY_NAMES[filterKey][value];
+  }
+  return value;
 };

@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { useEditItem } from '../hooks/useEditItem';
-import { EditItem } from '../ui/AdminFeatures/EditItem';
+import { useEditItem } from '../../hooks/Catalog/useEditItem';
+import { EditItem } from '../../ui/AdminFeatures/EditItem';
 
 export const EditProductContainer = ({ item, onClose }) => {
     const [images, setImages] = useState(item?.images?.map(img => img.url || img) || []);
-    const { 
-        handleSubmit, 
-        register, 
-        formState, 
+    const {
+        handleSubmit,
+        register,
+        formState,
         mutation
     } = useEditItem(item, onClose, images);
 

@@ -46,10 +46,6 @@ export const AdminOrderDetailsModal = ({ isOpen, onClose, orderId }) => {
                   <span className="ml-2 font-medium">{orderDetails.user.name}</span>
                 </div>
                 <div>
-                  <span className="text-gray-600">Email:</span>
-                  <span className="ml-2 font-medium">{orderDetails.user.email}</span>
-                </div>
-                <div>
                   <span className="text-gray-600">Телефон:</span>
                   <span className="ml-2 font-medium">{orderDetails.user.phone}</span>
                 </div>

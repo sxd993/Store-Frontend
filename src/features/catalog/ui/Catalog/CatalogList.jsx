@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { ProductsGrid } from './CatalogGrid';
 import { Pagination } from '../../../../shared/components/Pagination';
 import { Modal } from '../../../../shared/ui/Modal';
-import { EditProductContainer } from '../../components/EditProductContainer';
+import { EditProductContainer } from '../../components/AdminFeatures/EditProductContainer';
 import { NotificationAlert } from '../../../../shared/ui/SuccessAlert';
 import { LoadingState, ErrorState, EmptyState } from './states/CatalogListStates';
 

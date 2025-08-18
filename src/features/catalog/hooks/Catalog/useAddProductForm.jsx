@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { AddProductApi } from '../api/catalog';
-import { useNotificationStore } from '../../../shared/store/notificationStore';
+import { AddProductApi } from '../../api/catalog';
+import { useNotificationStore } from '../../../../shared/store/notificationStore';
 
 export const useAddProductForm = (onClose, images) => {
   const client = useQueryClient();

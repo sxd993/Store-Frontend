@@ -1,7 +1,6 @@
 import { memo, useCallback } from 'react';
 import { ProductCard } from './CatalogProductCard';
 
-// ОПТИМИЗИРОВАННАЯ ВЕРСИЯ ProductsGrid
 export const ProductsGrid = memo(({ products = [], onEditClick }) => {
   
   // Мемоизируем обработчик редактирования

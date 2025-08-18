@@ -124,7 +124,7 @@ const AdminOrderCard = ({ order, onShowDetails }) => (
           </div>
         </div>
   
-        {/* Информация о клиенте - БЕЗ EMAIL */}
+        {/* Информация о клиенте  */}
         <div>
           <h4 className="font-medium text-gray-900 mb-2">Клиент</h4>
           <div className="text-sm text-gray-600 space-y-1">
@@ -163,7 +163,7 @@ const AdminOrderCard = ({ order, onShowDetails }) => (
     </div>
   );
   
-  // Модальное окно деталей для админа - БЕЗ EMAIL
+  // Модальное окно деталей для админа
   const AdminOrderDetailsModal = ({ isOpen, onClose, orderId }) => {
     const { data: orderDetails, isLoading, error } = useAdminOrderDetails(orderId);
   
@@ -192,7 +192,7 @@ const AdminOrderCard = ({ order, onShowDetails }) => (
   
           {orderDetails && (
             <>
-              {/* Информация о клиенте - БЕЗ EMAIL */}
+              {/* Информация о клиенте */}
               <div className="bg-blue-50 p-4 rounded-lg">
                 <h3 className="font-medium text-gray-900 mb-3">Информация о клиенте</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
