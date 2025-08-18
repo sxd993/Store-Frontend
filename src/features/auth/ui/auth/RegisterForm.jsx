@@ -1,5 +1,5 @@
 import { LoadCanvasTemplate, loadCaptchaEnginge } from 'react-simple-captcha';
-import { Controller } from 'react-hook-form'; // Добавляем импорт Controller
+import { Controller } from 'react-hook-form';
 
 export const RegisterForm = ({
   handleSubmit,
@@ -15,60 +15,8 @@ export const RegisterForm = ({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
       <div>
-        <label htmlFor="email" className="block text-sm font-light text-gray-700 mb-1">
-          Email
-        </label>
-        <input
-          id="email"
-          type="email"
-          autoComplete="email"
-          placeholder="Введите email"
-          className={`w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none transition-all duration-300 font-light ${
-            errors.email ? 'border-red-300 bg-red-50' : 'hover:border-gray-300'
-          }`}
-          {...register('email', {
-            required: 'Email обязателен',
-            pattern: {
-              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: 'Неверный формат email',
-            },
-          })}
-        />
-        {errors.email && (
-          <p className="mt-1 text-sm text-red-600 font-light">{errors.email.message}</p>
-        )}
-      </div>
-
-      <div>
-        <label htmlFor="name" className="block text-sm font-light text-gray-700 mb-1">
-          Имя
-        </label>
-        <input
-          id="name"
-          type="text"
-          autoComplete="given-name"
-          placeholder="Введите ваше имя"
-          className={`w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none transition-all duration-300 font-light ${
-            errors.name ? 'border-red-300 bg-red-50' : 'hover:border-gray-300'
-          }`}
-          {...register('name', {
-            required: 'Имя обязательно',
-            minLength: { value: 2, message: 'Имя должно содержать минимум 2 символа' },
-            maxLength: { value: 50, message: 'Имя не должно превышать 50 символов' },
-            pattern: {
-              value: /^[а-яёa-z\s-]+$/i,
-              message: 'Имя может содержать только буквы, пробелы и дефисы',
-            },
-          })}
-        />
-        {errors.name && (
-          <p className="mt-1 text-sm text-red-600 font-light">{errors.name.message}</p>
-        )}
-      </div>
-
-      <div>
         <label htmlFor="phone" className="block text-sm font-light text-gray-700 mb-1">
-          Телефон
+          Номер телефона
         </label>
         <Controller
           name="phone"
@@ -90,7 +38,7 @@ export const RegisterForm = ({
               value={value || ''}
               onChange={(e) => onChange(formatPhone(e.target.value))}
               onFocus={(e) => {
-                if (!e.target.value) onChange('+7 ');
+                if (!e.target.value) onChange('+7 9');
               }}
               onBlur={onBlur}
               autoComplete="tel"
@@ -107,6 +55,56 @@ export const RegisterForm = ({
       </div>
 
       <div>
+        <label htmlFor="name" className="block text-sm font-light text-gray-700 mb-1">
+          Имя
+        </label>
+        <input
+          id="name"
+          type="text"
+          autoComplete="given-name"
+          placeholder="Введите ваше имя"
+          onKeyDown={(e) => {
+            // Разрешаем только буквы, backspace, delete, стрелки
+            const allowedKeys = [
+              'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
+              'Tab', 'Enter', 'Home', 'End'
+            ];
+            
+            // Проверяем, является ли нажатая клавиша буквой
+            const isLetter = /^[а-яёa-z]$/i.test(e.key);
+            
+            // Если это не буква и не разрешенная клавиша - блокируем
+            if (!isLetter && !allowedKeys.includes(e.key)) {
+              e.preventDefault();
+            }
+          }}
+          onPaste={(e) => {
+            e.preventDefault();
+            const pastedText = e.clipboardData.getData('text').replace(/[^а-яёa-z]/gi, '');
+            e.target.value = pastedText;
+            // Триггерим событие change для react-hook-form
+            const event = new Event('input', { bubbles: true });
+            e.target.dispatchEvent(event);
+          }}
+          className={`w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none transition-all duration-300 font-light ${
+            errors.name ? 'border-red-300 bg-red-50' : 'hover:border-gray-300'
+          }`}
+          {...register('name', {
+            required: 'Имя обязательно',
+            minLength: { value: 2, message: 'Имя должно содержать минимум 2 символа' },
+            maxLength: { value: 50, message: 'Имя не должно превышать 50 символов' },
+            pattern: {
+              value: /^[а-яёa-z]+$/i,
+              message: 'Имя может содержать только буквы',
+            },
+          })}
+        />
+        {errors.name && (
+          <p className="mt-1 text-sm text-red-600 font-light">{errors.name.message}</p>
+        )}
+      </div>
+
+      <div>
         <label htmlFor="password" className="block text-sm font-light text-gray-700 mb-1">
           Пароль
         </label>
@@ -114,13 +112,13 @@ export const RegisterForm = ({
           id="password"
           type="password"
           autoComplete="new-password"
-          placeholder="Минимум 8 символов"
+          placeholder="Минимум 6 символов"
           className={`w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none transition-all duration-300 font-light ${
             errors.password ? 'border-red-300 bg-red-50' : 'hover:border-gray-300'
           }`}
           {...register('password', {
             required: 'Пароль обязателен',
-            minLength: { value: 8, message: 'Пароль должен содержать минимум 8 символов' },
+            minLength: { value: 6, message: 'Пароль должен содержать минимум 6 символов' },
             validate: {
               hasUppercase: (v) => /[A-ZА-Я]/.test(v || '') || 'Добавьте заглавную букву',
               hasNumber: (v) => /\d/.test(v || '') || 'Добавьте цифру',
@@ -128,18 +126,24 @@ export const RegisterForm = ({
           })}
         />
         <ul className="mt-1 space-y-1 text-xs font-light">
-          <li className={`${password.length >= 8 ? 'text-gray-600' : 'text-red-600'}`}>
-            <span className="inline-block w-1 h-1 rounded-full bg-current mr-2 align-middle"></span>
-            Минимум 8 символов
-          </li>
-          <li className={`${/[A-ZА-Я]/.test(password) ? 'text-gray-600' : 'text-red-600'}`}>
-            <span className="inline-block w-1 h-1 rounded-full bg-current mr-2 align-middle"></span>
-            Хотя бы одна заглавная буква
-          </li>
-          <li className={`${/\d/.test(password) ? 'text-gray-600' : 'text-red-600'}`}>
-            <span className="inline-block w-1 h-1 rounded-full bg-current mr-2 align-middle"></span>
-            Хотя бы одна цифра
-          </li>
+          {password && password.length < 6 && (
+            <li className="text-red-600">
+              <span className="inline-block w-1 h-1 rounded-full bg-current mr-2 align-middle"></span>
+              Минимум 6 символов
+            </li>
+          )}
+          {password && !/[A-ZА-Я]/.test(password) && (
+            <li className="text-red-600">
+              <span className="inline-block w-1 h-1 rounded-full bg-current mr-2 align-middle"></span>
+              Хотя бы одна заглавная буква
+            </li>
+          )}
+          {password && !/\d/.test(password) && (
+            <li className="text-red-600">
+              <span className="inline-block w-1 h-1 rounded-full bg-current mr-2 align-middle"></span>
+              Хотя бы одна цифра
+            </li>
+          )}
         </ul>
         {errors.password && (
           <p className="mt-1 text-sm text-red-600 font-light">{errors.password.message}</p>

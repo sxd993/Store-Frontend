@@ -110,7 +110,7 @@ export const AuthPage = () => {
   const currentConfig = config[mode];
 
   return (
-    <section className="p-14 border-b border-gray-100">
+    <section className="p-8 border-b border-gray-100">
       <div className="container mx-auto px-4">
         <div className="max-w-md mx-auto">
           {/* Переключатель режимов с синей полоской снизу */}

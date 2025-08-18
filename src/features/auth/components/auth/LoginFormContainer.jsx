@@ -1,9 +1,10 @@
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useAuthActions } from '../../hooks/useAuthActions';
 import { useEffect, useCallback, useState } from 'react';
 import { loadCaptchaEnginge, validateCaptcha } from 'react-simple-captcha';
 import { LoginForm } from '../../ui/auth/LoginForm';
 import { useNavigate } from 'react-router-dom';
+import { normalizePhone, formatPhone } from '../../utils/registerValidation';
 
 export const LoginFormContainer = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ export const LoginFormContainer = () => {
     register,
     handleSubmit,
     setError,
+    control,
     formState: { errors },
   } = useForm({
     mode: 'onChange',
@@ -116,9 +118,15 @@ export const LoginFormContainer = () => {
           return;
         }
 
+        // Нормализуем телефон перед отправкой
+        const loginData = {
+          phone: normalizePhone(data.phone),
+          password: data.password
+        };
+
         // Используем loginWithRedirect для корректной синхронизации состояния
         await loginWithRedirect(
-          { email: data.email, password: data.password },
+          loginData,
           (user) => {
             // Редирект после успешной синхронизации состояния
             navigate('/profile');
@@ -128,7 +136,7 @@ export const LoginFormContainer = () => {
       } catch (error) {
         const status = error.response?.status;
         const messages = {
-          401: 'Неверный email или пароль',
+          401: 'Неверный номер телефона или пароль',
           429: 'Аккаунт заблокирован на 15 минут из-за слишком многих попыток входа.',
           default: 'Произошла ошибка при входе',
         };
@@ -147,6 +155,8 @@ export const LoginFormContainer = () => {
       onSubmit={onSubmit}
       register={register}
       errors={errors}
+      control={control}
+      formatPhone={formatPhone}
       loginError={loginError}
       isLoginLoading={isLoginLoading}
       captchaLoaded={captchaLoaded}

@@ -8,7 +8,7 @@ export const Sidebar = ({ user, activeSection, onSectionChange, onLogout }) => {
           </span>
         </div>
         <h2 className="text-lg font-semibold">{user.name}</h2>
-        <p className="text-sm text-gray-500">{user.email}</p>
+        <p className="text-sm text-gray-500">{user.phone}</p>
       </div>
 
       <nav className="space-y-2 w-full">

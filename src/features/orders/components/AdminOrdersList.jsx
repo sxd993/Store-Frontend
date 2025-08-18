@@ -98,6 +98,7 @@ export const AdminOrdersList = () => {
     </>
   );
 };
+
 const AdminOrderCard = ({ order, onShowDetails }) => (
     <div className="bg-white border border-gray-200 rounded-lg p-6 hover:border-gray-300 transition-colors">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -123,7 +124,7 @@ const AdminOrderCard = ({ order, onShowDetails }) => (
           </div>
         </div>
   
-        {/* Информация о клиенте */}
+        {/* Информация о клиенте - БЕЗ EMAIL */}
         <div>
           <h4 className="font-medium text-gray-900 mb-2">Клиент</h4>
           <div className="text-sm text-gray-600 space-y-1">
@@ -132,12 +133,6 @@ const AdminOrderCard = ({ order, onShowDetails }) => (
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
               <span>{order.user?.name || 'Неизвестно'}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-              <span className="truncate">{order.user?.email || 'Не указан'}</span>
             </div>
             <div className="flex items-center gap-2">
               <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -168,7 +163,7 @@ const AdminOrderCard = ({ order, onShowDetails }) => (
     </div>
   );
   
-  // Модальное окно деталей для админа
+  // Модальное окно деталей для админа - БЕЗ EMAIL
   const AdminOrderDetailsModal = ({ isOpen, onClose, orderId }) => {
     const { data: orderDetails, isLoading, error } = useAdminOrderDetails(orderId);
   
@@ -197,7 +192,7 @@ const AdminOrderCard = ({ order, onShowDetails }) => (
   
           {orderDetails && (
             <>
-              {/* Информация о клиенте */}
+              {/* Информация о клиенте - БЕЗ EMAIL */}
               <div className="bg-blue-50 p-4 rounded-lg">
                 <h3 className="font-medium text-gray-900 mb-3">Информация о клиенте</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
@@ -206,21 +201,17 @@ const AdminOrderCard = ({ order, onShowDetails }) => (
                     <span className="ml-2 font-medium">{orderDetails.user?.name || 'Не указано'}</span>
                   </div>
                   <div>
-                    <span className="text-gray-600">Email:</span>
-                    <span className="ml-2 font-medium">{orderDetails.user?.email || 'Не указан'}</span>
-                  </div>
-                  <div>
                     <span className="text-gray-600">Телефон:</span>
                     <span className="ml-2 font-medium">{orderDetails.user?.phone || 'Не указан'}</span>
                   </div>
-                  <div>
+                  <div className="col-span-2">
                     <span className="text-gray-600">ID пользователя:</span>
                     <span className="ml-2 font-medium">{orderDetails.user_id}</span>
                   </div>
                 </div>
               </div>
   
-              {/* Остальные детали заказа аналогично предыдущей версии */}
+              {/* Детали заказа */}
               <div className="bg-gray-50 p-4 rounded-lg">
                 <h3 className="font-medium text-gray-900 mb-3">Детали заказа</h3>
                 <div className="grid grid-cols-2 gap-4 text-sm">

@@ -1,37 +1,55 @@
 import { LoadCanvasTemplate, loadCaptchaEnginge } from 'react-simple-captcha';
+import { Controller } from 'react-hook-form';
 
 export const LoginForm = ({
   handleSubmit,
   onSubmit,
   register,
   errors,
+  control,
+  formatPhone,
   loginError,
   isLoginLoading,
 }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
       <div>
-        <label htmlFor="email" className="block text-sm font-light text-gray-700 mb-1">
-          Email
+        <label htmlFor="phone" className="block text-sm font-light text-gray-700 mb-1">
+          Номер телефона
         </label>
-        <input
-          id="email"
-          type="email"
-          autoComplete="email"
-          placeholder="Введите email"
-          className={`w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none transition-all duration-300 font-light ${
-            errors.email ? 'border-red-300 bg-red-50' : 'hover:border-gray-300'
-          }`}
-          {...register('email', {
-            required: 'Email обязателен',
-            pattern: {
-              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: 'Неверный формат email',
+        <Controller
+          name="phone"
+          control={control}
+          rules={{
+            required: 'Номер телефона обязателен',
+            validate: (value) => {
+              const digits = String(value || '').replace(/\D/g, '');
+              if (!(digits.startsWith('7') || digits.startsWith('8')))
+                return 'Телефон должен начинаться с +7';
+              return digits.length === 11 || 'Введите номер полностью';
             },
-          })}
+          }}
+          render={({ field: { value, onChange, onBlur, ref } }) => (
+            <input
+              id="phone"
+              type="tel"
+              ref={ref}
+              value={value || ''}
+              onChange={(e) => onChange(formatPhone(e.target.value))}
+              onFocus={(e) => {
+                if (!e.target.value) onChange('+7 9');
+              }}
+              onBlur={onBlur}
+              autoComplete="tel"
+              placeholder="+7 (999) 123-45-67"
+              className={`w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none transition-all duration-300 font-light ${
+                errors.phone ? 'border-red-300 bg-red-50' : 'hover:border-gray-300'
+              }`}
+            />
+          )}
         />
-        {errors.email && (
-          <p className="mt-1 text-sm text-red-600 font-light">{errors.email.message}</p>
+        {errors.phone && (
+          <p className="mt-1 text-sm text-red-600 font-light">{errors.phone.message}</p>
         )}
       </div>
 
