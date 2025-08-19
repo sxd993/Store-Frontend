@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-
 * {
   font-family: 'Roboto Flex';  
 }
@@ -32,11 +31,6 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   line-clamp: 3;
-}
-
-/* Скрываем стандартный текст "Reload Captcha" */
-#reload_href {
-  display: none !important;
 }
 
 /* Убираем стрелочки в полях ввода числа */

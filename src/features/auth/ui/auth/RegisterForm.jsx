@@ -1,4 +1,3 @@
-import { LoadCanvasTemplate, loadCaptchaEnginge } from 'react-simple-captcha';
 import { Controller } from 'react-hook-form';
 
 export const RegisterForm = ({
@@ -64,16 +63,13 @@ export const RegisterForm = ({
           autoComplete="given-name"
           placeholder="Введите ваше имя"
           onKeyDown={(e) => {
-            // Разрешаем только буквы, backspace, delete, стрелки
             const allowedKeys = [
               'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
               'Tab', 'Enter', 'Home', 'End'
             ];
             
-            // Проверяем, является ли нажатая клавиша буквой
             const isLetter = /^[а-яёa-z]$/i.test(e.key);
             
-            // Если это не буква и не разрешенная клавиша - блокируем
             if (!isLetter && !allowedKeys.includes(e.key)) {
               e.preventDefault();
             }
@@ -82,7 +78,6 @@ export const RegisterForm = ({
             e.preventDefault();
             const pastedText = e.clipboardData.getData('text').replace(/[^а-яёa-z]/gi, '');
             e.target.value = pastedText;
-            // Триггерим событие change для react-hook-form
             const event = new Event('input', { bubbles: true });
             e.target.dispatchEvent(event);
           }}
@@ -172,41 +167,14 @@ export const RegisterForm = ({
         )}
       </div>
 
-      <div>
-        <label className="block text-sm font-light text-gray-700 mb-1">
-          Подтвердите, что вы не робот
-        </label>
-        <div className="border border-gray-200 rounded-xl p-3 mb-3 bg-white">
-          <div className="flex justify-center">
-            <div className="p-1">
-              <LoadCanvasTemplate reloadText="Обновить капчу" reloadColor="#6b7280" />
-            </div>
-          </div>
-          <div className="text-center mt-2">
-            <button
-              type="button"
-              onClick={() => loadCaptchaEnginge(4)}
-              className="text-gray-500 hover:text-gray-700 text-sm font-light transition-colors duration-300 flex items-center justify-center mx-auto group"
-              title="Обновить капчу"
-            >
-              <svg className="w-4 h-4 mr-2 group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-              Обновить капчу
-            </button>
-          </div>
-        </div>
-        <input
-          type="text"
-          placeholder="Введите символы с изображения"
-          className={`w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none transition-all duration-300 font-light ${
-            errors.captcha ? 'border-red-300 bg-red-50' : 'hover:border-gray-300'
-          }`}
-          {...register('captcha', { required: 'Введите капчу' })}
-        />
-        {errors.captcha && (
-          <p className="mt-1 text-sm text-red-600 font-light">{errors.captcha.message}</p>
-        )}
+      {/* Убираем блок капчи - будет SMS подтверждение */}
+      <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl">
+        <p className="text-blue-700 text-sm font-light flex items-center">
+          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          После регистрации на ваш номер придёт SMS с кодом подтверждения
+        </p>
       </div>
 
       {(errors.form || registerError) && (
