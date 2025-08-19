@@ -1,7 +1,8 @@
-import { PriceDisplay } from '../../../shared/ui/PriceDisplay';
-import { useCart } from '../hooks/useCart';
+import { memo } from 'react';
+import { formatPrice } from '../../../../shared/utils/formatPrice';
+import { useCart } from '../../hooks/useCart';
 
-export const CartSummary = ({ className = '' }) => {
+export const CartSummary = memo(({ className = '' }) => {
   const { calculations } = useCart();
 
   const {
@@ -11,7 +12,7 @@ export const CartSummary = ({ className = '' }) => {
   } = calculations;
 
   return (
-    <div className={`bg-white border border-gray-200 p-6 ${className}`}>
+    <div className={`bg-white border border-gray-200 rounded-2xl p-6 ${className}`}>
       <h2 className="text-xl font-light text-gray-900 mb-6 text-center">
         Итого
       </h2>
@@ -27,7 +28,7 @@ export const CartSummary = ({ className = '' }) => {
         {/* Подытог */}
         <div className="flex justify-between items-center">
           <span className="text-gray-600 font-light text-sm">Сумма товаров</span>
-          <PriceDisplay price={subtotal} size="medium" />
+          <span className="text-lg font-light text-gray-900">{formatPrice(subtotal)}</span>
         </div>
 
         {/* Доставка */}
@@ -40,14 +41,12 @@ export const CartSummary = ({ className = '' }) => {
         <div className="border-t border-gray-200 pt-4">
           <div className="flex justify-between items-center">
             <span className="text-lg font-light text-gray-900">К оплате</span>
-            <PriceDisplay
-              price={total}
-              size="xl"
-              className="font-medium text-gray-900"
-            />
+            <span className="text-2xl font-light text-gray-900">
+              {formatPrice(total)}
+            </span>
           </div>
         </div>
       </div>
     </div>
   );
-};
+});
