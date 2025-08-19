@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { useForm } from 'react-hook-form';
-import { InputField } from '../../../../shared/ui/InputFields';
+import { InputField } from '../../../shared/ui/InputFields';
 
 export const CheckoutForm = memo(({ onSubmit, isLoading = false, error = null }) => {
   const { register, handleSubmit, formState } = useForm({

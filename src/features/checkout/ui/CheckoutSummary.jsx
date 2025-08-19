@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { formatPrice } from '../../../../shared/utils/formatPrice';
+import { formatPrice } from '../../../shared/utils/formatPrice';
 
 export const CheckoutSummary = memo(({ items = [], calculations = {} }) => {
   const { subtotal = 0, total = 0, totalItems = 0 } = calculations;

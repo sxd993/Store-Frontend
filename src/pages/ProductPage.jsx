@@ -11,7 +11,7 @@ import { ProductLoading } from '../features/catalog/ui/Product/states/ProductLoa
 import { ProductError } from '../features/catalog/ui/Product/states/ProductError';
 
 // Хуки
-import { useCart } from '../features/commerce/hooks/useCart';
+import { useCart } from '../features/cart/hooks/useCart';
 import { useAuth } from '../features/auth/hooks/useAuth';
 
 // Утилиты

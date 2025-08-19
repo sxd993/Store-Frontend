@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCart } from '../hooks/useCart';
+import { useCart } from '../../cart/hooks/useCart';
 import { useCreateOrder } from '../hooks/useCreateOrder';
 import { useAuth } from '../../auth/hooks/useAuth';
-import { CheckoutForm } from '../ui/checkout/CheckoutForm';
-import { CheckoutSummary } from '../ui/checkout/CheckoutSummary';
-import { OrderSuccess } from '../ui/checkout/OrderSuccess';
-import { CheckoutLoading, CheckoutError } from '../ui/checkout/states/CheckoutStates';
+import { CheckoutForm } from '../ui/CheckoutForm';
+import { CheckoutSummary } from '../ui/CheckoutSummary';
+import { OrderSuccess } from '../ui/OrderSuccess';
+import { CheckoutLoading, CheckoutError } from '../ui/states/CheckoutStates';
 
 
 export const CheckoutContainer = () => {

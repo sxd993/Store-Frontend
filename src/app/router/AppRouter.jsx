@@ -6,6 +6,7 @@ import { HomePage } from '../../pages/HomePage.jsx';
 import { CatalogPage } from '../../pages/CatalogPage.jsx';
 import { ProductPage } from '../../pages/ProductPage.jsx';
 import { CartPage } from '../../pages/CartPage.jsx';
+import { CheckoutPage } from '../../pages/CheckoutPage.jsx';
 import { ProfilePage } from '../../pages/ProfilePage.jsx';
 import { AuthPage } from '../../pages/AuthPage.jsx';
 import { AdminPage } from '../../pages/AdminPage.jsx';
@@ -27,6 +28,14 @@ export const AppRouter = () => {
         element={
           <ProtectedRoute>
             <ProfilePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path='/checkout'
+        element={
+          <ProtectedRoute>
+            <CheckoutPage />
           </ProtectedRoute>
         }
       />

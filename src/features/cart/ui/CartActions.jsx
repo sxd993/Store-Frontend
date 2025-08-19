@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { useCart } from '../../hooks/useCart';
+import { useCart } from '../hooks/useCart';
 
 export const CartActions = memo(() => {
   const { clearCart, isClearing } = useCart();

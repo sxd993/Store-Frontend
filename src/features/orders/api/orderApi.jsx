@@ -15,7 +15,7 @@ export const orderApi = {
     return response.data.data;
   },
 
-  // НОВЫЙ: Получить все заказы (только для админа)
+  // Получить все заказы (только для админа)
   getAllOrdersForAdmin: async (page = 1, per_page = 20) => {
     const response = await client.get('/admin/orders/all', {
       params: { page, per_page }
@@ -23,7 +23,7 @@ export const orderApi = {
     return response.data.data;
   },
 
-  // НОВЫЙ: Получить детали любого заказа (только для админа)
+  // Получить детали любого заказа (только для админа)
   getAnyOrderDetails: async (orderId) => {
     const response = await client.get(`/admin/orders/${orderId}/details`);
     return response.data.data;

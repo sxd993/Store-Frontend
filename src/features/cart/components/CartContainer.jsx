@@ -1,15 +1,37 @@
+import { useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
 import { useAuth } from '../../auth/hooks/useAuth';
-import { CartList } from '../ui/cart/CartList';
-import { CartSummary } from '../ui/cart/CartSummary';
-import { CartActions } from '../ui/cart/CartActions';
-import { EmptyCart } from '../ui/cart/EmptyCart';
-import { LoadingState, ErrorState } from '../../../shared';
-import { Link } from 'react-router-dom';
+import { CartList } from '../ui/CartList';
+import { CartSummary } from '../ui/CartSummary';
+import { CartActions } from '../ui/CartActions';
+import { EmptyCart } from '../ui/EmptyCart';
+import { ErrorState } from '../../../shared/ui/states/ErrorState';
+import { LoadingState } from '../../../shared/ui/states/LoadingState';
 
 export const CartContainer = () => {
-  const { items, isEmpty, isLoading, error } = useCart();
+  const { 
+    items, 
+    isEmpty, 
+    isLoading, 
+    error,
+    updateQuantity,
+    removeItem,
+    isUpdating,
+    isRemoving
+  } = useCart();
   const { isAuthenticated } = useAuth();
+
+  const handleQuantityChange = useCallback((itemId, newQuantity) => {
+    if (newQuantity < 1) return;
+    updateQuantity({ productId: itemId, quantity: newQuantity });
+  }, [updateQuantity]);
+
+  const handleRemoveItem = useCallback((itemId) => {
+    if (window.confirm('Удалить товар из корзины?')) {
+      removeItem(itemId);
+    }
+  }, [removeItem]);
 
   if (!isAuthenticated) {
     return (
@@ -48,7 +70,13 @@ export const CartContainer = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
-            <CartList items={items} />
+            <CartList 
+              items={items}
+              onQuantityChange={handleQuantityChange}
+              onRemoveItem={handleRemoveItem}
+              isUpdating={isUpdating}
+              isRemoving={isRemoving}
+            />
           </div>
           
           <div className="lg:col-span-1 space-y-6">

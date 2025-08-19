@@ -1,9 +1,13 @@
 import { useState, memo, useCallback, useMemo } from 'react';
-import { useCart } from '../../hooks/useCart';
-import { formatPrice } from '../../../../shared/utils/formatPrice';
+import { formatPrice } from '../../../shared/utils/formatPrice';
 
-export const CartItem = memo(({ item }) => {
-  const { updateQuantity, removeItem, isUpdating, isRemoving } = useCart();
+export const CartItem = memo(({ 
+  item, 
+  onQuantityChange, 
+  onRemoveItem,
+  isUpdating,
+  isRemoving 
+}) => {
   const [localQuantity, setLocalQuantity] = useState(item.quantity);
 
   const formattedPrice = useMemo(() => formatPrice(item.price), [item.price]);
@@ -12,14 +16,17 @@ export const CartItem = memo(({ item }) => {
   const handleQuantityChange = useCallback((newQuantity) => {
     if (newQuantity < 1) return;
     setLocalQuantity(newQuantity);
-    updateQuantity({ productId: item.id, quantity: newQuantity });
-  }, [item.id, updateQuantity]);
+    onQuantityChange(item.id, newQuantity);
+  }, [item.id, onQuantityChange]);
 
   const handleRemove = useCallback(() => {
-    if (window.confirm('Удалить товар из корзины?')) {
-      removeItem(item.id);
-    }
-  }, [item.id, removeItem]);
+    onRemoveItem(item.id);
+  }, [item.id, onRemoveItem]);
+
+  // Синхронизируем локальное состояние с пропсом
+  if (localQuantity !== item.quantity) {
+    setLocalQuantity(item.quantity);
+  }
 
   const isDisabled = isUpdating || isRemoving;
 

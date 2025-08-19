@@ -1,13 +1,5 @@
-import { useState } from 'react';
-import { CartContainer } from '../features/commerce/components/CartContainer';
-import { CheckoutContainer } from '../features/commerce/components/CheckoutContainer';
+import { CartContainer } from '../features/cart/components/CartContainer';
 
 export const CartPage = () => {
-  const [currentStep, setCurrentStep] = useState('cart');
-
-  if (currentStep === 'checkout') {
-    return <CheckoutContainer onBack={() => setCurrentStep('cart')} />;
-  }
-
-  return <CartContainer onCheckout={() => setCurrentStep('checkout')} />;
+  return <CartContainer />;
 };

@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import { formatPrice } from '../../../../shared/utils/formatPrice';
-import { useCart } from '../../hooks/useCart';
+import { formatPrice } from '../../../shared/utils/formatPrice';
+import { useCart } from '../hooks/useCart';
 
 export const CartSummary = memo(({ className = '' }) => {
   const { calculations } = useCart();

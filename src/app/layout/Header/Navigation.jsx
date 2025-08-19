@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { CartIcon, UserMenu, MessageIcon } from "./HeaderIcons";
 import { AdminGuard } from "../../../shared/components/AdminGuard";
-import { useCart } from '../../../features/commerce/hooks/useCart';
+import { useCart } from '../../../features/cart/hooks/useCart';
 
 const Navigation = () => {
   const { calculations } = useCart();
