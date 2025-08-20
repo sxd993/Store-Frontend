@@ -100,17 +100,17 @@ export const CheckoutForm = memo(({ onSubmit, isLoading = false, error = null })
             <InputField
               register={register}
               name="apartment"
-              placeholder="Квартира (необязательно)"
+              placeholder="Квартира"
             />
             <InputField
               register={register}
               name="entrance"
-              placeholder="Подъезд (необязательно)"
+              placeholder="Подъезд"
             />
             <InputField
               register={register}
               name="floor"
-              placeholder="Этаж (необязательно)"
+              placeholder="Этаж"
             />
           </div>
           
@@ -187,7 +187,7 @@ export const CheckoutForm = memo(({ onSubmit, isLoading = false, error = null })
           <button
             type="submit"
             disabled={isLoading || !formState.isValid}
-            className="w-full py-3 bg-gray-900 text-white rounded-2xl hover:bg-gray-800 transition-colors duration-300 font-light disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-3 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors duration-300 font-light disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? (
               <div className="flex items-center justify-center gap-2">

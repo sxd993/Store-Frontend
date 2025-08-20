@@ -174,7 +174,7 @@ export const ProductPage = () => {
                   inCart ? (
                     <button
                       onClick={handleGoToCart}
-                      className="w-full px-4 py-3 border border-green-400 text-gray-700 hover:bg-gray-50 transition-colors duration-300 rounded-lg font-light"
+                      className="w-full px-4 py-3 border border-blue-400 text-blue-600 rounded-2xl hover:bg-blue-50 transition-colors duration-300 font-light"
                     >
                       Перейти в корзину
                     </button>

@@ -63,7 +63,7 @@ export const CartContainer = () => {
     <section className="py-16 bg-white border-b border-gray-100">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-5xl font-light text-gray-900">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 text-center tracking-tight">
             Корзина
           </h1>
         </div>

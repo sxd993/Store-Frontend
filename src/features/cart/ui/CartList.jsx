@@ -14,9 +14,6 @@ export const CartList = memo(({
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-light text-gray-900 mb-6">
-        Корзина ({items.length})
-      </h2>
       <div className="space-y-4">
         {items.map(item => (
           <CartItem 

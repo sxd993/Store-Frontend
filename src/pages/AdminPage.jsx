@@ -2,7 +2,7 @@ import { OrderListContainer } from "../features/admin/components/OrderListContai
 
 export const AdminPage = () => {
     return (
-        <div className="flex justify-center py-15">
+        <div className="min-h-screen bg-white py-8">
             <OrderListContainer />
         </div>
     )

@@ -1,12 +1,12 @@
 export const getStatusColor = (status) => {
     const colors = {
-      'Ожидает оплаты': 'bg-yellow-100 text-yellow-800',
-      'Оплачен': 'bg-blue-100 text-blue-800',
-      'Отправлен': 'bg-purple-100 text-purple-800',
-      'Доставлен': 'bg-green-100 text-green-800',
-      'Отменён': 'bg-red-100 text-red-800'
+      'Ожидает оплаты': 'bg-amber-50 text-amber-600 border border-amber-100',
+      'Оплачен': 'bg-slate-50 text-slate-600 border border-slate-100',
+      'Отправлен': 'bg-blue-50 text-blue-600 border border-blue-100',
+      'Доставлен': 'bg-emerald-50 text-emerald-600 border border-emerald-100',
+      'Отменён': 'bg-rose-50 text-rose-600 border border-rose-100'
     };
-    return colors[status] || 'bg-gray-100 text-gray-800';
+    return colors[status] || 'bg-gray-50 text-gray-600 border border-gray-100';
   };
   
   export const formatOrderDate = (dateString) => {

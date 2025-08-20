@@ -1,12 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { getAllOrders, updateOrderStatus } from '../api/adminApi'
 
-export const useAdminOrders = () => {
+export const useAdminOrders = (page = 1, perPage = 10) => {
     const queryClient = useQueryClient()
 
     const { data: allOrders, error: ordersError, isLoading: ordersloading } = useQuery({
-        queryKey: ['allOrders'],
-        queryFn: getAllOrders,
+        queryKey: ['allOrders', page, perPage],
+        queryFn: () => getAllOrders({ page, per_page: perPage }),
         staleTime: 1000 * 60 * 5
     })
 

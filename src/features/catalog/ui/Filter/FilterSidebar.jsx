@@ -44,9 +44,9 @@ export const FilterSidebar = memo(({
     <div className="w-full bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl mt-2 shadow-xl mb-6 overflow-hidden">
       {/* Активные фильтры */}
       {hasActiveFilters && (
-        <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
+        <div className="p-6 bg-white border-b border-gray-200">
           <div className="flex items-center justify-between mb-4">
-            <h4 className="text-sm font-semibold text-blue-800 flex items-center gap-2">
+            <h4 className="text-sm font-semibold text-gray-800 flex items-center gap-2">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clipRule="evenodd" />
               </svg>
@@ -54,7 +54,7 @@ export const FilterSidebar = memo(({
             </h4>
             <button
               onClick={onClearAll}
-              className="text-sm text-red-600 hover:text-red-700 font-medium px-3 py-1 rounded-lg hover:bg-red-50 transition-all duration-200"
+              className="text-sm border border-red-300 text-red-600 rounded-lg hover:bg-red-50 transition-colors duration-300 font-light px-3 py-1"
             >
               Очистить все
             </button>
@@ -63,7 +63,7 @@ export const FilterSidebar = memo(({
             {Object.entries(filters).map(([key, value]) => (
               <span
                 key={key}
-                className="inline-flex items-center px-4 py-2 rounded-full text-sm bg-white text-blue-700 border border-blue-200 shadow-sm hover:shadow-md transition-all duration-200"
+                className="inline-flex items-center px-4 py-2 rounded-full text-sm bg-white text-blue-700 border border-blue-200   hover:shadow-md transition-all duration-200"
               >
                 <span className="mr-2 w-2 h-2 bg-blue-400 rounded-full"></span>
                 {getDisplayName(key, value)}

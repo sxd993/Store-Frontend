@@ -4,7 +4,7 @@ export const FilterToggleButton = memo(({ isOpen, onClick, hasActiveFilters }) =
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200 shadow-sm"
+      className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200  "
     >
       <span className="text-sm font-medium text-gray-700">
         Фильтры

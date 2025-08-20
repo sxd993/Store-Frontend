@@ -5,11 +5,11 @@ export const CheckoutSummary = memo(({ items = [], calculations = {} }) => {
   const { subtotal = 0, total = 0, totalItems = 0 } = calculations;
 
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl p-6 sticky top-4">
+    <div className="bg-white border border-gray-200 rounded-2xl p-6">
       <h3 className="text-xl font-light text-gray-900 mb-6">Ваш заказ</h3>
       
       {/* Товары в заказе */}
-      <div className="space-y-4 mb-6 max-h-80 overflow-y-auto">
+      <div className="space-y-4 mb-6">
         {items.map(item => (
           <CheckoutItem key={item.id} item={item} />
         ))}
@@ -41,20 +41,7 @@ export const CheckoutSummary = memo(({ items = [], calculations = {} }) => {
         </div>
       </div>
       
-      {/* Информация о доставке */}
-      <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-2xl">
-        <div className="flex items-start gap-3">
-          <svg className="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <div>
-            <h4 className="font-medium text-blue-800 mb-1 text-sm">Доставка</h4>
-            <p className="text-sm text-blue-700 font-light">
-              Бесплатная доставка по городу в течение 1-3 рабочих дней
-            </p>
-          </div>
-        </div>
-      </div>
+
     </div>
   );
 });

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useUserOrderDetails } from '../hooks/useUserOrders';
 import { formatPrice } from '../../../shared/utils/formatPrice';
+import { getStatusColor } from '../../../shared/utils/orderUtils';
 import { Modal } from '../../../shared/ui/Modal';
 
 export const OrderDetailsModal = ({ isOpen, onClose, orderId }) => {
@@ -32,7 +33,7 @@ export const OrderDetailsModal = ({ isOpen, onClose, orderId }) => {
         {orderDetails && (
           <>
             {/* Общая информация */}
-            <div className="bg-gray-50 p-4 rounded-lg">
+            <div className="bg-white border border-gray-200 p-4 rounded-2xl">
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
                   <span className="text-gray-600">Статус:</span>
@@ -52,7 +53,7 @@ export const OrderDetailsModal = ({ isOpen, onClose, orderId }) => {
                 </div>
                 <div>
                   <span className="text-gray-600">Общая стоимость:</span>
-                  <span className="ml-2 font-bold text-lg">{formatPrice(orderDetails.total_price)}</span>
+                  <span className="ml-2 font-medium">{formatPrice(orderDetails.total_price)}</span>
                 </div>
               </div>
             </div>
@@ -74,7 +75,7 @@ export const OrderDetailsModal = ({ isOpen, onClose, orderId }) => {
 };
 
 const OrderItem = ({ item }) => (
-  <div className="flex gap-4 p-3 border border-gray-200 rounded-lg">
+  <div className="flex gap-4 p-3 border border-gray-200 rounded-2xl">
     {/* Изображение */}
     <div className="w-16 h-16 flex-shrink-0">
       {item.image ? (
@@ -120,14 +121,3 @@ const OrderItem = ({ item }) => (
     </div>
   </div>
 );
-
-const getStatusColor = (status) => {
-  const colors = {
-    'Ожидает оплаты': 'bg-yellow-100 text-yellow-800',
-    'Оплачен': 'bg-blue-100 text-blue-800',
-    'Отправлен': 'bg-purple-100 text-purple-800',
-    'Доставлен': 'bg-green-100 text-green-800',
-    'Отменён': 'bg-red-100 text-red-800'
-  };
-  return colors[status] || 'bg-gray-100 text-gray-800';
-};

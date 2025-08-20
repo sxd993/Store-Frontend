@@ -4,17 +4,17 @@ import { OrderList } from "../ui/OrderList";
 
 export const OrderListContainer = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const perPage = 20;
+    const perPage = 10;
 
-    // Все заказы
-    const { allOrders, ordersError, ordersloading, updateOrder, statusPending } = useAdminOrders();
+    // Получаем заказы с пагинацией
+    const { allOrders, ordersError, ordersloading, updateOrder, statusPending } = useAdminOrders(currentPage, perPage);
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
 
     const orders = allOrders?.data?.items || [];
-    const pagination = allOrders?.data?.pagination || [];
+    const pagination = allOrders?.data?.pagination || {};
 
     if (ordersloading) {
         return <p>Загрузка</p>

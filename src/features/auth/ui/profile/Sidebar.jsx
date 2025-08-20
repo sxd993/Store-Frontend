@@ -1,40 +1,26 @@
-export const Sidebar = ({ user, activeSection, onSectionChange, onLogout }) => {
+export const Sidebar = ({ user, onLogout }) => {
   return (
-    <aside className="w-64 bg-gray-100 p-6 flex flex-col items-center space-y-6">
-      <div className="flex flex-col items-center mb-4">
-        <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-3">
-          <span className="text-white font-bold text-xl">
+    <header className="w-full bg-white border-b border-gray-200 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      {/* Информация о пользователе */}
+      <div className="flex flex-col md:flex-row items-center gap-4">
+        <div className="w-16 h-16 md:w-20 md:h-20 bg-gray-100 border-2 border-gray-200 rounded-2xl flex items-center justify-center">
+          <span className="text-gray-600 font-light text-lg md:text-2xl">
             {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
           </span>
         </div>
-        <h2 className="text-lg font-semibold">{user.name}</h2>
-        <p className="text-sm text-gray-500">{user.phone}</p>
+        <div className="flex flex-col items-center md:items-start text-center md:text-left">
+          <h2 className="text-base md:text-lg font-light text-gray-900">{user.name}</h2>
+          <p className="text-sm text-gray-500 font-light">{user.phone}</p>
+        </div>
       </div>
 
-      <nav className="space-y-2 w-full">
-        <button
-          onClick={() => onSectionChange('info')}
-          className={`w-full text-left px-4 py-2 rounded-lg transition-colors duration-200 ${
-            activeSection === 'info' ? 'bg-blue-200 text-blue-800 font-semibold' : 'text-gray-700 hover:bg-gray-200'
-          }`}
-        >
-          Общая информация
-        </button>
-        <button
-          onClick={() => onSectionChange('orders')}
-          className={`w-full text-left px-4 py-2 rounded-lg transition-colors duration-200 ${
-            activeSection === 'orders' ? 'bg-blue-200 text-blue-800 font-semibold' : 'text-gray-700 hover:bg-gray-200'
-          }`}
-        >
-          Мои заказы
-        </button>
-        <button
-          onClick={onLogout}
-          className="w-full text-left px-4 py-2 rounded-lg text-red-600 hover:bg-red-200 transition-colors duration-200"
-        >
-          Выйти
-        </button>
-      </nav>
-    </aside>
+      {/* Кнопка выхода */}
+      <button
+        onClick={onLogout}
+        className="w-full md:w-auto px-6 py-3 rounded-2xl text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-300 font-light border border-red-200"
+      >
+        Выйти
+      </button>
+    </header>
   );
 };

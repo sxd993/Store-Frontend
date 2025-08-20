@@ -15,7 +15,7 @@ export const CartActions = memo(() => {
     <div className="space-y-3">
       <Link
         to="/checkout"
-        className="w-full block px-6 py-3 bg-gray-900 text-white text-center rounded-2xl hover:bg-gray-800 transition-colors duration-300 font-light"
+        className="w-full block px-4 py-3 bg-blue-600 text-white text-center rounded-2xl hover:bg-blue-700 transition-colors duration-300 font-light"
       >
         Перейти к оформлению
       </Link>
