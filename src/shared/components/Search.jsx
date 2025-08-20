@@ -166,18 +166,7 @@ const Search = ({ className = "" }) => {
                 </Link>
               ))}
 
-              {/* Показать все результаты */}
-              <div className="border-t border-gray-200 p-3">
-                <button
-                  onClick={() => {
-                    console.log('Показать все результаты для:', query);
-                    setIsOpen(false);
-                  }}
-                  className="w-full text-center text-sm text-blue-600 hover:text-blue-800 font-medium"
-                >
-                  Показать все результаты ({results.length})
-                </button>
-              </div>
+
             </div>
           ) : (
             <div className="p-4 text-center text-gray-500">
