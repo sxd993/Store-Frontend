@@ -44,7 +44,7 @@ export const Modal = ({ isOpen, onClose, children, title }) => {
       
       {/* Modal Content */}
       <div 
-        className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto transform transition-all duration-200 scale-100"
+        className="relative bg-white rounded-2xl  w-full max-w-md max-h-[90vh] overflow-y-auto transform transition-all duration-200 scale-100"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}

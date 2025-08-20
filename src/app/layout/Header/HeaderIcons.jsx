@@ -17,7 +17,7 @@ export const CartIcon = ({ itemCount }) => {
 
       {/* Красный круг с количеством */}
       {itemCount > 0 && (
-        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-[4px] shadow-md">
+        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-[4px]">
           {itemCount > 99 ? '99+' : itemCount}
         </span>
       )}

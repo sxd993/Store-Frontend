@@ -28,9 +28,7 @@ export const CartContainer = () => {
   }, [updateQuantity]);
 
   const handleRemoveItem = useCallback((itemId) => {
-    if (window.confirm('Удалить товар из корзины?')) {
-      removeItem(itemId);
-    }
+    removeItem(itemId);
   }, [removeItem]);
 
   if (!isAuthenticated) {

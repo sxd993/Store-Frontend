@@ -41,7 +41,7 @@ export const FilterSidebar = memo(({
   }
 
   return (
-    <div className="w-full bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl mt-2 shadow-xl mb-6 overflow-hidden">
+    <div className="w-full bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl mt-2  mb-6 overflow-hidden">
       {/* Активные фильтры */}
       {hasActiveFilters && (
         <div className="p-6 bg-white border-b border-gray-200">
@@ -63,7 +63,7 @@ export const FilterSidebar = memo(({
             {Object.entries(filters).map(([key, value]) => (
               <span
                 key={key}
-                className="inline-flex items-center px-4 py-2 rounded-full text-sm bg-white text-blue-700 border border-blue-200   hover:shadow-md transition-all duration-200"
+                className="inline-flex items-center px-4 py-2 rounded-full text-sm bg-white text-blue-700 border border-blue-200  transition-all duration-200"
               >
                 <span className="mr-2 w-2 h-2 bg-blue-400 rounded-full"></span>
                 {getDisplayName(key, value)}
@@ -92,13 +92,14 @@ export const FilterSidebar = memo(({
           if (!options.length) return null;
 
           return (
-            <div key={config.key} className="p-6 hover:bg-gray-50 transition-colors duration-200">
+            <button
+              key={config.key}
+              onClick={() => onGroupToggle(config.key)}
+              className="w-full p-6 hover:bg-gray-50 transition-colors duration-200 text-left group cursor-pointer"
+            >
               {/* Заголовок группы */}
-              <button
-                onClick={() => onGroupToggle(config.key)}
-                className="w-full flex items-center justify-between text-left group"
-              >
-                <span className="text-base font-semibold text-gray-800 group-hover:text-blue-600 transition-colors duration-200">
+              <div className="w-full flex items-center justify-between">
+                <span className="text-base font-semibold text-gray-800 transition-colors duration-200">
                   {config.title}
                 </span>
                 <div className="flex items-center gap-2">
@@ -106,7 +107,7 @@ export const FilterSidebar = memo(({
                     <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
                   )}
                   <svg
-                    className={`w-5 h-5 text-gray-400 group-hover:text-blue-500 transform transition-all duration-300 ${
+                    className={`w-5 h-5 text-gray-400 transform transition-all duration-300 ${
                       isExpanded ? 'rotate-180' : ''
                     }`}
                     fill="none"
@@ -116,7 +117,7 @@ export const FilterSidebar = memo(({
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
-              </button>
+              </div>
 
               {/* Опции */}
               {isExpanded && (
@@ -124,7 +125,10 @@ export const FilterSidebar = memo(({
                   {config.type === 'radio' && (
                     <>
                       {/* Опция "Все" */}
-                      <label className="flex items-center cursor-pointer group">
+                      <label 
+                        className="flex items-center cursor-pointer group"
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <div className="relative">
                           <input
                             type="radio"
@@ -143,14 +147,18 @@ export const FilterSidebar = memo(({
                             )}
                           </div>
                         </div>
-                        <span className="ml-3 text-sm text-gray-700 group-hover:text-blue-600 transition-colors duration-200">
+                        <span className="ml-3 text-sm text-gray-700 transition-colors duration-200">
                           {config.defaultValue === 'all' ? 'Все' : config.defaultValue}
                         </span>
                       </label>
                       
                       {/* Остальные опции */}
                       {options.map(option => (
-                        <label key={option} className="flex items-center cursor-pointer group">
+                        <label 
+                          key={option} 
+                          className="flex items-center cursor-pointer group"
+                          onClick={(e) => e.stopPropagation()}
+                        >
                           <div className="relative">
                             <input
                               type="radio"
@@ -162,14 +170,14 @@ export const FilterSidebar = memo(({
                             <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
                               currentValue === option 
                                 ? 'border-blue-500 bg-blue-500' 
-                                : 'border-gray-300 group-hover:border-blue-400'
+                                : 'border-blue-400'
                             }`}>
                               {currentValue === option && (
                                 <div className="w-2 h-2 bg-white rounded-full"></div>
                               )}
                             </div>
                           </div>
-                          <span className="ml-3 text-sm text-gray-700 group-hover:text-blue-600 transition-colors duration-200">
+                          <span className="ml-3 text-sm text-gray-700 transition-colors duration-200">
                             {getDisplayName(config.key, option)}
                           </span>
                         </label>
@@ -178,7 +186,10 @@ export const FilterSidebar = memo(({
                   )}
 
                   {config.type === 'dropdown' && (
-                    <div className="relative">
+                    <div 
+                      className="relative"
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       <select
                         value={currentValue}
                         onChange={(e) => onFilterChange(config.key, e.target.value)}
@@ -202,7 +213,7 @@ export const FilterSidebar = memo(({
                   )}
                 </div>
               )}
-            </div>
+            </button>
           );
         })}
       </div>

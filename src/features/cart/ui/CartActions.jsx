@@ -6,9 +6,7 @@ export const CartActions = memo(() => {
   const { clearCart, isClearing } = useCart();
 
   const handleClear = () => {
-    if (window.confirm('Очистить корзину?')) {
-      clearCart();
-    }
+    clearCart();
   };
 
   return (

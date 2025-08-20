@@ -152,14 +152,14 @@ export const EditItem = memo(({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 font-light transition-colors duration-300"
+              className="px-4 py-2 border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 font-light transition-colors duration-300 rounded-2xl"
             >
               Отмена
             </button>
             <button
               type="submit"
               disabled={isLoading}
-              className="px-4 py-2 border border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 border border-gray-900 bg-white text-gray-900 hover:bg-gray-900 hover:text-white font-light transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed rounded-2xl"
             >
               {isLoading ? 'Сохраняем...' : 'Сохранить изменения'}
             </button>
