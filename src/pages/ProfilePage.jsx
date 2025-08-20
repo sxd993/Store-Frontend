@@ -5,6 +5,7 @@ import { UserOrders } from '../features/auth/ui/profile/UserOrders.jsx';
 import { useAuth } from '../features/auth/hooks/useAuth.jsx';
 import { useAuthActions } from '../features/auth/hooks/useAuthActions.jsx';
 import { LoadingState, UnauthorizedState } from '../features/auth/ui/profile/states/ProfileStates.jsx';
+import { ScrollToTop } from '../shared/components/ScrollToTop.jsx';
 
 export const ProfilePage = () => {
   const { user, isLoading, isAuthenticated } = useAuth();
@@ -41,6 +42,11 @@ export const ProfilePage = () => {
         <section className="p-4 md:p-8">
           <UserOrders />
         </section>
+        
+        {/* Футер с кнопкой "Скролл наверх" */}
+        <footer className="p-4 md:p-8 border-t border-gray-200">
+          <ScrollToTop />
+        </footer>
       </main>
     </div>
   );

@@ -8,6 +8,7 @@ import { CartActions } from '../ui/CartActions';
 import { EmptyCart } from '../ui/EmptyCart';
 import { ErrorState } from '../../../shared/ui/states/ErrorState';
 import { LoadingState } from '../../../shared/ui/states/LoadingState';
+import { ScrollToTop } from '../../../shared/components/ScrollToTop.jsx';
 
 export const CartContainer = () => {
   const { 
@@ -82,6 +83,11 @@ export const CartContainer = () => {
             <CartActions />
           </div>
         </div>
+        
+        {/* Футер с кнопкой "Скролл наверх" */}
+        <footer className="mt-16 pt-8 border-t border-gray-200">
+          <ScrollToTop />
+        </footer>
       </div>
     </section>
   );
